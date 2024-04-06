@@ -1,3 +1,5 @@
+import { AlphabetChar } from "./types";
+
 interface KeyboardRowProps {
   children?: React.ReactNode;
 }
@@ -10,12 +12,14 @@ interface KeyboardButtonProps {
   children?: React.ReactNode;
   grow?: "0.5" | "1" | "1.5";
   fontSize?: "xs" | "sm" | "md" | "lg" | "xl";
+  onClick?: () => void;
 }
 
 function KeyboardButton({
   children,
   grow = "1",
   fontSize = "xl",
+  onClick,
 }: KeyboardButtonProps): JSX.Element {
   const growClass =
     grow === "0.5"
@@ -38,51 +42,58 @@ function KeyboardButton({
   return (
     <button
       className={`bg-slate-300 active:bg-slate-400 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold`}
+      onClick={onClick}
     >
       {children}
     </button>
   );
 }
 
-export default function VirtualKeyboard() {
+interface VirtualKeyboardProps {
+  onLetterGuess: (letter: AlphabetChar) => void;
+}
+
+export default function VirtualKeyboard({
+  onLetterGuess,
+}: VirtualKeyboardProps) {
   return (
     <div className="w-full max-w-xl h-56 flex flex-col p-2 gap-2">
       <KeyboardRow>
-        <KeyboardButton>Q</KeyboardButton>
-        <KeyboardButton>W</KeyboardButton>
-        <KeyboardButton>E</KeyboardButton>
-        <KeyboardButton>R</KeyboardButton>
-        <KeyboardButton>T</KeyboardButton>
-        <KeyboardButton>Y</KeyboardButton>
-        <KeyboardButton>U</KeyboardButton>
-        <KeyboardButton>I</KeyboardButton>
-        <KeyboardButton>O</KeyboardButton>
-        <KeyboardButton>P</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("q")}>Q</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("w")}>W</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("e")}>E</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("r")}>R</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("t")}>T</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("y")}>Y</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("u")}>U</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("i")}>I</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("o")}>O</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("p")}>P</KeyboardButton>
       </KeyboardRow>
       <KeyboardRow>
         <div className="flex-[0.5_1_0%]"></div>
-        <KeyboardButton>A</KeyboardButton>
-        <KeyboardButton>S</KeyboardButton>
-        <KeyboardButton>D</KeyboardButton>
-        <KeyboardButton>F</KeyboardButton>
-        <KeyboardButton>G</KeyboardButton>
-        <KeyboardButton>H</KeyboardButton>
-        <KeyboardButton>J</KeyboardButton>
-        <KeyboardButton>K</KeyboardButton>
-        <KeyboardButton>L</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("a")}>A</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("s")}>S</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("d")}>D</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("f")}>F</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("g")}>G</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("h")}>H</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("j")}>J</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("k")}>K</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("l")}>L</KeyboardButton>
         <div className="flex-[0.5_1_0%]"></div>
       </KeyboardRow>
       <KeyboardRow>
         <KeyboardButton grow="1.5" fontSize="xs">
           ENTER
         </KeyboardButton>
-        <KeyboardButton>Z</KeyboardButton>
-        <KeyboardButton>X</KeyboardButton>
-        <KeyboardButton>C</KeyboardButton>
-        <KeyboardButton>V</KeyboardButton>
-        <KeyboardButton>B</KeyboardButton>
-        <KeyboardButton>N</KeyboardButton>
-        <KeyboardButton>M</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("z")}>Z</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("x")}>X</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("c")}>C</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("v")}>V</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("b")}>B</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("n")}>N</KeyboardButton>
+        <KeyboardButton onClick={() => onLetterGuess("m")}>M</KeyboardButton>
         <KeyboardButton grow="1.5">
           <svg
             xmlns="http://www.w3.org/2000/svg"
