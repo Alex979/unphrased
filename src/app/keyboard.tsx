@@ -1,20 +1,22 @@
-function KeyboardRow({
-  children,
-}: {
+interface KeyboardRowProps {
   children?: React.ReactNode;
-}): JSX.Element {
+}
+
+function KeyboardRow({ children }: KeyboardRowProps): JSX.Element {
   return <div className="grow flex gap-2">{children}</div>;
+}
+
+interface KeyboardButtonProps {
+  children?: React.ReactNode;
+  grow?: "0.5" | "1" | "1.5";
+  fontSize?: "xs" | "sm" | "md" | "lg" | "xl";
 }
 
 function KeyboardButton({
   children,
   grow = "1",
   fontSize = "xl",
-}: {
-  children?: React.ReactNode;
-  grow?: "0.5" | "1" | "1.5";
-  fontSize?: "xs" | "sm" | "md" | "lg" | "xl";
-}): JSX.Element {
+}: KeyboardButtonProps): JSX.Element {
   const growClass =
     grow === "0.5"
       ? "flex-[0.5_1_0%]"
@@ -32,6 +34,7 @@ function KeyboardButton({
       : fontSize === "lg"
       ? "text-lg"
       : "text-xl";
+
   return (
     <button
       className={`bg-slate-300 active:bg-slate-400 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold`}
@@ -43,7 +46,7 @@ function KeyboardButton({
 
 export default function VirtualKeyboard() {
   return (
-    <div className="w-full h-56 flex flex-col p-2 gap-2">
+    <div className="w-full max-w-xl h-56 flex flex-col p-2 gap-2">
       <KeyboardRow>
         <KeyboardButton>Q</KeyboardButton>
         <KeyboardButton>W</KeyboardButton>
