@@ -29,3 +29,8 @@ export type AlphabetChar =
 export function isAlphabetChar(char: string): char is AlphabetChar {
   return /^[a-z]$/.test(char);
 }
+
+export enum GuessingMode {
+  Individual,
+  Full,
+}
