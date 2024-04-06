@@ -1,4 +1,3 @@
-import Image from "next/image";
 import VirtualKeyboard from "./keyboard";
 import Sentence from "./sentence";
 import { AlphabetChar } from "./types";
