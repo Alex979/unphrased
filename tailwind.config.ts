@@ -8,10 +8,31 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      keyframes: ({ theme }) => ({
+        pop: {
+          "0%": {
+            transform: "scale(1.5)",
+            color: theme("colors.green.500"),
+          },
+          "50%": {
+            transform: "scale(1)",
+            color: theme("colors.green.500"),
+          },
+          "100%": {
+            transform: "scale(1)",
+            color: theme("colors.black"),
+          },
+        },
+        jiggle: {
+          "0%": { transform: "translateX(0)" },
+          "25%": { transform: "translateX(5px)" },
+          "50%": { transform: "translateX(-5px)" },
+          "75%": { transform: "translateX(5px)" },
+          "100%": { transform: "translateX(0)" },
+        },
+      }),
+      animation: {
+        pop: "pop 0.3s linear",
       },
     },
   },

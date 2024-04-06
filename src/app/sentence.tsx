@@ -31,19 +31,19 @@ export default function Sentence({
           return;
         }
         if (!isAlphabetChar(letter) || guessedLetters.has(letter)) {
-          currentSpan.push(<span key={currentSpan.length - 1}>{letter.toUpperCase()}</span>);
+          currentSpan.push(<span key={currentSpan.length - 1} className="inline-block animate-pop">{letter.toUpperCase()}</span>);
           return;
         }
 
         // Handle blanks.
         if (guessingMode === GuessingMode.Individual) {
-          currentSpan.push(<span key={currentSpan.length - 1}>_</span>);
+          currentSpan.push(<span key={currentSpan.length - 1} className="inline-block">_</span>);
           return;
         }
         blankIndex++;
         if (blankIndex === sentenceGuesses.length) {
           currentSpan.push(
-            <span key={currentSpan.length - 1} className="text-red-500">
+            <span key={currentSpan.length - 1} className="text-red-500 inline-block">
               <span className="absolute translate-y-1/2 text-red-500">^</span>_
             </span>
           );
@@ -51,7 +51,7 @@ export default function Sentence({
         }
         if (blankIndex < sentenceGuesses.length) {
           currentSpan.push(
-            <span key={currentSpan.length - 1} className="text-red-500">
+            <span key={currentSpan.length - 1} className="text-red-500 inline-block">
               {sentenceGuesses[blankIndex].toUpperCase()}
             </span>
           );
@@ -75,7 +75,7 @@ export default function Sentence({
   return (
     <div className="p-12 text-center">
       <p
-        className={`text-3xl ${inconsolata.className} font-bold leading-loose`}
+        className={`text-3xl ${inconsolata.className} font-bold leading-loose text-black`}
       >
         {formatSentence()}
       </p>

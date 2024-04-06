@@ -1,4 +1,5 @@
-import { AlphabetChar } from "./types";
+import { useEffect } from "react";
+import { AlphabetChar, isAlphabetChar } from "./types";
 
 interface KeyboardRowProps {
   children?: React.ReactNode;
@@ -60,6 +61,27 @@ export default function VirtualKeyboard({
   onBackspace,
   onEnter,
 }: VirtualKeyboardProps) {
+  // Listen for keyboard events for desktop users to optionally use
+  // their real keyboard.
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      const key = event.key.toLowerCase();
+      if (isAlphabetChar(key)) {
+        onLetterPress(key);
+      } else if (key === "enter") {
+        onEnter();
+      } else if (key === "backspace") {
+        onBackspace();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onLetterPress, onBackspace, onEnter]);
+
   return (
     <div className="w-full max-w-xl h-56 flex flex-col p-2 gap-2">
       <KeyboardRow>
