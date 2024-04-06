@@ -5,6 +5,7 @@ import VirtualKeyboard from "./keyboard";
 import Sentence from "./sentence";
 import { AlphabetChar, GuessingMode } from "./types";
 import LetterPreview from "./letter-preview";
+import GuessModeButton from "./guess-mode-btn";
 
 export default function Home() {
   const [guessingMode, setGuessingMode] = useState<GuessingMode>(
@@ -50,6 +51,14 @@ export default function Home() {
     }
   };
 
+  const toggleGuessingMode = () => {
+    setGuessingMode((prevGuess) => {
+      return prevGuess === GuessingMode.Individual
+        ? GuessingMode.Full
+        : GuessingMode.Individual;
+    });
+  }
+
   return (
     <main className="min-h-screen flex flex-col">
       <div className="flex-1 flex flex-col justify-center items-center">
@@ -61,7 +70,15 @@ export default function Home() {
         />
       </div>
       <div className="flex flex-col items-center gap-2">
-        <LetterPreview letter={queuedLetter} />
+        <div className="w-full flex gap-2 px-2">
+          <div className="flex-1"></div>
+          <div className="flex justify-center items-center">
+            <LetterPreview letter={queuedLetter} />
+          </div>
+          <div className="flex-1 flex justify-end">
+            <GuessModeButton guessingMode={guessingMode} onClick={toggleGuessingMode} />
+          </div>
+        </div>
         <VirtualKeyboard
           onLetterPress={onLetterPress}
           onBackspace={onBackspace}
