@@ -33,17 +33,17 @@ function KeyboardButton({
       ? "text-lg"
       : "text-xl";
   return (
-    <div
-      className={`bg-blue-500 ${growClass} flex items-center justify-center ${fontSizeClass} font-bold`}
+    <button
+      className={`bg-slate-300 active:bg-slate-400 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold`}
     >
       {children}
-    </div>
+    </button>
   );
 }
 
 export default function VirtualKeyboard() {
   return (
-    <div className="w-full h-56 flex flex-col bg-red-500 p-2 gap-2">
+    <div className="w-full h-56 flex flex-col p-2 gap-2">
       <KeyboardRow>
         <KeyboardButton>Q</KeyboardButton>
         <KeyboardButton>W</KeyboardButton>
