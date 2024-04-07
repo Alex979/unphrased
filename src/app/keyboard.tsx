@@ -14,6 +14,7 @@ interface KeyboardButtonProps {
   grow?: "0.5" | "1" | "1.5";
   fontSize?: "xs" | "sm" | "md" | "lg" | "xl";
   onClick?: () => void;
+  guessed: boolean;
 }
 
 function KeyboardButton({
@@ -21,6 +22,7 @@ function KeyboardButton({
   grow = "1",
   fontSize = "xl",
   onClick,
+  guessed,
 }: KeyboardButtonProps): JSX.Element {
   const growClass =
     grow === "0.5"
@@ -42,7 +44,7 @@ function KeyboardButton({
 
   return (
     <button
-      className={`bg-slate-300 active:bg-slate-400 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold`}
+      className={`${guessed ? 'bg-slate-500 text-white' : 'bg-slate-300'} active:bg-slate-400 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold`}
       onClick={onClick}
     >
       {children}
@@ -54,12 +56,14 @@ interface VirtualKeyboardProps {
   onLetterPress: (letter: AlphabetChar) => void;
   onBackspace: () => void;
   onEnter: () => void;
+  guessedLetters: Set<AlphabetChar>;
 }
 
 export default function VirtualKeyboard({
   onLetterPress,
   onBackspace,
   onEnter,
+  guessedLetters,
 }: VirtualKeyboardProps) {
   // Listen for keyboard events for desktop users to optionally use
   // their real keyboard.
@@ -85,42 +89,52 @@ export default function VirtualKeyboard({
   return (
     <div className="w-full max-w-xl h-56 flex flex-col p-2 gap-2">
       <KeyboardRow>
-        <KeyboardButton onClick={() => onLetterPress("q")}>Q</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("w")}>W</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("e")}>E</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("r")}>R</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("t")}>T</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("y")}>Y</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("u")}>U</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("i")}>I</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("o")}>O</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("p")}>P</KeyboardButton>
+        {Array.from("qwertyuiop").map((letter) => (
+          <KeyboardButton
+            key={letter}
+            onClick={() => onLetterPress(letter as AlphabetChar)}
+            guessed={guessedLetters.has(letter as AlphabetChar)}
+          >
+            {letter.toUpperCase()}
+          </KeyboardButton>
+        ))}
       </KeyboardRow>
       <KeyboardRow>
         <div className="flex-[0.5_1_0%]"></div>
-        <KeyboardButton onClick={() => onLetterPress("a")}>A</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("s")}>S</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("d")}>D</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("f")}>F</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("g")}>G</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("h")}>H</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("j")}>J</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("k")}>K</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("l")}>L</KeyboardButton>
+        {Array.from("asdfghjkl").map((letter) => (
+          <KeyboardButton
+            key={letter}
+            onClick={() => onLetterPress(letter as AlphabetChar)}
+            guessed={guessedLetters.has(letter as AlphabetChar)}
+          >
+            {letter.toUpperCase()}
+          </KeyboardButton>
+        ))}
         <div className="flex-[0.5_1_0%]"></div>
       </KeyboardRow>
       <KeyboardRow>
-        <KeyboardButton grow="1.5" fontSize="xs" onClick={() => onEnter()}>
+        <KeyboardButton
+          grow="1.5"
+          fontSize="xs"
+          onClick={() => onEnter()}
+          guessed={false}
+        >
           ENTER
         </KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("z")}>Z</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("x")}>X</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("c")}>C</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("v")}>V</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("b")}>B</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("n")}>N</KeyboardButton>
-        <KeyboardButton onClick={() => onLetterPress("m")}>M</KeyboardButton>
-        <KeyboardButton grow="1.5" onClick={() => onBackspace()}>
+        {Array.from("zxcvbnm").map((letter) => (
+          <KeyboardButton
+            key={letter}
+            onClick={() => onLetterPress(letter as AlphabetChar)}
+            guessed={guessedLetters.has(letter as AlphabetChar)}
+          >
+            {letter.toUpperCase()}
+          </KeyboardButton>
+        ))}
+        <KeyboardButton
+          grow="1.5"
+          onClick={() => onBackspace()}
+          guessed={false}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

@@ -6,6 +6,7 @@ import Sentence from "./sentence";
 import { AlphabetChar, GuessingMode, isAlphabetChar } from "./types";
 import LetterPreview from "./letter-preview";
 import GuessModeButton from "./guess-mode-btn";
+import Header from "./header";
 
 export default function Home() {
   const sentence = "sea sells sea shells by the sea shore";
@@ -163,6 +164,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col">
+      <Header />
       <div className="flex-1 flex flex-col justify-center items-center">
         <LetterPreview
           letter={queuedLetter}
@@ -191,6 +193,7 @@ export default function Home() {
           onLetterPress={onLetterPress}
           onBackspace={onBackspace}
           onEnter={onEnter}
+          guessedLetters={guessedLetters}
         />
       </div>
     </main>
