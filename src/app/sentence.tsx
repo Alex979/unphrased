@@ -1,5 +1,6 @@
 import { Inconsolata } from "next/font/google";
 import { AlphabetChar, GuessingMode, isAlphabetChar } from "./types";
+import { useEffect, useRef, useState } from "react";
 
 const inconsolata = Inconsolata({ subsets: ["latin"] });
 
@@ -8,6 +9,7 @@ interface SentenceProps {
   guessedLetters: Set<AlphabetChar>;
   guessingMode: GuessingMode;
   sentenceGuesses: AlphabetChar[];
+  jiggleTrigger: number;
 }
 
 export default function Sentence({
@@ -15,7 +17,32 @@ export default function Sentence({
   guessedLetters,
   guessingMode,
   sentenceGuesses,
+  jiggleTrigger,
 }: SentenceProps) {
+  const [isJiggling, setIsJiggling] = useState(false);
+  const jiggleRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (jiggleTrigger === 0) {
+      return;
+    }
+    setIsJiggling(true);
+  }, [jiggleTrigger]);
+
+  // When jiggle animation ends, remove jiggle class.
+  useEffect(() => {
+    const handleAnimationEnd = () => {
+      setIsJiggling(false);
+    };
+
+    const jiggleElement = jiggleRef.current;
+    jiggleElement?.addEventListener("animationend", handleAnimationEnd);
+
+    return () => {
+      jiggleElement?.removeEventListener("animationend", handleAnimationEnd);
+    };
+  }, []);
+
   const formatSentence = () => {
     let blankIndex = -1;
     let currentSpan: React.ReactNode[] = [];
@@ -30,20 +57,43 @@ export default function Sentence({
           allSpans.push(currentSpan);
           return;
         }
-        if (!isAlphabetChar(letter) || guessedLetters.has(letter)) {
-          currentSpan.push(<span key={currentSpan.length - 1} className="inline-block animate-pop">{letter.toUpperCase()}</span>);
+        if (!isAlphabetChar(letter)) {
+          currentSpan.push(
+            <span key={currentSpan.length - 1} className="inline-block">
+              {letter.toUpperCase()}
+            </span>
+          );
+          return;
+        }
+
+        if (guessedLetters.has(letter)) {
+          currentSpan.push(
+            <span
+              key={currentSpan.length - 1}
+              className="inline-block animate-pop"
+            >
+              {letter.toUpperCase()}
+            </span>
+          );
           return;
         }
 
         // Handle blanks.
         if (guessingMode === GuessingMode.Individual) {
-          currentSpan.push(<span key={currentSpan.length - 1} className="inline-block">_</span>);
+          currentSpan.push(
+            <span key={currentSpan.length - 1} className="inline-block">
+              _
+            </span>
+          );
           return;
         }
         blankIndex++;
         if (blankIndex === sentenceGuesses.length) {
           currentSpan.push(
-            <span key={currentSpan.length - 1} className="text-red-500 inline-block">
+            <span
+              key={currentSpan.length - 1}
+              className="text-red-500 inline-block"
+            >
               <span className="absolute translate-y-1/2 text-red-500">^</span>_
             </span>
           );
@@ -51,7 +101,10 @@ export default function Sentence({
         }
         if (blankIndex < sentenceGuesses.length) {
           currentSpan.push(
-            <span key={currentSpan.length - 1} className="text-red-500 inline-block">
+            <span
+              key={currentSpan.length - 1}
+              className="text-red-500 inline-block"
+            >
               {sentenceGuesses[blankIndex].toUpperCase()}
             </span>
           );
@@ -73,7 +126,10 @@ export default function Sentence({
   };
 
   return (
-    <div className="p-12 text-center">
+    <div
+      className={`p-12 text-center ${isJiggling ? "animate-jiggle" : ""}`}
+      ref={jiggleRef}
+    >
       <p
         className={`text-3xl ${inconsolata.className} font-bold leading-loose text-black`}
       >

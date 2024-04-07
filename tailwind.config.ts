@@ -33,6 +33,7 @@ const config: Config = {
       }),
       animation: {
         pop: "pop 0.3s linear",
+        jiggle: "jiggle 0.2s ease-out"
       },
     },
   },

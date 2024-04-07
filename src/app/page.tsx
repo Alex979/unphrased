@@ -8,8 +8,9 @@ import LetterPreview from "./letter-preview";
 import GuessModeButton from "./guess-mode-btn";
 
 export default function Home() {
-  const sentence = "she sells sea shells by the sea shore";
+  const sentence = "sea sells sea shells by the sea shore";
 
+  // Game state.
   const [guessingMode, setGuessingMode] = useState<GuessingMode>(
     GuessingMode.Individual
   );
@@ -20,13 +21,19 @@ export default function Home() {
   const [sentenceGuesses, setSentenceGuesses] = useState<AlphabetChar[]>([]);
   const [solved, setSolved] = useState(false);
 
+  // Animation states.
+  const [sentenceJiggleTrigger, setSentenceJiggleTrigger] = useState(0);
+  const [previewJiggleTrigger, setPreviewJiggleTrigger] = useState(0);
+
   const onLetterPress = (letter: AlphabetChar) => {
     if (guessingMode === GuessingMode.Individual) {
       setQueuedLetter(letter);
     } else {
-      setSentenceGuesses((prevSentenceGuesses) => {
-        return [...prevSentenceGuesses, letter];
-      });
+      if (sentenceGuesses.length < numBlanksInSentence()) {
+        setSentenceGuesses((prevSentenceGuesses) => {
+          return [...prevSentenceGuesses, letter];
+        });
+      }
     }
   };
 
@@ -43,17 +50,34 @@ export default function Home() {
   const onEnter = () => {
     if (guessingMode === GuessingMode.Individual) {
       if (!queuedLetter) {
+        jiggleLetterPreview();
         return;
       }
+
+      if (guessedLetters.has(queuedLetter)) {
+        jiggleLetterPreview();
+        setQueuedLetter(null);
+        return;
+      }
+      
       setGuessedLetters((prevGuessedLetters) => {
         const newGuessedLetters = new Set(prevGuessedLetters);
         newGuessedLetters.add(queuedLetter);
         checkForWin(newGuessedLetters, sentenceGuesses);
         return newGuessedLetters;
       });
+      if (!sentence.includes(queuedLetter)) {
+        jiggleLetterPreview();
+      }
       setQueuedLetter(null);
     } else {
-      checkForWin(guessedLetters, sentenceGuesses);
+      const didWin = checkForWin(guessedLetters, sentenceGuesses);
+      if (!didWin) {
+        jiggleSentence();
+        if (sentenceGuesses.length === numBlanksInSentence()) {
+          setSentenceGuesses([]);
+        }
+      }
     }
   };
 
@@ -78,24 +102,18 @@ export default function Home() {
       if (!isAlphabetChar(char)) {
         continue;
       }
-      console.log(guessedLetters);
+
       if (guessedLetters.has(char)) {
         continue;
       }
 
       blankIndex++;
       if (blankIndex >= sentenceGuesses.length) {
-        console.log(
-          `blankIndex (${blankIndex}) >= sentenceGuesses.length (${sentenceGuesses.length}): not solved`
-        );
         didSolve = false;
         break;
       }
 
       if (sentenceGuesses[blankIndex] !== char) {
-        console.log(
-          `sentenceGuesses[${blankIndex}] (${sentenceGuesses[blankIndex]}) !== char (${char}): not solved`
-        );
         didSolve = false;
         break;
       }
@@ -119,6 +137,28 @@ export default function Home() {
         return newGuessedLetters;
       });
     }
+
+    return didSolve;
+  };
+
+  const numBlanksInSentence = () => {
+    let numBlanks = 0;
+    for (let char of sentence) {
+      if (!isAlphabetChar(char) || guessedLetters.has(char)) {
+        continue;
+      }
+
+      numBlanks++;
+    }
+    return numBlanks;
+  };
+
+  const jiggleSentence = () => {
+    setSentenceJiggleTrigger((prev) => prev + 1);
+  };
+
+  const jiggleLetterPreview = () => {
+    setPreviewJiggleTrigger((prev) => prev + 1);
   };
 
   return (
@@ -129,12 +169,14 @@ export default function Home() {
           className={
             guessingMode === GuessingMode.Full || solved ? "invisible" : ""
           }
+          jiggleTrigger={previewJiggleTrigger}
         />
         <Sentence
           sentence={sentence}
           guessingMode={guessingMode}
           guessedLetters={guessedLetters}
           sentenceGuesses={sentenceGuesses}
+          jiggleTrigger={sentenceJiggleTrigger}
         />
       </div>
       <div className="flex flex-col items-center gap-2">
