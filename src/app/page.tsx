@@ -9,11 +9,7 @@ import GuessModeButton from "./guess-mode-btn";
 import Header from "./header";
 import GuessCounter from "./guess-counter";
 
-export default function Home() {
-  const sentence = "she sells sea shells by the sea shore";
-  const maxGuesses = 12;
-
-  // Game state.
+function useGameState() {
   const [currentGuess, setCurrentGuess] = useState(1);
   const [guessingMode, setGuessingMode] = useState<GuessingMode>(
     GuessingMode.Individual
@@ -25,90 +21,126 @@ export default function Home() {
   const [sentenceGuesses, setSentenceGuesses] = useState<AlphabetChar[]>([]);
   const [solved, setSolved] = useState(false);
 
+  const addSentenceGuess = (letter: AlphabetChar) => {
+    setSentenceGuesses((prevSentenceGuesses) => {
+      return [...prevSentenceGuesses, letter];
+    });
+  };
+
+  const popSentenceGuess = () => {
+    setSentenceGuesses((prevSentenceGuesses) => {
+      return prevSentenceGuesses.slice(0, -1);
+    });
+  };
+
+  return {
+    currentGuess,
+    setCurrentGuess,
+    guessingMode,
+    setGuessingMode,
+    queuedLetter,
+    setQueuedLetter,
+    guessedLetters,
+    setGuessedLetters,
+    sentenceGuesses,
+    setSentenceGuesses,
+    addSentenceGuess,
+    popSentenceGuess,
+    solved,
+    setSolved,
+  };
+}
+
+export default function Home() {
+  const sentence = "she sells sea shells by the sea shore";
+  const maxGuesses = 12;
+
+  // Game state.
+  const game = useGameState();
+
   // Animation states.
   const [sentenceJiggleTrigger, setSentenceJiggleTrigger] = useState(0);
   const [previewJiggleTrigger, setPreviewJiggleTrigger] = useState(0);
 
+  // Popup state.
+  const [popupOpen, setPopupOpen] = useState(true);
+
   // Force full guessing mode when on last guess.
   useEffect(() => {
-    if (currentGuess === maxGuesses) {
-      setGuessingMode(GuessingMode.Full);
+    if (game.currentGuess === maxGuesses) {
+      game.setGuessingMode(GuessingMode.Full);
     }
-  }, [currentGuess]);
+  }, [game.currentGuess]);
 
   const onLetterPress = (letter: AlphabetChar) => {
-    if (guessingMode === GuessingMode.Individual) {
-      setQueuedLetter(letter);
+    if (game.guessingMode === GuessingMode.Individual) {
+      game.setQueuedLetter(letter);
     } else {
-      if (sentenceGuesses.length < numBlanksInSentence()) {
-        if (guessedLetters.has(letter)) {
+      if (game.sentenceGuesses.length < numBlanksInSentence()) {
+        if (game.guessedLetters.has(letter)) {
           jiggleSentence();
           return;
         }
-        setSentenceGuesses((prevSentenceGuesses) => {
-          return [...prevSentenceGuesses, letter];
-        });
+        game.addSentenceGuess(letter);
       }
     }
   };
 
   const onBackspace = () => {
-    if (guessingMode === GuessingMode.Individual) {
-      setQueuedLetter(null);
+    if (game.guessingMode === GuessingMode.Individual) {
+      game.setQueuedLetter(null);
     } else {
-      setSentenceGuesses((prevSentenceGuesses) => {
-        return prevSentenceGuesses.slice(0, -1);
-      });
+      game.popSentenceGuess();
     }
   };
 
   const onEnter = () => {
-    if (guessingMode === GuessingMode.Individual) {
-      if (!queuedLetter) {
+    if (game.guessingMode === GuessingMode.Individual) {
+      if (!game.queuedLetter) {
         jiggleLetterPreview();
         return;
       }
 
-      if (guessedLetters.has(queuedLetter)) {
+      if (game.guessedLetters.has(game.queuedLetter)) {
         jiggleLetterPreview();
-        setQueuedLetter(null);
+        game.setQueuedLetter(null);
         return;
       }
 
-      setGuessedLetters((prevGuessedLetters) => {
+      game.setGuessedLetters((prevGuessedLetters) => {
         const newGuessedLetters = new Set(prevGuessedLetters);
-        newGuessedLetters.add(queuedLetter);
-        checkForWin(newGuessedLetters, sentenceGuesses);
+        newGuessedLetters.add(game.queuedLetter!);
+        checkForWin(newGuessedLetters, game.sentenceGuesses);
         return newGuessedLetters;
       });
-      if (!sentence.includes(queuedLetter)) {
+      if (!sentence.includes(game.queuedLetter)) {
         jiggleLetterPreview();
       }
-      setQueuedLetter(null);
-      setCurrentGuess((prevGuess) => prevGuess + 1);
+      game.setQueuedLetter(null);
+      game.setCurrentGuess((prevGuess) => prevGuess + 1);
     } else {
-      const didWin = checkForWin(guessedLetters, sentenceGuesses);
+      const didWin = checkForWin(game.guessedLetters, game.sentenceGuesses);
       if (!didWin) {
         jiggleSentence();
       }
-      if (sentenceGuesses.length === numBlanksInSentence()) {
-        setSentenceGuesses([]);
-        setCurrentGuess((prevGuess) => prevGuess + 1);
+      if (game.sentenceGuesses.length === numBlanksInSentence()) {
+        game.setSentenceGuesses([]);
+        game.setCurrentGuess((prevGuess) => prevGuess + 1);
       }
     }
   };
 
   const toggleGuessingMode = () => {
-    if (currentGuess === maxGuesses) {
+    if (game.currentGuess === maxGuesses) {
       return;
     }
-    
-    if (guessingMode === GuessingMode.Individual) {
-      setGuessingMode(GuessingMode.Full);
-      setQueuedLetter(null);
+
+    if (game.guessingMode === GuessingMode.Individual) {
+      game.setGuessingMode(GuessingMode.Full);
+      game.setQueuedLetter(null);
     } else {
-      setGuessingMode(GuessingMode.Individual);
-      setSentenceGuesses([]);
+      game.setGuessingMode(GuessingMode.Individual);
+      game.setSentenceGuesses([]);
     }
   };
 
@@ -140,7 +172,7 @@ export default function Home() {
       }
     }
 
-    setSolved(didSolve);
+    game.setSolved(didSolve);
     if (didSolve) {
       // Add all remaining letters to guessedLetters if solved.
       const remainingLetters: Set<AlphabetChar> = new Set();
@@ -150,7 +182,7 @@ export default function Home() {
         }
         remainingLetters.add(char);
       }
-      setGuessedLetters((prevGuessedLetters) => {
+      game.setGuessedLetters((prevGuessedLetters) => {
         const newGuessedLetters = new Set(prevGuessedLetters);
         remainingLetters.forEach((char) => {
           newGuessedLetters.add(char);
@@ -165,7 +197,7 @@ export default function Home() {
   const numBlanksInSentence = () => {
     let numBlanks = 0;
     for (let char of sentence) {
-      if (!isAlphabetChar(char) || guessedLetters.has(char)) {
+      if (!isAlphabetChar(char) || game.guessedLetters.has(char)) {
         continue;
       }
 
@@ -187,35 +219,40 @@ export default function Home() {
       <Header />
       <div className="flex-1 flex flex-col justify-center items-center">
         <LetterPreview
-          letter={queuedLetter}
+          letter={game.queuedLetter}
           className={
-            guessingMode === GuessingMode.Full || solved ? "invisible" : ""
+            game.guessingMode === GuessingMode.Full || game.solved
+              ? "invisible"
+              : ""
           }
           jiggleTrigger={previewJiggleTrigger}
         />
         <Sentence
           sentence={sentence}
-          guessingMode={guessingMode}
-          guessedLetters={guessedLetters}
-          sentenceGuesses={sentenceGuesses}
+          guessingMode={game.guessingMode}
+          guessedLetters={game.guessedLetters}
+          sentenceGuesses={game.sentenceGuesses}
           jiggleTrigger={sentenceJiggleTrigger}
         />
       </div>
       <div className="flex flex-col items-center gap-2">
-        <GuessCounter currentGuess={currentGuess} maxGuesses={maxGuesses} />
+        <GuessCounter
+          currentGuess={game.currentGuess}
+          maxGuesses={maxGuesses}
+        />
         <div className="px-2 w-full max-w-64">
           <GuessModeButton
-            className={`w-full ${solved ? "invisible" : ""}`}
-            guessingMode={guessingMode}
+            className={`w-full ${game.solved ? "invisible" : ""}`}
+            guessingMode={game.guessingMode}
             onClick={toggleGuessingMode}
-            finalGuess={currentGuess === maxGuesses}
+            finalGuess={game.currentGuess === maxGuesses}
           />
         </div>
         <VirtualKeyboard
           onLetterPress={onLetterPress}
           onBackspace={onBackspace}
           onEnter={onEnter}
-          guessedLetters={guessedLetters}
+          guessedLetters={game.guessedLetters}
         />
       </div>
     </main>
