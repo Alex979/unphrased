@@ -1,17 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import VirtualKeyboard from "./keyboard";
 import Sentence from "./sentence";
 import { AlphabetChar, GuessingMode, isAlphabetChar } from "./types";
 import LetterPreview from "./letter-preview";
 import GuessModeButton from "./guess-mode-btn";
 import Header from "./header";
+import GuessCounter from "./guess-counter";
 
 export default function Home() {
-  const sentence = "sea sells sea shells by the sea shore";
+  const sentence = "she sells sea shells by the sea shore";
+  const maxGuesses = 12;
 
   // Game state.
+  const [currentGuess, setCurrentGuess] = useState(1);
   const [guessingMode, setGuessingMode] = useState<GuessingMode>(
     GuessingMode.Individual
   );
@@ -26,11 +29,22 @@ export default function Home() {
   const [sentenceJiggleTrigger, setSentenceJiggleTrigger] = useState(0);
   const [previewJiggleTrigger, setPreviewJiggleTrigger] = useState(0);
 
+  // Force full guessing mode when on last guess.
+  useEffect(() => {
+    if (currentGuess === maxGuesses) {
+      setGuessingMode(GuessingMode.Full);
+    }
+  }, [currentGuess]);
+
   const onLetterPress = (letter: AlphabetChar) => {
     if (guessingMode === GuessingMode.Individual) {
       setQueuedLetter(letter);
     } else {
       if (sentenceGuesses.length < numBlanksInSentence()) {
+        if (guessedLetters.has(letter)) {
+          jiggleSentence();
+          return;
+        }
         setSentenceGuesses((prevSentenceGuesses) => {
           return [...prevSentenceGuesses, letter];
         });
@@ -60,7 +74,7 @@ export default function Home() {
         setQueuedLetter(null);
         return;
       }
-      
+
       setGuessedLetters((prevGuessedLetters) => {
         const newGuessedLetters = new Set(prevGuessedLetters);
         newGuessedLetters.add(queuedLetter);
@@ -71,18 +85,24 @@ export default function Home() {
         jiggleLetterPreview();
       }
       setQueuedLetter(null);
+      setCurrentGuess((prevGuess) => prevGuess + 1);
     } else {
       const didWin = checkForWin(guessedLetters, sentenceGuesses);
       if (!didWin) {
         jiggleSentence();
-        if (sentenceGuesses.length === numBlanksInSentence()) {
-          setSentenceGuesses([]);
-        }
+      }
+      if (sentenceGuesses.length === numBlanksInSentence()) {
+        setSentenceGuesses([]);
+        setCurrentGuess((prevGuess) => prevGuess + 1);
       }
     }
   };
 
   const toggleGuessingMode = () => {
+    if (currentGuess === maxGuesses) {
+      return;
+    }
+    
     if (guessingMode === GuessingMode.Individual) {
       setGuessingMode(GuessingMode.Full);
       setQueuedLetter(null);
@@ -182,11 +202,13 @@ export default function Home() {
         />
       </div>
       <div className="flex flex-col items-center gap-2">
+        <GuessCounter currentGuess={currentGuess} maxGuesses={maxGuesses} />
         <div className="px-2 w-full max-w-64">
           <GuessModeButton
             className={`w-full ${solved ? "invisible" : ""}`}
             guessingMode={guessingMode}
             onClick={toggleGuessingMode}
+            finalGuess={currentGuess === maxGuesses}
           />
         </div>
         <VirtualKeyboard
