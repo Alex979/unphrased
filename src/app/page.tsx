@@ -11,6 +11,7 @@ import GuessCounter from "./guess-counter";
 import Popup from "./popup";
 import FinishScreen from "./finish-screen";
 import ShowResultsButton from "./show-results-btn";
+import TutorialScreen from "./tutorial-screen";
 
 function useGameState() {
   const [currentGuess, setCurrentGuess] = useState(1);
@@ -67,7 +68,7 @@ function useGameState() {
 }
 
 export default function Home() {
-  const sentence = "she sells sea shells by the sea shore";
+  const sentence = "journey to the center of the earth";
   const maxGuesses = 12;
 
   // Game state.
@@ -78,7 +79,7 @@ export default function Home() {
   const [previewJiggleTrigger, setPreviewJiggleTrigger] = useState(0);
 
   // Popup state.
-  const [popupOpen, setPopupOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(true);
 
   // Force full guessing mode when on last guess.
   useEffect(() => {
@@ -305,13 +306,21 @@ export default function Home() {
         />
       </div>
       <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
-        <FinishScreen
-          didWin={game.solved}
-          guessCount={game.currentGuess - 1}
-          guessHistory={game.guessHistory}
-          sentence={sentence}
-          puzzleNumber={1}
-        />
+        {game.gameOver ? (
+          <FinishScreen
+            didWin={game.solved}
+            guessCount={game.currentGuess - 1}
+            guessHistory={game.guessHistory}
+            sentence={sentence}
+            puzzleNumber={1}
+          />
+        ) : (
+          <TutorialScreen
+            maxGuesses={maxGuesses}
+            sentence={sentence}
+            onClose={() => setPopupOpen(false)}
+          />
+        )}
       </Popup>
     </main>
   );

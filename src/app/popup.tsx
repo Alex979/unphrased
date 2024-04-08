@@ -11,7 +11,7 @@ export default function Popup({ children, open, onClose }: PopupProps) {
         !open ? "translate-y-full" : ""
       }`}
     >
-      <div className="flex items-center justify-end pr-12 pt-12 pb-5">
+      <div className="flex items-center justify-end pr-8 pt-8 pb-5">
         <button onClick={onClose}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
