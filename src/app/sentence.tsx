@@ -129,7 +129,7 @@ export default function Sentence({
 
   return (
     <div
-      className={`mt-12 mx-12 text-center ${isJiggling ? "animate-jiggle" : ""}`}
+      className={`mx-12 text-center ${isJiggling ? "animate-jiggle" : ""}`}
       ref={jiggleRef}
     >
       <p

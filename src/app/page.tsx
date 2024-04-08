@@ -12,6 +12,7 @@ import Popup from "./popup";
 import FinishScreen from "./finish-screen";
 import ShowResultsButton from "./show-results-btn";
 import TutorialScreen from "./tutorial-screen";
+import Hint from "./hint";
 
 function useGameState() {
   const [currentGuess, setCurrentGuess] = useState(1);
@@ -68,8 +69,8 @@ function useGameState() {
 }
 
 export default function Home() {
-  const sentence = "journey to the center of the earth";
-  const maxGuesses = 12;
+  const sentence = "actions speak louder than words";
+  const maxGuesses = 8;
 
   // Game state.
   const game = useGameState();
@@ -159,6 +160,9 @@ export default function Home() {
       });
       if (!sentence.includes(game.queuedLetter)) {
         jiggleLetterPreview();
+        game.addGuessHistory(false);
+      } else {
+        game.addGuessHistory(true);
       }
       game.setQueuedLetter(null);
       game.setCurrentGuess((prevGuess) => prevGuess + 1);
@@ -170,6 +174,7 @@ export default function Home() {
       if (game.sentenceGuesses.length === numBlanksInSentence()) {
         game.setSentenceGuesses([]);
         game.setCurrentGuess((prevGuess) => prevGuess + 1);
+        game.addGuessHistory(didWin);
       }
     }
   };
@@ -216,7 +221,6 @@ export default function Home() {
     }
 
     game.setSolved(didSolve);
-    game.addGuessHistory(didSolve);
     if (didSolve) {
       // Add all remaining letters to guessedLetters if solved.
       const remainingLetters: Set<AlphabetChar> = new Set();
@@ -263,23 +267,26 @@ export default function Home() {
     <main className="min-h-full flex flex-col">
       <Header />
       <div className="flex-1 flex flex-col justify-center items-center">
-        <LetterPreview
-          letter={game.queuedLetter}
-          className={
-            game.guessingMode === GuessingMode.Full || game.solved
-              ? "invisible"
-              : ""
-          }
-          jiggleTrigger={previewJiggleTrigger}
-        />
-        <Sentence
-          sentence={sentence}
-          guessingMode={game.guessingMode}
-          guessedLetters={game.guessedLetters}
-          sentenceGuesses={game.sentenceGuesses}
-          jiggleTrigger={sentenceJiggleTrigger}
-          gameOver={game.gameOver}
-        />
+        <div className="grow flex flex-col justify-between items-center max-h-80">
+          <Hint emojis="🫴🔊🤐" />
+          <LetterPreview
+            letter={game.queuedLetter}
+            className={
+              game.guessingMode === GuessingMode.Full || game.solved
+                ? "invisible"
+                : ""
+            }
+            jiggleTrigger={previewJiggleTrigger}
+          />
+          <Sentence
+            sentence={sentence}
+            guessingMode={game.guessingMode}
+            guessedLetters={game.guessedLetters}
+            sentenceGuesses={game.sentenceGuesses}
+            jiggleTrigger={sentenceJiggleTrigger}
+            gameOver={game.gameOver}
+          />
+        </div>
       </div>
       <div className="flex flex-col items-center gap-2">
         <GuessCounter
