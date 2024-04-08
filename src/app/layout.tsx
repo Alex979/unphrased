@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "Guess today's hidden phrase!",
   openGraph: {
     title: "Unphrased - A daily phrase guessing game",
-    images: "unphrased_og.png",
+    images: "https://www.unphrased.app/unphrased_og.png",
   },
 };
 
