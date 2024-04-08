@@ -87,7 +87,7 @@ export default function VirtualKeyboard({
   }, [onLetterPress, onBackspace, onEnter]);
 
   return (
-    <div className="w-full max-w-xl h-56 flex flex-col p-2 gap-2">
+    <div className="w-full max-w-xl h-40 flex flex-col p-2 gap-2">
       <KeyboardRow>
         {Array.from("qwertyuiop").map((letter) => (
           <KeyboardButton
