@@ -40,7 +40,7 @@ export default function LetterPreview({
 
   return (
     <div
-      className={`w-14 h-14 border-2 ${borderClass} rounded flex justify-center items-center text-3xl font-bold ${
+      className={`w-14 h-14 border-2 dark:border-zinc-600 ${borderClass} rounded flex justify-center items-center text-3xl font-bold ${
         className || ""
       } ${isJiggling ? "animate-jiggle" : ""}`}
       ref={jiggleRef}

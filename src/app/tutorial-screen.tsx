@@ -1,6 +1,7 @@
 import { Roboto_Slab } from "next/font/google";
 import { isAlphabetChar } from "./types";
 import { Inconsolata } from "next/font/google";
+import BlockQuote from "./block-quote";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
 const inconsolata = Inconsolata({ subsets: ["latin"] });
@@ -38,51 +39,35 @@ export default function TutorialScreen({
             Reveal the hidden phrase in{" "}
             <span className="font-bold">{maxGuesses} guesses.</span>
           </li>
-          <div className="border rounded p-2 bg-slate-200 my-4">
-            <p
-              className={`font-extrabold text-xl text-slate-600 ${inconsolata.className}`}
-            >
-              _______ __ ___ ______ __ ___ _____
-            </p>
-          </div>
+          <BlockQuote>_______ __ ___ ______ __ ___ _____</BlockQuote>
           <li>
             Guess <span className="font-bold">individual letters</span> to
             reveal them in the phrase.
           </li>
-          <div className="border rounded p-2 bg-slate-200 my-4">
-            <p
-              className={`font-extrabold text-xl text-slate-600 ${inconsolata.className}`}
-            >
-              _O___E_ TO T_E _E_TE_ O_ T_E E__T_
-            </p>
-          </div>
+          <BlockQuote>_O___E_ TO T_E _E_TE_ O_ T_E E__T_</BlockQuote>
           <li>
             Think you know the phrase? Switch the{" "}
             <span className="font-bold">guess mode</span> to guess the entire
             phrase instead.
           </li>
-          <div className="border rounded p-2 bg-slate-200 my-4">
-            <p
-              className={`font-extrabold text-xl text-slate-600 ${inconsolata.className}`}
-            >
-              <span className="text-pink-500">J</span>O
-              <span className="text-pink-500">URN</span>E
-              <span className="text-pink-500">Y</span> TO T
-              <span className="text-pink-500">H</span>E{" "}
-              <span className="text-pink-500">C</span>E
-              <span className="text-pink-500">N</span>TE
-              <span className="text-pink-500">R</span> O
-              <span className="text-pink-500">F</span> T
-              <span className="text-pink-500">H</span>E E
-              <span className="text-pink-500">AR</span>T
-              <span className="text-pink-500">H</span>
-            </p>
-          </div>
+          <BlockQuote>
+            <span className="text-pink-500">J</span>O
+            <span className="text-pink-500">URN</span>E
+            <span className="text-pink-500">Y</span> TO T
+            <span className="text-pink-500">H</span>E{" "}
+            <span className="text-pink-500">C</span>E
+            <span className="text-pink-500">N</span>TE
+            <span className="text-pink-500">R</span> O
+            <span className="text-pink-500">F</span> T
+            <span className="text-pink-500">H</span>E E
+            <span className="text-pink-500">AR</span>T
+            <span className="text-pink-500">H</span>
+          </BlockQuote>
         </ul>
         <div className="mt-6 pb-32 flex justify-center">
           <button
             onClick={onClose}
-            className="border border-gray-700 active:bg-gray-200 rounded-full font-bold py-2 px-8 shadow-sm"
+            className="border border-gray-700 dark:border-zinc-700 active:bg-gray-200 dark:active:bg-zinc-800 rounded-full font-bold py-2 px-8 shadow-sm"
           >
             Got it!
           </button>

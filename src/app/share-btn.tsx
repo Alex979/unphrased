@@ -28,7 +28,7 @@ export default function ShareButton({
     <div className={`flex flex-col items-center space-y-3 ${className || ""}`}>
       <button
         onClick={handleShare}
-        className={`border border-gray-700 active:bg-gray-200 rounded-full font-bold py-2 px-5 shadow-sm flex items-center justify-center`}
+        className={`border border-gray-700 dark:border-zinc-700 active:bg-gray-200 dark:active:bg-zinc-800 rounded-full font-bold py-2 px-5 shadow-sm flex items-center justify-center`}
       >
         Share results{" "}
         <svg

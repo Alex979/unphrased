@@ -44,7 +44,7 @@ function KeyboardButton({
 
   return (
     <button
-      className={`${guessed ? 'bg-slate-500 text-white' : 'bg-slate-300'} active:bg-slate-400 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold shadow-sm`}
+      className={`${guessed ? 'bg-slate-500 dark:bg-zinc-800 text-white' : 'bg-slate-300 dark:bg-zinc-500'} active:bg-slate-400 dark:active:bg-zinc-600 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold shadow-sm`}
       onClick={onClick}
     >
       {children}

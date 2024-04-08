@@ -1,6 +1,7 @@
 import { Inconsolata } from "next/font/google";
 import ShareButton from "./share-btn";
 import { Roboto_Slab } from "next/font/google";
+import BlockQuote from "./block-quote";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
 const inconsolata = Inconsolata({ subsets: ["latin"] });
@@ -23,7 +24,9 @@ export default function FinishScreen({
   return (
     <div className="w-full h-full flex justify-center pt-20">
       <div className="p-8">
-        <h1 className={`font-extrabold text-4xl my-2 text-center leading-tight ${robotoSlab.className}`}>
+        <h1
+          className={`font-extrabold text-4xl my-2 text-center leading-tight ${robotoSlab.className}`}
+        >
           {didWin ? "Well done!" : "Better luck next time!"}
         </h1>
         {didWin ? (
@@ -35,13 +38,7 @@ export default function FinishScreen({
         ) : (
           <p className="my-2 text-lg">The phrase was:</p>
         )}
-        <div className="border rounded p-2 bg-slate-200 my-4">
-          <p
-            className={`font-extrabold text-xl text-slate-600 ${inconsolata.className}`}
-          >
-            {sentence.toUpperCase()}
-          </p>
-        </div>
+        <BlockQuote>{sentence.toUpperCase()}</BlockQuote>
         <div className="flex justify-center">
           <ShareButton
             guessHistory={guessHistory}

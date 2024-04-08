@@ -20,7 +20,6 @@ const config: Config = {
           },
           "100%": {
             transform: "scale(1)",
-            color: theme("colors.black"),
           },
         },
         jiggle: {

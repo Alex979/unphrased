@@ -133,7 +133,7 @@ export default function Sentence({
       ref={jiggleRef}
     >
       <p
-        className={`text-3xl ${inconsolata.className} font-bold leading-loose text-black`}
+        className={`text-3xl ${inconsolata.className} font-bold leading-loose`}
       >
         {formatSentence()}
       </p>
