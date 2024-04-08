@@ -19,7 +19,7 @@ export default function ShareButton({
         return guess ? "✅" : "❌";
       })
       .join("");
-    const shareString = `Unphrased\nPuzzle #${puzzleNumber}\n${guessString}`;
+    const shareString = `Unphrased\nPuzzle #${puzzleNumber}\n${guessString}\nwww.unphrased.app`;
     navigator.clipboard.writeText(shareString);
     setShowClipboardText(true);
   };
