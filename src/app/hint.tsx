@@ -5,7 +5,7 @@ interface HintProps {
 export default function Hint({ emojis }: HintProps) {
   return (
     <div className="border rounded-lg overflow-hidden m-4">
-      <div className="bg-indigo-300 text-center">
+      <div className="bg-indigo-100 text-center">
         <p className="text-sm font-bold">CLUE</p>
       </div>
       <div className="p-1">

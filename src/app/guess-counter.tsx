@@ -10,7 +10,7 @@ export default function GuessCounter({
   return (
     <div className="flex h-8">
       {Array.from({ length: maxGuesses - currentGuess + 1 }).map((_, index) => (
-        <p key={index} className="text-2xl text-slate-500">•</p>
+        <p key={index} className="text-2xl text-slate-400">•</p>
       ))}
     </div>
   );
