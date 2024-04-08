@@ -26,7 +26,7 @@ export default function TutorialScreen({
   };
 
   return (
-    <div className="w-full h-full flex justify-center overflow-y-scroll">
+    <div className="w-full h-full flex justify-center overflow-scroll">
       <div className="max-w-96 px-8">
         <h1
           className={`font-extrabold text-4xl mb-4 text-center leading-tight ${robotoSlab.className}`}
@@ -79,7 +79,7 @@ export default function TutorialScreen({
             </p>
           </div>
         </ul>
-        <div className="mt-6 flex justify-center">
+        <div className="mt-6 pb-32 flex justify-center">
           <button
             onClick={onClose}
             className="border border-gray-700 active:bg-gray-200 rounded-full font-bold py-2 px-8 shadow-sm"
