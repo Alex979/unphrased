@@ -70,7 +70,7 @@ function useGameState() {
 }
 
 export default function Home() {
-  const sentence = "actions speak louder than words";
+  const sentence = "two heads are better than one";
   const maxGuesses = 8;
 
   // Game state.
@@ -201,6 +201,8 @@ export default function Home() {
     let blankIndex = -1;
     let didSolve = true;
     for (let char of sentence) {
+      char = char.toLowerCase();
+
       if (!isAlphabetChar(char)) {
         continue;
       }
@@ -247,6 +249,7 @@ export default function Home() {
   const numBlanksInSentence = () => {
     let numBlanks = 0;
     for (let char of sentence) {
+      char = char.toLowerCase();
       if (!isAlphabetChar(char) || game.guessedLetters.has(char)) {
         continue;
       }
@@ -269,7 +272,7 @@ export default function Home() {
       <Header />
       <div className="flex-1 flex flex-col justify-center items-center">
         <div className="grow flex flex-col justify-between items-center max-h-80">
-          <Hint emojis="🫴🔊🤐" />
+          <Hint emojis="👩👨👍" />
           <LetterPreview
             letter={game.queuedLetter}
             className={
@@ -320,7 +323,7 @@ export default function Home() {
             guessCount={game.currentGuess - 1}
             guessHistory={game.guessHistory}
             sentence={sentence}
-            puzzleNumber={1}
+            puzzleNumber={2}
           />
         ) : (
           <TutorialScreen
