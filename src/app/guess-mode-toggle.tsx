@@ -13,7 +13,20 @@ export default function GuessModeToggle({
   onClick,
   finalGuess,
 }: GuessModeToggleProps) {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Blur the button to prevent focus outline from sticking around, only when it was a mouse click.
+    if (event.detail !== 0) {
+      event.currentTarget.blur();
+    }
+
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  // Don't allow "Enter" key to trigger clicks, since this is the submit key.
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    console.log(event);
     if (event.key === "Enter") {
       event.preventDefault();
     }
@@ -22,7 +35,7 @@ export default function GuessModeToggle({
   return (
     <button
       className={`my-2 ${className}`}
-      onClick={onClick}
+      onClick={handleClick}
       onKeyDown={handleKeyDown}
     >
       <div
