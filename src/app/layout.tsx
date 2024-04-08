@@ -7,6 +7,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Unphrased",
   description: "Guess today's hidden phrase!",
+  openGraph: {
+    title: "Unphrased - A daily phrase guessing game",
+    images: "unphrased_og.png",
+  },
 };
 
 export default function RootLayout({
