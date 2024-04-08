@@ -27,7 +27,7 @@ export default function TutorialScreen({
   };
 
   return (
-    <div className="w-full h-full flex justify-center overflow-scroll">
+    <div className="w-full h-full flex justify-center overflow-y-auto">
       <div className="max-w-96 px-8">
         <h1
           className={`font-extrabold text-4xl mb-4 text-center leading-tight ${robotoSlab.className}`}
