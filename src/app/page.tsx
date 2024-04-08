@@ -8,9 +8,13 @@ import LetterPreview from "./letter-preview";
 import GuessModeButton from "./guess-mode-btn";
 import Header from "./header";
 import GuessCounter from "./guess-counter";
+import Popup from "./popup";
+import FinishScreen from "./finish-screen";
+import ShowResultsButton from "./show-results-btn";
 
 function useGameState() {
   const [currentGuess, setCurrentGuess] = useState(1);
+  const [guessHistory, setGuessHistory] = useState<boolean[]>([]);
   const [guessingMode, setGuessingMode] = useState<GuessingMode>(
     GuessingMode.Individual
   );
@@ -19,7 +23,14 @@ function useGameState() {
     new Set()
   );
   const [sentenceGuesses, setSentenceGuesses] = useState<AlphabetChar[]>([]);
+  const [gameOver, setGameOver] = useState(false);
   const [solved, setSolved] = useState(false);
+
+  const addGuessHistory = (guess: boolean) => {
+    setGuessHistory((prevGuessHistory) => {
+      return [...prevGuessHistory, guess];
+    });
+  };
 
   const addSentenceGuess = (letter: AlphabetChar) => {
     setSentenceGuesses((prevSentenceGuesses) => {
@@ -36,6 +47,8 @@ function useGameState() {
   return {
     currentGuess,
     setCurrentGuess,
+    guessHistory,
+    addGuessHistory,
     guessingMode,
     setGuessingMode,
     queuedLetter,
@@ -46,6 +59,8 @@ function useGameState() {
     setSentenceGuesses,
     addSentenceGuess,
     popSentenceGuess,
+    gameOver,
+    setGameOver,
     solved,
     setSolved,
   };
@@ -63,16 +78,36 @@ export default function Home() {
   const [previewJiggleTrigger, setPreviewJiggleTrigger] = useState(0);
 
   // Popup state.
-  const [popupOpen, setPopupOpen] = useState(true);
+  const [popupOpen, setPopupOpen] = useState(false);
 
   // Force full guessing mode when on last guess.
   useEffect(() => {
     if (game.currentGuess === maxGuesses) {
       game.setGuessingMode(GuessingMode.Full);
     }
+    if (game.currentGuess > maxGuesses) {
+      game.setGameOver(true);
+    }
   }, [game.currentGuess]);
 
+  // Open popup with a delay after game is over.
+  useEffect(() => {
+    if (game.gameOver) {
+      const timeoutId = setTimeout(() => {
+        setPopupOpen(true);
+      }, 500);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }
+  }, [game.gameOver]);
+
   const onLetterPress = (letter: AlphabetChar) => {
+    if (game.gameOver) {
+      return;
+    }
+
     if (game.guessingMode === GuessingMode.Individual) {
       game.setQueuedLetter(letter);
     } else {
@@ -87,6 +122,10 @@ export default function Home() {
   };
 
   const onBackspace = () => {
+    if (game.gameOver) {
+      return;
+    }
+
     if (game.guessingMode === GuessingMode.Individual) {
       game.setQueuedLetter(null);
     } else {
@@ -95,6 +134,10 @@ export default function Home() {
   };
 
   const onEnter = () => {
+    if (game.gameOver) {
+      return;
+    }
+
     if (game.guessingMode === GuessingMode.Individual) {
       if (!game.queuedLetter) {
         jiggleLetterPreview();
@@ -148,7 +191,6 @@ export default function Home() {
     guessedLetters: Set<AlphabetChar>,
     sentenceGuesses: AlphabetChar[]
   ) => {
-    console.log("Checcking for win...");
     let blankIndex = -1;
     let didSolve = true;
     for (let char of sentence) {
@@ -173,6 +215,7 @@ export default function Home() {
     }
 
     game.setSolved(didSolve);
+    game.addGuessHistory(didSolve);
     if (didSolve) {
       // Add all remaining letters to guessedLetters if solved.
       const remainingLetters: Set<AlphabetChar> = new Set();
@@ -189,6 +232,7 @@ export default function Home() {
         });
         return newGuessedLetters;
       });
+      game.setGameOver(true);
     }
 
     return didSolve;
@@ -233,6 +277,7 @@ export default function Home() {
           guessedLetters={game.guessedLetters}
           sentenceGuesses={game.sentenceGuesses}
           jiggleTrigger={sentenceJiggleTrigger}
+          gameOver={game.gameOver}
         />
       </div>
       <div className="flex flex-col items-center gap-2">
@@ -241,8 +286,12 @@ export default function Home() {
           maxGuesses={maxGuesses}
         />
         <div className="px-2 w-full max-w-64">
+          <ShowResultsButton
+            className={`w-full ${game.gameOver ? "" : "hidden"}`}
+            onClick={() => setPopupOpen(true)}
+          />
           <GuessModeButton
-            className={`w-full ${game.solved ? "invisible" : ""}`}
+            className={`w-full ${game.gameOver ? "hidden" : ""}`}
             guessingMode={game.guessingMode}
             onClick={toggleGuessingMode}
             finalGuess={game.currentGuess === maxGuesses}
@@ -255,6 +304,15 @@ export default function Home() {
           guessedLetters={game.guessedLetters}
         />
       </div>
+      <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
+        <FinishScreen
+          didWin={game.solved}
+          guessCount={game.currentGuess - 1}
+          guessHistory={game.guessHistory}
+          sentence={sentence}
+          puzzleNumber={1}
+        />
+      </Popup>
     </main>
   );
 }

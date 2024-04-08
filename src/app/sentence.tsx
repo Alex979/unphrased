@@ -10,6 +10,7 @@ interface SentenceProps {
   guessingMode: GuessingMode;
   sentenceGuesses: AlphabetChar[];
   jiggleTrigger: number;
+  gameOver: boolean;
 }
 
 export default function Sentence({
@@ -18,6 +19,7 @@ export default function Sentence({
   guessingMode,
   sentenceGuesses,
   jiggleTrigger,
+  gameOver,
 }: SentenceProps) {
   const [isJiggling, setIsJiggling] = useState(false);
   const jiggleRef = useRef<HTMLDivElement>(null);
@@ -79,7 +81,7 @@ export default function Sentence({
         }
 
         // Handle blanks.
-        if (guessingMode === GuessingMode.Individual) {
+        if (guessingMode === GuessingMode.Individual || gameOver) {
           currentSpan.push(
             <span key={currentSpan.length - 1} className="inline-block">
               _
@@ -92,9 +94,9 @@ export default function Sentence({
           currentSpan.push(
             <span
               key={currentSpan.length - 1}
-              className="text-red-500 inline-block"
+              className="text-pink-500 inline-block"
             >
-              <span className="absolute translate-y-1/2 text-red-500">^</span>_
+              <span className="absolute translate-y-1/2 text-pink-500">^</span>_
             </span>
           );
           return;
@@ -103,7 +105,7 @@ export default function Sentence({
           currentSpan.push(
             <span
               key={currentSpan.length - 1}
-              className="text-red-500 inline-block"
+              className="text-pink-500 inline-block"
             >
               {sentenceGuesses[blankIndex].toUpperCase()}
             </span>
@@ -127,7 +129,7 @@ export default function Sentence({
 
   return (
     <div
-      className={`p-12 text-center ${isJiggling ? "animate-jiggle" : ""}`}
+      className={`mt-12 mx-12 text-center ${isJiggling ? "animate-jiggle" : ""}`}
       ref={jiggleRef}
     >
       <p

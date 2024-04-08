@@ -17,7 +17,7 @@ export default function GuessModeButton({
     return (
       <button
         onClick={onClick}
-        className={`bg-sky-500 rounded-full font-bold py-2 px-4 text-white shadow-sm ${
+        className={`bg-indigo-500 rounded-full font-bold py-2 px-4 text-white shadow-sm ${
           className || ""
         }`}
       >
@@ -28,7 +28,7 @@ export default function GuessModeButton({
     return (
       <button
         onClick={onClick}
-        className={`bg-red-500 rounded-full font-bold py-2 px-4 text-white shadow-sm ${
+        className={`bg-pink-500 rounded-full font-bold py-2 px-4 text-white shadow-sm ${
           className || ""
         }`}
       >

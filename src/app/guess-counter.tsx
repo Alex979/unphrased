@@ -8,7 +8,7 @@ export default function GuessCounter({
   maxGuesses,
 }: GuessCounterProps) {
   return (
-    <div className="flex">
+    <div className="flex h-8">
       {Array.from({ length: maxGuesses - currentGuess + 1 }).map((_, index) => (
         <p key={index} className="text-2xl text-slate-500">•</p>
       ))}
