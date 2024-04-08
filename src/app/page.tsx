@@ -259,7 +259,7 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col">
+    <main className="min-h-full flex flex-col">
       <Header />
       <div className="flex-1 flex flex-col justify-center items-center">
         <LetterPreview
