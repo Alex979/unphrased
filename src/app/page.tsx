@@ -13,6 +13,7 @@ import FinishScreen from "./finish-screen";
 import ShowResultsButton from "./show-results-btn";
 import TutorialScreen from "./tutorial-screen";
 import Hint from "./hint";
+import GuessModeToggle from "./guess-mode-toggle";
 
 function useGameState() {
   const [currentGuess, setCurrentGuess] = useState(1);
@@ -293,13 +294,13 @@ export default function Home() {
           currentGuess={game.currentGuess}
           maxGuesses={maxGuesses}
         />
-        <div className="px-2 w-full max-w-64">
+        <div className="px-2 w-full flex justify-center">
           <ShowResultsButton
-            className={`w-full ${game.gameOver ? "" : "hidden"}`}
+            className={`${game.gameOver ? "" : "hidden"}`}
             onClick={() => setPopupOpen(true)}
           />
-          <GuessModeButton
-            className={`w-full ${game.gameOver ? "hidden" : ""}`}
+          <GuessModeToggle
+            className={`${game.gameOver ? "hidden" : ""}`}
             guessingMode={game.guessingMode}
             onClick={toggleGuessingMode}
             finalGuess={game.currentGuess === maxGuesses}
