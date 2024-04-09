@@ -1,8 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AlphabetChar, GuessingMode } from "./types";
 
-const GAME_STATE_VERSION = "v1";
-
 interface StoredGameState {
   currentGuess: number;
   guessHistory: boolean[];
@@ -39,23 +37,9 @@ function localStorageAvailable() {
   }
 }
 
-function formatDateAsYYYYMMDD(date: Date) {
-  const year = date.getFullYear();
-  // Add 1 to month because getMonth() returns a zero-based index.
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const day = date.getDate().toString().padStart(2, "0");
 
-  return `${year}-${month}-${day}`;
-}
-
-function constructTodaysGameStateKey() {
-  // Fetch today's date.
-  const today = new Date();
-  // Format as string in user's time zone: YYYY-MM-DD.
-  const dateString = formatDateAsYYYYMMDD(today);
-  // Construct key for localStorage.
-  const key = `game-${GAME_STATE_VERSION}-${dateString}`;
-  return key;
+function gameStateKey(puzzleId: string) {
+  return `game-${puzzleId}`;
 }
 
 function storeLocalGameState(gameState: StoredGameState) {
@@ -63,7 +47,7 @@ function storeLocalGameState(gameState: StoredGameState) {
     return;
   }
 
-  const key = constructTodaysGameStateKey();
+  const key = gameStateKey('3');
   localStorage.setItem(key, JSON.stringify(gameState));
 }
 
@@ -72,7 +56,7 @@ function loadLocalGameState(): StoredGameState | null {
     return null;
   }
 
-  const key = constructTodaysGameStateKey();
+  const key = gameStateKey('3');
   const storedGameState = localStorage.getItem(key);
   if (storedGameState === null) {
     return null;

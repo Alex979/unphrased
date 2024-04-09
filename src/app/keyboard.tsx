@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { AlphabetChar, isAlphabetChar } from "./types";
+import { AlphabetChar, GuessingMode, isAlphabetChar } from "./types";
 
 interface KeyboardRowProps {
   children?: React.ReactNode;
@@ -16,6 +16,7 @@ interface KeyboardButtonProps {
   onClick?: () => void;
   guessed: boolean;
   highlight?: boolean;
+  guessingMode?: GuessingMode;
 }
 
 function KeyboardButton({
@@ -25,6 +26,7 @@ function KeyboardButton({
   onClick,
   guessed,
   highlight,
+  guessingMode,
 }: KeyboardButtonProps): JSX.Element {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     // Blur the button to prevent focus outline from sticking around, only when it was a mouse click.
@@ -71,7 +73,10 @@ function KeyboardButton({
       : "bg-slate-300 dark:bg-zinc-500"
   } active:bg-slate-400 dark:active:bg-zinc-600`;
 
-  const colorClassHighlight = `bg-indigo-500 active:bg-indigo-700 text-white`;
+  const colorClassHighlight =
+    guessingMode === GuessingMode.Full
+      ? `bg-pink-500 active:bg-pink-700 text-white`
+      : `bg-indigo-500 active:bg-indigo-700 text-white`;
 
   const colorClass = highlight ? colorClassHighlight : colorClassDefault;
 
@@ -91,6 +96,7 @@ interface VirtualKeyboardProps {
   onBackspace: () => void;
   onEnter: () => void;
   guessedLetters: Set<AlphabetChar>;
+  guessingMode: GuessingMode;
 }
 
 export default function VirtualKeyboard({
@@ -98,6 +104,7 @@ export default function VirtualKeyboard({
   onBackspace,
   onEnter,
   guessedLetters,
+  guessingMode,
 }: VirtualKeyboardProps) {
   // Listen for keyboard events for desktop users to optionally use
   // their real keyboard.
@@ -153,6 +160,7 @@ export default function VirtualKeyboard({
           onClick={() => onEnter()}
           guessed={false}
           highlight
+          guessingMode={guessingMode}
         >
           SUBMIT
         </KeyboardButton>
