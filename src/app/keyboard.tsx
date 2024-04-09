@@ -11,10 +11,11 @@ function KeyboardRow({ children }: KeyboardRowProps): JSX.Element {
 
 interface KeyboardButtonProps {
   children?: React.ReactNode;
-  grow?: "0.5" | "1" | "1.5";
+  grow?: "0.5" | "1" | "1.5" | "2";
   fontSize?: "xs" | "sm" | "md" | "lg" | "xl";
   onClick?: () => void;
   guessed: boolean;
+  highlight?: boolean;
 }
 
 function KeyboardButton({
@@ -23,25 +24,8 @@ function KeyboardButton({
   fontSize = "xl",
   onClick,
   guessed,
+  highlight,
 }: KeyboardButtonProps): JSX.Element {
-  const growClass =
-    grow === "0.5"
-      ? "flex-[0.5_1_0%]"
-      : grow === "1"
-      ? "flex-[1_1_0%]"
-      : "flex-[1.5_1_0%]";
-
-  const fontSizeClass =
-    fontSize === "xs"
-      ? "text-xs"
-      : fontSize === "sm"
-      ? "text-sm"
-      : fontSize === "md"
-      ? "text-md"
-      : fontSize === "lg"
-      ? "text-lg"
-      : "text-xl";
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     // Blur the button to prevent focus outline from sticking around, only when it was a mouse click.
     if (event.detail !== 0) {
@@ -61,13 +45,39 @@ function KeyboardButton({
     }
   };
 
+  const growClass =
+    grow === "0.5"
+      ? "flex-[0.5_1_0%]"
+      : grow === "1"
+      ? "flex-[1_1_0%]"
+      : grow === "1.5"
+      ? "flex-[1.5_1_0%]"
+      : "flex-[2_1_0%]";
+
+  const fontSizeClass =
+    fontSize === "xs"
+      ? "text-xs"
+      : fontSize === "sm"
+      ? "text-sm"
+      : fontSize === "md"
+      ? "text-md"
+      : fontSize === "lg"
+      ? "text-lg"
+      : "text-xl";
+
+  const colorClassDefault = `${
+    guessed
+      ? "bg-slate-500 dark:bg-zinc-800 text-white"
+      : "bg-slate-300 dark:bg-zinc-500"
+  } active:bg-slate-400 dark:active:bg-zinc-600`;
+
+  const colorClassHighlight = `bg-indigo-500 active:bg-indigo-700 text-white`;
+
+  const colorClass = highlight ? colorClassHighlight : colorClassDefault;
+
   return (
     <button
-      className={`${
-        guessed
-          ? "bg-slate-500 dark:bg-zinc-800 text-white"
-          : "bg-slate-300 dark:bg-zinc-500"
-      } active:bg-slate-400 dark:active:bg-zinc-600 rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold shadow-sm`}
+      className={`${colorClass} rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold shadow-sm`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
     >
@@ -138,12 +148,13 @@ export default function VirtualKeyboard({
       </KeyboardRow>
       <KeyboardRow>
         <KeyboardButton
-          grow="1.5"
+          grow="2"
           fontSize="xs"
           onClick={() => onEnter()}
           guessed={false}
+          highlight
         >
-          ENTER
+          SUBMIT
         </KeyboardButton>
         {Array.from("zxcvbnm").map((letter) => (
           <KeyboardButton
