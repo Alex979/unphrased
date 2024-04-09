@@ -295,6 +295,7 @@ export default function Home() {
             didWin={game.solved}
             guessCount={game.currentGuess - 1}
             guessHistory={game.guessHistory}
+            maxGuesses={maxGuesses}
             sentence={sentence}
             puzzleNumber={2}
           />

@@ -3,12 +3,14 @@ import { useState } from "react";
 interface ShareButtonProps {
   className?: string;
   guessHistory: boolean[];
+  maxGuesses: number;
   puzzleNumber: number;
 }
 
 export default function ShareButton({
   className,
   guessHistory,
+  maxGuesses,
   puzzleNumber,
 }: ShareButtonProps) {
   const [showClipboardText, setShowClipboardText] = useState(false);
@@ -19,7 +21,8 @@ export default function ShareButton({
         return guess ? "✅" : "❌";
       })
       .join("");
-    const shareString = `Unphrased\nPuzzle #${puzzleNumber}\n${guessString}\nwww.unphrased.app`;
+    const numGuesses = guessHistory[guessHistory.length - 1] ? guessHistory.length : 'X';
+    const shareString = `Unphrased\nPuzzle #${puzzleNumber} ${numGuesses}/${maxGuesses}\n${guessString}\nwww.unphrased.app`;
     navigator.clipboard.writeText(shareString);
     setShowClipboardText(true);
   };
