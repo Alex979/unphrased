@@ -39,29 +39,26 @@ export default function TutorialScreen({
             Reveal the hidden phrase in{" "}
             <span className="font-bold">{maxGuesses} guesses.</span>
           </li>
-          <BlockQuote>_______ __ ___ ______ __ ___ _____</BlockQuote>
+          <BlockQuote>___ _____ ___ ______ ____ ___</BlockQuote>
           <li>
             Guess <span className="font-bold">individual letters</span> to
             reveal them in the phrase.
           </li>
-          <BlockQuote>_O___E_ TO T_E _E_TE_ O_ T_E E__T_</BlockQuote>
+          <BlockQuote>T_O _E___ __E _ETTE_ T___ O_E</BlockQuote>
           <li>
             Think you know the phrase? Switch the{" "}
             <span className="font-bold">guess mode</span> to guess the entire
             phrase instead.
           </li>
           <BlockQuote>
-            <span className="text-pink-500">J</span>O
-            <span className="text-pink-500">URN</span>E
-            <span className="text-pink-500">Y</span> TO T
-            <span className="text-pink-500">H</span>E{" "}
-            <span className="text-pink-500">C</span>E
-            <span className="text-pink-500">N</span>TE
-            <span className="text-pink-500">R</span> O
-            <span className="text-pink-500">F</span> T
-            <span className="text-pink-500">H</span>E E
-            <span className="text-pink-500">AR</span>T
-            <span className="text-pink-500">H</span>
+            T<span className="text-pink-500">W</span>O{" "}
+            <span className="text-pink-500">H</span>E
+            <span className="text-pink-500">ADS</span>{" "}
+            <span className="text-pink-500">AR</span>E{" "}
+            <span className="text-pink-500">B</span>ETTE
+            <span className="text-pink-500">R</span> T
+            <span className="text-pink-500">HAN</span> O
+            <span className="text-pink-500">N</span>E
           </BlockQuote>
         </ul>
         <div className="mt-6 pb-32 flex justify-center">
