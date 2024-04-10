@@ -75,10 +75,11 @@ function KeyboardButton({
       : "bg-slate-300 dark:bg-zinc-500"
   } active:bg-slate-400 dark:active:bg-zinc-600`;
 
-  const colorClassHighlight =
+  const colorClassHighlight = `${
     guessingMode === GuessingMode.Full
-      ? `bg-pink-500 active:bg-pink-700 text-white disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-700 dark:disabled:text-zinc-400`
-      : `bg-indigo-500 active:bg-indigo-700 text-white`;
+      ? `bg-pink-500 active:bg-pink-700 text-white`
+      : `bg-indigo-500 active:bg-indigo-700 text-white`
+  } disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-700 dark:disabled:text-zinc-400`;
 
   const colorClass = highlight ? colorClassHighlight : colorClassDefault;
 

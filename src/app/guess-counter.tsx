@@ -8,9 +8,12 @@ export default function GuessCounter({
   maxGuesses,
 }: GuessCounterProps) {
   const isFinalGuess = currentGuess === maxGuesses;
+  const isGameOver = currentGuess > maxGuesses;
   return (
-    <div className="flex items-center h-8">
-      <p className="text-slate-600 dark:text-zinc-300 mr-2">{isFinalGuess ? "Last guess!" : "Remaining: "}</p>
+    <div className={`flex items-center h-8 ${isGameOver ? "invisible" : ""}`}>
+      <p className="text-slate-600 dark:text-zinc-300 mr-2">
+        {isFinalGuess ? "Last guess!" : "Remaining: "}
+      </p>
       {!isFinalGuess &&
         Array.from({ length: maxGuesses - currentGuess + 1 }).map(
           (_, index) => (
