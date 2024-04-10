@@ -36,13 +36,13 @@ export default function GuessModeToggle({
     <button
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className="rounded-full"
+      className={`rounded-full w-full max-w-80 ${className}`}
     >
-      <div className={`my-2 ${className}`}>
+      <div className={`flex items-center`}>
         <div
-          className={`w-1/2 inline ${
+          className={`w-1/2 flex items-center justify-center ${
             finalGuess ? "hidden" : ""
-          } px-6 py-2 rounded-l-full border-t border-b border-l ${
+          } px-6 py-1.5 rounded-l-full border-t border-b border-l ${
             guessingMode === GuessingMode.Individual
               ? "border-r border-indigo-600 dark:border-indigo-400 bg-indigo-50 dark:bg-indigo-950 font-semibold text-indigo-600 dark:text-indigo-400"
               : "border-gray-400 dark:border-zinc-400 text-gray-600 dark:text-zinc-300"
@@ -51,7 +51,7 @@ export default function GuessModeToggle({
           {finalGuess ? "" : "Guess letters"}
         </div>
         <div
-          className={`w-1/2 inline px-6 py-2 rounded-r-full ${
+          className={`w-1/2 px-6 py-1.5 rounded-r-full ${
             finalGuess ? "rounded-l-full" : ""
           } border-t border-b border-r ${
             guessingMode === GuessingMode.Full
