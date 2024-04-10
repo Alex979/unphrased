@@ -287,6 +287,7 @@ export default function Home() {
           onEnter={onEnter}
           guessedLetters={game.guessedLetters}
           guessingMode={game.guessingMode}
+          submitDisabled={game.guessingMode === GuessingMode.Full && game.sentenceGuesses.length < numBlanksInSentence()}
         />
       </div>
       <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>

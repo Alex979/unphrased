@@ -16,6 +16,7 @@ interface KeyboardButtonProps {
   onClick?: () => void;
   guessed: boolean;
   highlight?: boolean;
+  disabled?: boolean;
   guessingMode?: GuessingMode;
 }
 
@@ -26,6 +27,7 @@ function KeyboardButton({
   onClick,
   guessed,
   highlight,
+  disabled,
   guessingMode,
 }: KeyboardButtonProps): JSX.Element {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,7 +77,7 @@ function KeyboardButton({
 
   const colorClassHighlight =
     guessingMode === GuessingMode.Full
-      ? `bg-pink-500 active:bg-pink-700 text-white`
+      ? `bg-pink-500 active:bg-pink-700 text-white disabled:bg-slate-200 disabled:text-slate-400 dark:disabled:bg-zinc-700 dark:disabled:text-zinc-400`
       : `bg-indigo-500 active:bg-indigo-700 text-white`;
 
   const colorClass = highlight ? colorClassHighlight : colorClassDefault;
@@ -85,6 +87,7 @@ function KeyboardButton({
       className={`${colorClass} rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold shadow-sm`}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      disabled={disabled}
     >
       {children}
     </button>
@@ -97,6 +100,7 @@ interface VirtualKeyboardProps {
   onEnter: () => void;
   guessedLetters: Set<AlphabetChar>;
   guessingMode: GuessingMode;
+  submitDisabled: boolean;
 }
 
 export default function VirtualKeyboard({
@@ -105,6 +109,7 @@ export default function VirtualKeyboard({
   onEnter,
   guessedLetters,
   guessingMode,
+  submitDisabled,
 }: VirtualKeyboardProps) {
   // Listen for keyboard events for desktop users to optionally use
   // their real keyboard.
@@ -160,6 +165,7 @@ export default function VirtualKeyboard({
           onClick={() => onEnter()}
           guessed={false}
           highlight
+          disabled={submitDisabled}
           guessingMode={guessingMode}
         >
           SUBMIT
