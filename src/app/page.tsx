@@ -297,7 +297,7 @@ export default function Home() {
             guessHistory={game.guessHistory}
             maxGuesses={maxGuesses}
             sentence={sentence}
-            puzzleNumber={2}
+            puzzleNumber={3}
           />
         ) : (
           <TutorialScreen
