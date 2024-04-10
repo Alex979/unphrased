@@ -16,7 +16,7 @@ import GuessModeToggle from "./guess-mode-toggle";
 import { useGameState } from "./game-state";
 
 export default function Home() {
-  const sentence = "out of sight, out of mind";
+  const sentence = "the snack that smiles back";
   const maxGuesses = 8;
 
   // Game state.
@@ -244,7 +244,7 @@ export default function Home() {
       <Header onOpenHelp={() => setPopupOpen(true)} />
       <div className="flex-1 flex flex-col justify-center items-center">
         <div className="grow flex flex-col justify-between items-center max-h-80">
-          <Hint emojis="😰🙈😌" guessingMode={game.guessingMode} />
+          <Hint emojis="🧀🐟😁" guessingMode={game.guessingMode} />
           <LetterPreview
             letter={game.queuedLetter}
             className={
@@ -303,7 +303,7 @@ export default function Home() {
             guessHistory={game.guessHistory}
             maxGuesses={maxGuesses}
             sentence={sentence}
-            puzzleNumber={3}
+            puzzleNumber={4}
           />
         ) : (
           <TutorialScreen

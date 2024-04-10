@@ -47,7 +47,7 @@ function storeLocalGameState(gameState: StoredGameState) {
     return;
   }
 
-  const key = gameStateKey('3');
+  const key = gameStateKey('4');
   localStorage.setItem(key, JSON.stringify(gameState));
 }
 
@@ -56,7 +56,7 @@ function loadLocalGameState(): StoredGameState | null {
     return null;
   }
 
-  const key = gameStateKey('3');
+  const key = gameStateKey('4');
   const storedGameState = localStorage.getItem(key);
   if (storedGameState === null) {
     return null;
