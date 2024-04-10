@@ -1,16 +1,18 @@
 interface GuessCounterProps {
   currentGuess: number;
   maxGuesses: number;
+  gameOver: boolean;
 }
 
 export default function GuessCounter({
   currentGuess,
   maxGuesses,
+  gameOver,
 }: GuessCounterProps) {
   const isFinalGuess = currentGuess === maxGuesses;
-  const isGameOver = currentGuess > maxGuesses;
+
   return (
-    <div className={`flex items-center h-8 ${isGameOver ? "invisible" : ""}`}>
+    <div className={`flex items-center h-8 ${gameOver ? "invisible" : ""}`}>
       <p className="text-slate-600 dark:text-zinc-300 mr-2">
         {isFinalGuess ? "Last guess!" : "Remaining: "}
       </p>

@@ -268,6 +268,7 @@ export default function Home() {
         <GuessCounter
           currentGuess={game.currentGuess}
           maxGuesses={maxGuesses}
+          gameOver={game.gameOver}
         />
         <div className="px-2 w-full flex justify-center">
           <ShowResultsButton
