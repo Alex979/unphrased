@@ -1,8 +1,8 @@
-import { Inconsolata } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import { AlphabetChar, GuessingMode, isAlphabetChar } from "./types";
 import { useEffect, useRef, useState } from "react";
 
-const inconsolata = Inconsolata({ subsets: ["latin"] });
+const robotoMono = Roboto_Mono({ subsets: ["latin"] });
 
 interface SentenceProps {
   sentence: string;
@@ -133,7 +133,7 @@ export default function Sentence({
       ref={jiggleRef}
     >
       <p
-        className={`text-3xl ${inconsolata.className} font-bold leading-loose`}
+        className={`text-2xl ${robotoMono.className} font-bold leading-loose`}
       >
         {formatSentence()}
       </p>

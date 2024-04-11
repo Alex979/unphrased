@@ -1,10 +1,8 @@
 import { Roboto_Slab } from "next/font/google";
 import { isAlphabetChar } from "./types";
-import { Inconsolata } from "next/font/google";
 import BlockQuote from "./block-quote";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
-const inconsolata = Inconsolata({ subsets: ["latin"] });
 
 interface TutorialScreenProps {
   maxGuesses: number;

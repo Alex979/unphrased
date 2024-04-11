@@ -1,10 +1,8 @@
-import { Inconsolata } from "next/font/google";
 import ShareButton from "./share-btn";
 import { Roboto_Slab } from "next/font/google";
 import BlockQuote from "./block-quote";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
-const inconsolata = Inconsolata({ subsets: ["latin"] });
 
 interface FinishScreenProps {
   didWin: boolean;
