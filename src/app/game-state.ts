@@ -130,8 +130,6 @@ function useGameState() {
       setClue(data.clue);
 
       const storedGameState = loadLocalGameState(data.id);
-      console.log("loading game state");
-      console.log(storedGameState);
 
       if (storedGameState) {
         setCurrentGuess(storedGameState.currentGuess);
@@ -151,15 +149,6 @@ function useGameState() {
       firstUpdate.current = false;
       return;
     }
-
-    console.log("storing game state");
-    console.log({
-      currentGuess,
-      guessHistory,
-      guessedLetters: Array.from(guessedLetters),
-      gameOver,
-      solved,
-    });
 
     storeLocalGameState(puzzleId, {
       currentGuess,
