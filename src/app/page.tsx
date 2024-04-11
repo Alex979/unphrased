@@ -14,9 +14,9 @@ import TutorialScreen from "./tutorial-screen";
 import Hint from "./hint";
 import GuessModeToggle from "./guess-mode-toggle";
 import { useGameState } from "./game-state";
+import { logStatsToServer } from "./lib/api";
 
 export default function Home() {
-  const sentence = "the snack that smiles back";
   const maxGuesses = 8;
 
   // Game state.
@@ -36,6 +36,11 @@ export default function Home() {
     }
     if (game.currentGuess > maxGuesses) {
       game.setGameOver(true);
+      logStatsToServer(
+        game.puzzleId,
+        game.solved,
+        game.solved ? game.currentGuess - 1 : undefined
+      );
     }
   }, [game.currentGuess]);
 
@@ -105,7 +110,7 @@ export default function Home() {
         checkForWin(newGuessedLetters, game.sentenceGuesses);
         return newGuessedLetters;
       });
-      if (!sentence.includes(game.queuedLetter)) {
+      if (!game.phrase.includes(game.queuedLetter)) {
         jiggleLetterPreview();
         game.addGuessHistory(false);
       } else {
@@ -146,7 +151,7 @@ export default function Home() {
   ) => {
     let blankIndex = -1;
     let didSolve = true;
-    for (let char of sentence) {
+    for (let char of game.phrase) {
       char = char.toLowerCase();
 
       if (!isAlphabetChar(char)) {
@@ -173,7 +178,7 @@ export default function Home() {
     if (didSolve) {
       // Add all remaining letters to guessedLetters if solved.
       const remainingLetters: Set<AlphabetChar> = new Set();
-      for (let char of sentence) {
+      for (let char of game.phrase) {
         if (!isAlphabetChar(char) || guessedLetters.has(char)) {
           continue;
         }
@@ -187,6 +192,9 @@ export default function Home() {
         return newGuessedLetters;
       });
       game.setGameOver(true);
+
+      // Log stats to server.
+      logStatsToServer(game.puzzleId, true, game.currentGuess);
     }
 
     return didSolve;
@@ -194,7 +202,7 @@ export default function Home() {
 
   const numBlanksInSentence = () => {
     let numBlanks = 0;
-    for (let char of sentence) {
+    for (let char of game.phrase) {
       char = char.toLowerCase();
       if (!isAlphabetChar(char) || game.guessedLetters.has(char)) {
         continue;
@@ -244,7 +252,7 @@ export default function Home() {
       <Header onOpenHelp={() => setPopupOpen(true)} />
       <div className="flex-1 flex flex-col justify-center items-center">
         <div className="grow flex flex-col justify-between items-center max-h-80">
-          <Hint emojis="🧀🐟😁" guessingMode={game.guessingMode} />
+          <Hint emojis={game.clue} guessingMode={game.guessingMode} />
           <LetterPreview
             letter={game.queuedLetter}
             className={
@@ -255,7 +263,7 @@ export default function Home() {
             jiggleTrigger={previewJiggleTrigger}
           />
           <Sentence
-            sentence={sentence}
+            sentence={game.phrase}
             guessingMode={game.guessingMode}
             guessedLetters={game.guessedLetters}
             sentenceGuesses={game.sentenceGuesses}
@@ -302,13 +310,13 @@ export default function Home() {
             guessCount={game.currentGuess - 1}
             guessHistory={game.guessHistory}
             maxGuesses={maxGuesses}
-            sentence={sentence}
-            puzzleNumber={4}
+            sentence={game.phrase}
+            puzzleNumber={game.puzzleNumber}
           />
         ) : (
           <TutorialScreen
             maxGuesses={maxGuesses}
-            sentence={sentence}
+            sentence={game.phrase}
             onClose={() => setPopupOpen(false)}
           />
         )}

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AlphabetChar, GuessingMode } from "./types";
+import { AlphabetChar, GuessingMode, isTodaysPuzzleResponse } from "./types";
 
 interface StoredGameState {
   currentGuess: number;
@@ -37,26 +37,25 @@ function localStorageAvailable() {
   }
 }
 
-
 function gameStateKey(puzzleId: string) {
   return `game-${puzzleId}`;
 }
 
-function storeLocalGameState(gameState: StoredGameState) {
+function storeLocalGameState(puzzleId: string, gameState: StoredGameState) {
   if (!localStorageAvailable()) {
     return;
   }
 
-  const key = gameStateKey('4');
+  const key = gameStateKey(puzzleId);
   localStorage.setItem(key, JSON.stringify(gameState));
 }
 
-function loadLocalGameState(): StoredGameState | null {
+function loadLocalGameState(puzzleId: string): StoredGameState | null {
   if (!localStorageAvailable()) {
     return null;
   }
 
-  const key = gameStateKey('4');
+  const key = gameStateKey(puzzleId);
   const storedGameState = localStorage.getItem(key);
   if (storedGameState === null) {
     return null;
@@ -65,6 +64,11 @@ function loadLocalGameState(): StoredGameState | null {
 }
 
 function useGameState() {
+  const [puzzleId, setPuzzleId] = useState("");
+  const [puzzleNumber, setPuzzleNumber] = useState(0);
+  const [phrase, setPhrase] = useState("");
+  const [clue, setClue] = useState("");
+
   const [currentGuess, setCurrentGuess] = useState(1);
   const [guessHistory, setGuessHistory] = useState<boolean[]>([]);
   const [guessingMode, setGuessingMode] = useState<GuessingMode>(
@@ -103,17 +107,42 @@ function useGameState() {
 
   // Load game state from local storage.
   useEffect(() => {
-    const storedGameState = loadLocalGameState();
+    (async () => {
+      // Fetch today's puzzle from the server.
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const response = await fetch("/api/todays-puzzle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ timeZone }),
+        cache: "no-store",
+      });
+      const data = await response.json();
+      if (!isTodaysPuzzleResponse(data)) {
+        console.error("Invalid response from server.");
+        return;
+      }
 
-    if (storedGameState) {
-      setCurrentGuess(storedGameState.currentGuess);
-      setGuessHistory(storedGameState.guessHistory);
-      setGuessedLetters(new Set(storedGameState.guessedLetters));
-      setGameOver(storedGameState.gameOver);
-      setSolved(storedGameState.solved);
-    }
+      setPuzzleId(data.id);
+      setPuzzleNumber(data.number);
+      setPhrase(data.phrase);
+      setClue(data.clue);
 
-    setLoading(false);
+      const storedGameState = loadLocalGameState(data.id);
+      console.log("loading game state");
+      console.log(storedGameState);
+
+      if (storedGameState) {
+        setCurrentGuess(storedGameState.currentGuess);
+        setGuessHistory(storedGameState.guessHistory);
+        setGuessedLetters(new Set(storedGameState.guessedLetters));
+        setGameOver(storedGameState.gameOver);
+        setSolved(storedGameState.solved);
+      }
+
+      setLoading(false);
+    })();
   }, []);
 
   // Update locally stored game state whenever it changes.
@@ -123,16 +152,29 @@ function useGameState() {
       return;
     }
 
-    storeLocalGameState({
+    console.log("storing game state");
+    console.log({
       currentGuess,
       guessHistory,
       guessedLetters: Array.from(guessedLetters),
       gameOver,
       solved,
     });
-  }, [currentGuess, guessHistory, guessedLetters, gameOver, solved]);
+
+    storeLocalGameState(puzzleId, {
+      currentGuess,
+      guessHistory,
+      guessedLetters: Array.from(guessedLetters),
+      gameOver,
+      solved,
+    });
+  }, [puzzleId, currentGuess, guessHistory, guessedLetters, gameOver, solved]);
 
   return {
+    puzzleId,
+    puzzleNumber,
+    phrase,
+    clue,
     currentGuess,
     setCurrentGuess,
     guessHistory,
