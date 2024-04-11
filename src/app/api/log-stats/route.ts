@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 import { LogStatsRequest, isLogStatsRequest } from "@/app/types";
 
 export const runtime = 'edge';
+export const preferredRegion = ['sfo1'];
 
 function validateRequest(data: LogStatsRequest) {
   if (data.solved && (!data.numGuesses || data.numGuesses < 1 || data.numGuesses > 8)) {
@@ -14,6 +15,10 @@ function validateRequest(data: LogStatsRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  if (process.env.NODE_ENV !== "production") {
+    return Response.json({ error: "Not logging stats during development." }, { status: 500 });
+  }
+
   const supabaseAdmin = createClient<Database>(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
