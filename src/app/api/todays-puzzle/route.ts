@@ -3,6 +3,9 @@ import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
 import { isTodaysPuzzleRequest } from "@/app/types";
 
+export const runtime = 'edge';
+export const preferredRegion = ['sfo1'];
+
 function getCurrentDateForTimeZone(timeZone: string) {
   const options: Intl.DateTimeFormatOptions = {
     timeZone,
