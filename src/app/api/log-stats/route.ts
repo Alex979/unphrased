@@ -3,6 +3,8 @@ import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
 import { LogStatsRequest, isLogStatsRequest } from "@/app/types";
 
+export const runtime = 'edge';
+
 function validateRequest(data: LogStatsRequest) {
   if (data.solved && (!data.numGuesses || data.numGuesses < 1 || data.numGuesses > 8)) {
     return false;
