@@ -134,7 +134,7 @@ function useGameState() {
 
       setPuzzleId(data.id);
       setPuzzleNumber(data.number);
-      setPhrase("test");
+      setPhrase(data.phrase);
       setClue(data.clue);
 
       const storedGameState = loadLocalGameState(data.id);
