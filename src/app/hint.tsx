@@ -19,7 +19,7 @@ export default function Hint({ emojis, guessingMode }: HintProps) {
         <p className="text-sm font-bold">CLUE</p>
       </div>
       <div className="p-1 border-x border-b rounded-b-lg dark:border-zinc-600">
-        <p className="text-3xl">{emojis}</p>
+        <p className="text-3xl tracking-widest">{emojis}</p>
       </div>
     </div>
   );
