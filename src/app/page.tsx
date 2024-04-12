@@ -250,9 +250,9 @@ export default function Home() {
   return (
     <main className="min-h-full flex flex-col">
       <Header onOpenHelp={() => setPopupOpen(true)} />
-      <div className="flex-1 flex flex-col justify-center items-center">
-        <div className="grow flex flex-col justify-between items-center max-h-80">
-          <Hint emojis={game.clue} guessingMode={game.guessingMode} />
+      <div className="flex-1 flex flex-col justify-center items-center py-4">
+        <Hint emojis={game.clue} guessingMode={game.guessingMode} />
+        <div className="grow flex flex-col justify-center items-center">
           <LetterPreview
             letter={game.queuedLetter}
             className={
