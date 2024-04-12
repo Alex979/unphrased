@@ -14,7 +14,7 @@ export default function Header({ onOpenHelp }: HeaderProps) {
       >
         Unphrased
       </h1>
-      <button onClick={onOpenHelp}>
+      <button onClick={() => onOpenHelp()}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

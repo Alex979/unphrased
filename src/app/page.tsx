@@ -3,7 +3,12 @@
 import { useEffect, useState } from "react";
 import VirtualKeyboard from "./keyboard";
 import Sentence from "./sentence";
-import { AlphabetChar, GuessingMode, isAlphabetChar } from "./types";
+import {
+  AlphabetChar,
+  GuessingMode,
+  PopupScreen,
+  isAlphabetChar,
+} from "./types";
 import LetterPreview from "./letter-preview";
 import Header from "./header";
 import GuessCounter from "./guess-counter";
@@ -28,34 +33,31 @@ export default function Home() {
 
   // Popup state.
   const [popupOpen, setPopupOpen] = useState(true);
+  const [popupScreen, setPopupScreen] = useState(PopupScreen.UNSET);
 
   // Force full guessing mode when on last guess.
   useEffect(() => {
+    if (game.loading) {
+      return;
+    }
+
     if (game.currentGuess === maxGuesses) {
       game.setGuessingMode(GuessingMode.Full);
     }
-    if (game.currentGuess > maxGuesses) {
-      game.setGameOver(true);
-      logStatsToServer(
-        game.puzzleId,
-        game.solved,
-        game.solved ? game.currentGuess - 1 : undefined
-      );
-    }
-  }, [game.currentGuess]);
+  }, [game.currentGuess, game.loading]);
 
-  // Open popup with a delay after game is over.
+  // Set initial popup screen based on game state.
   useEffect(() => {
-    if (game.gameOver) {
-      const timeoutId = setTimeout(() => {
-        setPopupOpen(true);
-      }, 500);
-
-      return () => {
-        clearTimeout(timeoutId);
-      };
+    if (game.loading) {
+      return;
     }
-  }, [game.gameOver]);
+
+    if (game.gameOver) {
+      setPopupScreen(PopupScreen.RESULTS);
+    } else {
+      setPopupScreen(PopupScreen.TUTORIAL);
+    }
+  }, [game.gameOver, game.loading]);
 
   const onLetterPress = (letter: AlphabetChar) => {
     if (game.gameOver) {
@@ -104,12 +106,11 @@ export default function Home() {
         return;
       }
 
-      game.setGuessedLetters((prevGuessedLetters) => {
-        const newGuessedLetters = new Set(prevGuessedLetters);
-        newGuessedLetters.add(game.queuedLetter!);
-        checkForWin(newGuessedLetters, game.sentenceGuesses);
-        return newGuessedLetters;
-      });
+      game.addGuessedLetter(game.queuedLetter);
+      const newGuessedLetters = new Set(game.guessedLetters);
+      newGuessedLetters.add(game.queuedLetter);
+      checkForWin(newGuessedLetters, game.sentenceGuesses, game.currentGuess);
+
       if (!game.phrase.includes(game.queuedLetter)) {
         jiggleLetterPreview();
         game.addGuessHistory(false);
@@ -118,8 +119,17 @@ export default function Home() {
       }
       game.setQueuedLetter(null);
       game.setCurrentGuess((prevGuess) => prevGuess + 1);
+
+      // Force full guessing mode when on last guess.
+      if (game.currentGuess === maxGuesses - 1) {
+        game.setGuessingMode(GuessingMode.Full);
+      }
     } else {
-      const didWin = checkForWin(game.guessedLetters, game.sentenceGuesses);
+      const didWin = checkForWin(
+        game.guessedLetters,
+        game.sentenceGuesses,
+        game.currentGuess
+      );
       if (!didWin) {
         jiggleSentence();
       }
@@ -127,6 +137,11 @@ export default function Home() {
         game.setSentenceGuesses([]);
         game.setCurrentGuess((prevGuess) => prevGuess + 1);
         game.addGuessHistory(didWin);
+
+        // Force full guessing mode when on last guess.
+        if (game.currentGuess === maxGuesses - 1) {
+          game.setGuessingMode(GuessingMode.Full);
+        }
       }
     }
   };
@@ -147,7 +162,8 @@ export default function Home() {
 
   const checkForWin = (
     guessedLetters: Set<AlphabetChar>,
-    sentenceGuesses: AlphabetChar[]
+    sentenceGuesses: AlphabetChar[],
+    currentGuess: number
   ) => {
     let blankIndex = -1;
     let didSolve = true;
@@ -194,7 +210,18 @@ export default function Home() {
       game.setGameOver(true);
 
       // Log stats to server.
-      logStatsToServer(game.puzzleId, true, game.currentGuess);
+      logStatsToServer(game.puzzleId, true, currentGuess);
+      openResultsScreen(500);
+    } else {
+      if (currentGuess === maxGuesses) {
+        game.setGameOver(true);
+        logStatsToServer(
+          game.puzzleId,
+          false,
+          didSolve ? currentGuess : undefined
+        );
+        openResultsScreen(500);
+      }
     }
 
     return didSolve;
@@ -221,7 +248,50 @@ export default function Home() {
     setPreviewJiggleTrigger((prev) => prev + 1);
   };
 
-  if (game.loading) {
+  const PopupScreenSwitch = () => {
+    switch (popupScreen) {
+      case PopupScreen.TUTORIAL:
+        return (
+          <TutorialScreen
+            maxGuesses={maxGuesses}
+            sentence={game.phrase}
+            onClose={() => setPopupOpen(false)}
+          />
+        );
+      case PopupScreen.RESULTS:
+        return (
+          <FinishScreen
+            didWin={game.solved}
+            guessCount={game.currentGuess - 1}
+            guessHistory={game.guessHistory}
+            maxGuesses={maxGuesses}
+            sentence={game.phrase}
+            puzzleNumber={game.puzzleNumber}
+          />
+        );
+    }
+  };
+
+  const openTutorialScreen = () => {
+    setPopupScreen(PopupScreen.TUTORIAL);
+    setPopupOpen(true);
+  };
+
+  const openResultsScreen = (delay?: number) => {
+    setPopupScreen(PopupScreen.RESULTS);
+
+    console.log(delay);
+
+    if (!delay) {
+      setPopupOpen(true);
+    } else {
+      setTimeout(() => {
+        setPopupOpen(true);
+      }, 500);
+    }
+  };
+
+  if (game.loading || popupScreen === PopupScreen.UNSET) {
     return (
       <main className="min-h-full flex justify-center items-center">
         <div role="status">
@@ -249,7 +319,7 @@ export default function Home() {
 
   return (
     <main className="min-h-full flex flex-col">
-      <Header onOpenHelp={() => setPopupOpen(true)} />
+      <Header onOpenHelp={openTutorialScreen} />
       <div className="flex-1 flex flex-col justify-center items-center">
         <Hint emojis={game.clue} guessingMode={game.guessingMode} />
         <div className="grow flex flex-col justify-center items-center max-h-[40rem]">
@@ -281,7 +351,7 @@ export default function Home() {
         <div className="px-2 w-full flex justify-center">
           <ShowResultsButton
             className={`${game.gameOver ? "" : "hidden"}`}
-            onClick={() => setPopupOpen(true)}
+            onClick={openResultsScreen}
           />
           <GuessModeToggle
             className={`${game.gameOver ? "hidden" : ""}`}
@@ -304,22 +374,7 @@ export default function Home() {
         />
       </div>
       <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
-        {game.gameOver ? (
-          <FinishScreen
-            didWin={game.solved}
-            guessCount={game.currentGuess - 1}
-            guessHistory={game.guessHistory}
-            maxGuesses={maxGuesses}
-            sentence={game.phrase}
-            puzzleNumber={game.puzzleNumber}
-          />
-        ) : (
-          <TutorialScreen
-            maxGuesses={maxGuesses}
-            sentence={game.phrase}
-            onClose={() => setPopupOpen(false)}
-          />
-        )}
+        <PopupScreenSwitch />
       </Popup>
     </main>
   );

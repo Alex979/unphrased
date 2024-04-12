@@ -90,6 +90,14 @@ function useGameState() {
     });
   };
 
+  const addGuessedLetter = (letter: AlphabetChar) => {
+    setGuessedLetters((prevGuessedLetters) => {
+      const newGuessedLetters = new Set(prevGuessedLetters);
+      newGuessedLetters.add(letter);
+      return newGuessedLetters;
+    });
+  };
+
   const addSentenceGuess = (letter: AlphabetChar) => {
     setSentenceGuesses((prevSentenceGuesses) => {
       return [...prevSentenceGuesses, letter];
@@ -126,7 +134,7 @@ function useGameState() {
 
       setPuzzleId(data.id);
       setPuzzleNumber(data.number);
-      setPhrase(data.phrase);
+      setPhrase("test");
       setClue(data.clue);
 
       const storedGameState = loadLocalGameState(data.id);
@@ -174,6 +182,7 @@ function useGameState() {
     setQueuedLetter,
     guessedLetters,
     setGuessedLetters,
+    addGuessedLetter,
     sentenceGuesses,
     setSentenceGuesses,
     addSentenceGuess,

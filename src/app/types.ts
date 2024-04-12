@@ -35,6 +35,12 @@ export enum GuessingMode {
   Full,
 }
 
+export enum PopupScreen {
+  UNSET,
+  TUTORIAL,
+  RESULTS,
+}
+
 export interface LogStatsRequest {
   fingerprint: string;
   puzzleId: string;
