@@ -22,10 +22,10 @@ export default function FinishScreen({
   maxGuesses,
 }: FinishScreenProps) {
   return (
-    <div className="w-full h-full flex justify-center pt-20">
+    <div className="w-full h-full flex justify-center pt-10">
       <div className="p-8">
         <h1
-          className={`font-extrabold text-4xl my-2 text-center leading-tight ${robotoSlab.className}`}
+          className={`font-extrabold text-4xl mb-6 text-center leading-tight ${robotoSlab.className}`}
         >
           {didWin ? "Well done!" : "Better luck next time!"}
         </h1>
@@ -39,8 +39,12 @@ export default function FinishScreen({
           <p className="my-2 text-lg">The phrase was:</p>
         )}
         <BlockQuote>{sentence.toUpperCase()}</BlockQuote>
+        <p className="my-2 text-lg">
+          Come back tomorrow to guess a new phrase.
+        </p>
         <div className="flex justify-center">
           <ShareButton
+            className="my-8"
             guessHistory={guessHistory}
             maxGuesses={maxGuesses}
             puzzleNumber={puzzleNumber}
