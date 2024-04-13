@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AlphabetChar, GuessingMode, isTodaysPuzzleResponse } from "./types";
+import { useSearchParams } from "next/navigation";
 
 interface StoredGameState {
   currentGuess: number;
@@ -84,6 +85,8 @@ function useGameState() {
 
   const [loading, setLoading] = useState(true);
 
+  const queryParams = useSearchParams();
+
   const addGuessHistory = (guess: boolean) => {
     setGuessHistory((prevGuessHistory) => {
       return [...prevGuessHistory, guess];
@@ -118,12 +121,13 @@ function useGameState() {
     (async () => {
       // Fetch today's puzzle from the server.
       const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      const forceTimeZone = queryParams.get("tz");
       const response = await fetch("/api/todays-puzzle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ timeZone }),
+        body: JSON.stringify({ timeZone: forceTimeZone || timeZone }),
         cache: "no-store",
       });
       const data = await response.json();
