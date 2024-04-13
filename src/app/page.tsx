@@ -280,8 +280,6 @@ export default function Home() {
   const openResultsScreen = (delay?: number) => {
     setPopupScreen(PopupScreen.RESULTS);
 
-    console.log(delay);
-
     if (!delay) {
       setPopupOpen(true);
     } else {

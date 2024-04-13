@@ -26,7 +26,6 @@ export default function GuessModeToggle({
 
   // Don't allow "Enter" key to trigger clicks, since this is the submit key.
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    console.log(event);
     if (event.key === "Enter") {
       event.preventDefault();
     }
