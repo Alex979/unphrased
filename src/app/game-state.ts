@@ -153,7 +153,7 @@ function useGameState() {
 
       setLoading(false);
     })();
-  }, []);
+  }, [queryParams]);
 
   // Update locally stored game state whenever it changes.
   useEffect(() => {
