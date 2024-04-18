@@ -45,6 +45,8 @@ export default function Sentence({
     };
   }, []);
 
+  const dashColorClasses = 'text-gray-500 dark:text-zinc-400';
+
   const formatSentence = () => {
     let blankIndex = -1;
     let currentSpan: React.ReactNode[] = [];
@@ -74,7 +76,7 @@ export default function Sentence({
               key={currentSpan.length - 1}
               className="inline-block animate-pop"
             >
-              <span className="absolute translate-y-1 font-normal">_</span>
+              <span className={`absolute translate-y-1 font-normal ${dashColorClasses}`}>_</span>
               {letter.toUpperCase()}
             </span>
           );
@@ -84,7 +86,7 @@ export default function Sentence({
         // Handle blanks.
         if (guessingMode === GuessingMode.Individual || gameOver) {
           currentSpan.push(
-            <span key={currentSpan.length - 1} className="inline-block translate-y-1 font-normal">
+            <span key={currentSpan.length - 1} className={`inline-block translate-y-1 font-normal ${dashColorClasses}`}>
               _
             </span>
           );
@@ -108,13 +110,13 @@ export default function Sentence({
               key={currentSpan.length - 1}
               className="text-pink-500 inline-block"
             >
-              <span className="absolute translate-y-1 font-normal">_</span>
+              <span className="absolute translate-y-1 font-normal opacity-80">_</span>
               {sentenceGuesses[blankIndex].toUpperCase()}
             </span>
           );
           return;
         }
-        currentSpan.push(<span key={currentSpan.length - 1} className="inline-block translate-y-1 font-normal">_</span>);
+        currentSpan.push(<span key={currentSpan.length - 1} className={`inline-block translate-y-1 font-normal ${dashColorClasses}`}>_</span>);
       });
 
     return allSpans.map((contents, index) => {
