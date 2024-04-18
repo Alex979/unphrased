@@ -295,9 +295,9 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-full flex flex-col">
+    <main className="h-full flex flex-col">
       <Header onOpenHelp={openTutorialScreen} />
-      <div className="flex-1 flex flex-col justify-center items-center">
+      <div className="flex-1 flex flex-col items-center overflow-y-auto">
         <Hint emojis={game.clue} guessingMode={game.guessingMode} />
         <div className="grow flex flex-col justify-center items-center max-h-[40rem]">
           <LetterPreview
