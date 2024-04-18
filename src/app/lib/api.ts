@@ -6,13 +6,12 @@ export function logStatsToServer(
   solved: boolean,
   numGuesses?: number
 ) {
-  sendGAEvent({
-    event: 'puzzle_finished',
+  sendGAEvent("event", "puzzle_finished", {
     puzzle_id: puzzleId,
     solved,
     num_guesses: numGuesses,
   });
-  
+
   getFingerprint().then((fingerprint) => {
     fetch("/api/log-stats", {
       method: "POST",
