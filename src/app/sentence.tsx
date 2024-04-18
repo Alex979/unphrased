@@ -45,7 +45,7 @@ export default function Sentence({
     };
   }, []);
 
-  const dashColorClasses = 'text-gray-500 dark:text-zinc-400';
+  const dashColorClasses = "text-gray-500 dark:text-zinc-400";
 
   const formatSentence = () => {
     let blankIndex = -1;
@@ -76,7 +76,11 @@ export default function Sentence({
               key={currentSpan.length - 1}
               className="inline-block animate-pop"
             >
-              <span className={`absolute translate-y-1 font-normal ${dashColorClasses}`}>_</span>
+              <span
+                className={`absolute translate-y-1 font-normal ${dashColorClasses}`}
+              >
+                _
+              </span>
               {letter.toUpperCase()}
             </span>
           );
@@ -86,7 +90,10 @@ export default function Sentence({
         // Handle blanks.
         if (guessingMode === GuessingMode.Individual || gameOver) {
           currentSpan.push(
-            <span key={currentSpan.length - 1} className={`inline-block translate-y-1 font-normal ${dashColorClasses}`}>
+            <span
+              key={currentSpan.length - 1}
+              className={`inline-block translate-y-1 font-normal ${dashColorClasses}`}
+            >
               _
             </span>
           );
@@ -99,7 +106,10 @@ export default function Sentence({
               key={currentSpan.length - 1}
               className="text-pink-500 inline-block translate-y-1 font-normal"
             >
-              <span className="absolute translate-y-1/2 text-pink-500 font-bold">^</span>_
+              <span className="absolute translate-y-1/2 text-pink-500 font-bold">
+                ^
+              </span>
+              _
             </span>
           );
           return;
@@ -110,13 +120,22 @@ export default function Sentence({
               key={currentSpan.length - 1}
               className="text-pink-500 inline-block"
             >
-              <span className="absolute translate-y-1 font-normal opacity-80">_</span>
+              <span className="absolute translate-y-1 font-normal opacity-80">
+                _
+              </span>
               {sentenceGuesses[blankIndex].toUpperCase()}
             </span>
           );
           return;
         }
-        currentSpan.push(<span key={currentSpan.length - 1} className={`inline-block translate-y-1 font-normal ${dashColorClasses}`}>_</span>);
+        currentSpan.push(
+          <span
+            key={currentSpan.length - 1}
+            className={`inline-block translate-y-1 font-normal ${dashColorClasses}`}
+          >
+            _
+          </span>
+        );
       });
 
     return allSpans.map((contents, index) => {
@@ -136,7 +155,9 @@ export default function Sentence({
       className={`mx-8 my-4 text-center ${isJiggling ? "animate-jiggle" : ""}`}
       ref={jiggleRef}
     >
-      <p className={`text-2xl ${robotoMono.className} font-bold leading-loose tracking-wider`}>
+      <p
+        className={`text-2xl ${robotoMono.className} font-bold leading-loose tracking-wider`}
+      >
         {formatSentence()}
       </p>
     </div>
