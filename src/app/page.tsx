@@ -21,6 +21,7 @@ import GuessModeToggle from "./guess-mode-toggle";
 import { useGameState } from "./game-state";
 import { logStatsToServer } from "./lib/api";
 import Loading from "./loading";
+import Notifications from "./notifications";
 
 export default function Home() {
   const maxGuesses = 8;
@@ -35,6 +36,11 @@ export default function Home() {
   // Popup state.
   const [popupOpen, setPopupOpen] = useState(true);
   const [popupScreen, setPopupScreen] = useState(PopupScreen.UNSET);
+
+  // Notifications state.
+  const [messages, setMessages] = useState<{ message: string; id: number }[]>(
+    []
+  );
 
   // Force full guessing mode when on last guess.
   useEffect(() => {
@@ -71,6 +77,7 @@ export default function Home() {
       if (game.sentenceGuesses.length < numBlanksInSentence()) {
         if (game.guessedLetters.has(letter)) {
           jiggleSentence();
+          addNotification("Letter already guessed");
           return;
         }
         game.addSentenceGuess(letter);
@@ -98,11 +105,13 @@ export default function Home() {
     if (game.guessingMode === GuessingMode.Individual) {
       if (!game.queuedLetter) {
         jiggleLetterPreview();
+        addNotification("No letter selected");
         return;
       }
 
       if (game.guessedLetters.has(game.queuedLetter)) {
         jiggleLetterPreview();
+        addNotification("Letter already guessed");
         game.setQueuedLetter(null);
         return;
       }
@@ -126,6 +135,12 @@ export default function Home() {
         game.setGuessingMode(GuessingMode.Full);
       }
     } else {
+      if (game.sentenceGuesses.length < numBlanksInSentence()) {
+        jiggleSentence();
+        addNotification("Fill in all blanks");
+        return;
+      }
+
       const didWin = checkForWin(
         game.guessedLetters,
         game.sentenceGuesses,
@@ -134,15 +149,13 @@ export default function Home() {
       if (!didWin) {
         jiggleSentence();
       }
-      if (game.sentenceGuesses.length === numBlanksInSentence()) {
-        game.setSentenceGuesses([]);
-        game.setCurrentGuess((prevGuess) => prevGuess + 1);
-        game.addGuessHistory(didWin);
+      game.setSentenceGuesses([]);
+      game.setCurrentGuess((prevGuess) => prevGuess + 1);
+      game.addGuessHistory(didWin);
 
-        // Force full guessing mode when on last guess.
-        if (game.currentGuess === maxGuesses - 1) {
-          game.setGuessingMode(GuessingMode.Full);
-        }
+      // Force full guessing mode when on last guess.
+      if (game.currentGuess === maxGuesses - 1) {
+        game.setGuessingMode(GuessingMode.Full);
       }
     }
   };
@@ -290,6 +303,27 @@ export default function Home() {
     }
   };
 
+  const addNotification = (message: string) => {
+    setMessages((prevMessages) => {
+      if (prevMessages.length === 0) {
+        return [{ message, id: 0 }];
+      }
+      const lastId = prevMessages[prevMessages.length - 1].id;
+      return [...prevMessages, { message, id: lastId + 1 }];
+    });
+  };
+
+  const onNotificationEnd = () => {
+    setMessages((prevMessages) => prevMessages.slice(1));
+  };
+
+  const submitButtonDisabled =
+    (game.guessingMode === GuessingMode.Individual &&
+      game.queuedLetter === null) ||
+    (game.guessingMode === GuessingMode.Full &&
+      game.sentenceGuesses.length < numBlanksInSentence()) ||
+    game.gameOver;
+
   if (game.loading || popupScreen === PopupScreen.UNSET) {
     return <Loading />;
   }
@@ -318,6 +352,7 @@ export default function Home() {
             gameOver={game.gameOver}
           />
         </div>
+        <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
       </div>
       <div className="flex flex-col items-center gap-2">
         <GuessCounter
@@ -343,11 +378,7 @@ export default function Home() {
           onEnter={onEnter}
           guessedLetters={game.guessedLetters}
           guessingMode={game.guessingMode}
-          submitDisabled={
-            (game.guessingMode === GuessingMode.Full &&
-              game.sentenceGuesses.length < numBlanksInSentence()) ||
-            game.gameOver
-          }
+          submitDisabled={submitButtonDisabled}
         />
       </div>
       <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
