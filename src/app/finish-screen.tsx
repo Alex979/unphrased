@@ -25,7 +25,7 @@ export default function FinishScreen({
     <div className="w-full h-full flex justify-center pt-10">
       <div className="p-8">
         <h1
-          className={`font-extrabold text-4xl mb-6 text-center leading-tight ${robotoSlab.className}`}
+          className={`font-extrabold text-4xl mb-6 leading-tight ${robotoSlab.className}`}
         >
           {didWin ? "Well done!" : "Better luck next time!"}
         </h1>
