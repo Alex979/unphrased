@@ -156,7 +156,7 @@ export default function Sentence({
       ref={jiggleRef}
     >
       <p
-        className={`text-2xl ${robotoMono.className} font-bold leading-loose tracking-wider`}
+        className={`relative text-2xl ${robotoMono.className} font-bold leading-loose tracking-wider`}
       >
         {formatSentence()}
       </p>
