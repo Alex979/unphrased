@@ -6,7 +6,7 @@ interface KeyboardRowProps {
 }
 
 function KeyboardRow({ children }: KeyboardRowProps): JSX.Element {
-  return <div className="grow flex gap-2">{children}</div>;
+  return <div className="grow flex">{children}</div>;
 }
 
 interface KeyboardButtonProps {
@@ -30,10 +30,32 @@ function KeyboardButton({
   disabled,
   guessingMode,
 }: KeyboardButtonProps): JSX.Element {
+  const checkTouchDevice = () => {
+    return "ontouchstart" in window;
+  };
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Don't execute click events on touch devices.
+    if (checkTouchDevice()) {
+      event.preventDefault();
+      return;
+    }
+
     // Blur the button to prevent focus outline from sticking around, only when it was a mouse click.
     if (event.detail !== 0) {
       event.currentTarget.blur();
+    }
+
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  const handleTouchEnd = (event: React.TouchEvent<HTMLButtonElement>) => {
+    // Don't execute touch events on non-touch devices.
+    if (!checkTouchDevice()) {
+      event.preventDefault();
+      return;
     }
 
     if (onClick) {
@@ -90,11 +112,16 @@ function KeyboardButton({
 
   return (
     <button
-      className={`${colorClass} rounded ${growClass} flex items-center justify-center ${fontSizeClass} font-bold shadow-sm`}
+      className={`${growClass} p-0.5`}
       onClick={handleClick}
+      onTouchEnd={handleTouchEnd}
       onKeyDown={handleKeyDown}
     >
-      {children}
+      <div
+        className={`${colorClass} rounded w-full h-full flex items-center justify-center font-bold shadow-sm ${fontSizeClass}`}
+      >
+        {children}
+      </div>
     </button>
   );
 }
@@ -138,7 +165,7 @@ export default function VirtualKeyboard({
   }, [onLetterPress, onBackspace, onEnter]);
 
   return (
-    <div className="w-full max-w-xl h-40 flex flex-col p-2 gap-2">
+    <div className="w-full max-w-xl h-40 flex flex-col p-1.5">
       <KeyboardRow>
         {Array.from("qwertyuiop").map((letter) => (
           <KeyboardButton
