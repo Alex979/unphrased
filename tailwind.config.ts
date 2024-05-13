@@ -40,6 +40,9 @@ const config: Config = {
         jiggle: "jiggle 0.2s ease-out",
         "fade-out": "fadeOut 0.3s ease-out forwards",
       },
+      screens: {
+        tiny: { raw: "(max-height: 630px)" },
+      },
     },
   },
   plugins: [
