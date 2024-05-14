@@ -14,7 +14,6 @@ import Header from "./header";
 import GuessCounter from "./guess-counter";
 import Popup from "./popup";
 import FinishScreen from "./finish-screen";
-import ShowResultsButton from "./show-results-btn";
 import TutorialScreen from "./tutorial-screen";
 import Hint from "./hint";
 import GuessModeToggle from "./guess-mode-toggle";
@@ -22,6 +21,7 @@ import { useGameState } from "./game-state";
 import { logStatsToServer } from "./lib/api";
 import Loading from "./loading";
 import Notifications from "./notifications";
+import Button from "./_components/button";
 
 export default function Home() {
   const maxGuesses = 8;
@@ -361,10 +361,13 @@ export default function Home() {
           gameOver={game.gameOver}
         />
         <div className="px-2 w-full flex justify-center">
-          <ShowResultsButton
+          <Button
+            variant="secondary"
             className={`${game.gameOver ? "" : "hidden"}`}
-            onClick={openResultsScreen}
-          />
+            onClick={() => openResultsScreen()}
+          >
+            Show Results
+          </Button>
           <GuessModeToggle
             className={`${game.gameOver ? "hidden" : ""}`}
             guessingMode={game.guessingMode}

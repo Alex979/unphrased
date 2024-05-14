@@ -1,6 +1,7 @@
 import { Roboto_Slab } from "next/font/google";
 import { isAlphabetChar } from "./types";
 import BlockQuote from "./block-quote";
+import Button from "./_components/button";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -60,12 +61,9 @@ export default function TutorialScreen({
           </BlockQuote>
         </ul>
         <div className="mt-6 pb-32 flex justify-center">
-          <button
-            onClick={onClose}
-            className="border border-gray-700 dark:border-zinc-700 active:bg-gray-200 dark:active:bg-zinc-800 rounded-full font-bold py-2 px-8 shadow-sm"
-          >
+          <Button variant="mono" onClick={onClose}>
             Got it!
-          </button>
+          </Button>
         </div>
       </div>
     </div>
