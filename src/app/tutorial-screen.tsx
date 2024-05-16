@@ -60,7 +60,7 @@ export default function TutorialScreen({
             <span className="text-pink-500">N</span>E
           </BlockQuote>
         </ul>
-        <div className="mt-6 pb-6 flex justify-center">
+        <div className="mt-6 pb-32 flex justify-center">
           <Button variant="mono" onClick={onClose}>
             Got it!
           </Button>
