@@ -34,11 +34,25 @@ const config: Config = {
           "0%": { opacity: "1" },
           "100%": { opacity: "0" },
         },
+        switchPhrase: {
+          "0%": { right: "50%", left: "0"},
+          "10%": { left: "0" },
+          "90%": { right: "0" },
+          "100%": { left: "50%", right: "0"},
+        },
+        switchLetters: {
+          "0%": { left: "50%", right: "0"},
+          "10%": { right: "0" },
+          "90%": { left: "0" },
+          "100%": { right: "50%", left: "0"},
+        },
       }),
       animation: {
         pop: "pop 0.3s linear",
         jiggle: "jiggle 0.2s ease-out",
         "fade-out": "fadeOut 0.3s ease-out forwards",
+        "switch-phrase": "switchPhrase 0.15s ease-in-out forwards",
+        "switch-letters": "switchLetters 0.15s ease-in-out forwards",
       },
       screens: {
         tiny: { raw: "(max-height: 630px)" },

@@ -14,7 +14,7 @@ export default function Hint({ emojis, guessingMode }: HintProps) {
   return (
     <div className="rounded-lg m-4">
       <div
-        className={`${colorClass} rounded-t-lg text-center`}
+        className={`transition-colors ${colorClass} rounded-t-lg text-center`}
       >
         <p className="text-sm tiny:text-xs font-bold">CLUE</p>
       </div>

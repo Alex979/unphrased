@@ -34,17 +34,26 @@ export default function GuessModeToggle({
     }
   };
 
+  const pillPositionStyles =
+    guessingMode === GuessingMode.Individual
+      ? "animate-switch-letters"
+      : "animate-switch-phrase";
+
+  const pillColorStyles =
+    guessingMode === GuessingMode.Individual ? "bg-indigo-500" : "bg-pink-500";
+
   return (
     <div
-      className={`rounded-full w-full max-w-80 bg-gray-200 dark:bg-zinc-700 font-semibold overflow-hidden ${className}`}
+      className={`relative rounded-full w-full max-w-80 h-10 bg-gray-200 dark:bg-zinc-700 font-semibold overflow-hidden ${className}`}
     >
+      <div
+        className={`absolute rounded-full inset-y-0 shadow-[0_0_6px_-1px_rgba(0,0,0,0.2)] transition-colors ${pillPositionStyles} ${pillColorStyles}`}
+      ></div>
       <button
         onClick={(e) => handleClick(e, GuessingMode.Individual)}
         onKeyDown={handleKeyDown}
-        className={`w-1/2 rounded-full px-2 py-2 ${
-          guessingMode === GuessingMode.Individual
-            ? "bg-indigo-500 text-white shadow-[0_0_6px_-1px_rgba(0,0,0,0.2)]"
-            : ""
+        className={`absolute transition-colors inset-y-0 left-0 right-1/2 h-full rounded-full ${
+          guessingMode === GuessingMode.Individual ? "text-white" : ""
         }`}
       >
         Guess letters
@@ -52,10 +61,8 @@ export default function GuessModeToggle({
       <button
         onClick={(e) => handleClick(e, GuessingMode.Full)}
         onKeyDown={handleKeyDown}
-        className={`w-1/2 rounded-full px-2 py-2 ${
-          guessingMode === GuessingMode.Full
-            ? "bg-pink-500 text-white shadow-[0_0_6px_-1px_rgba(0,0,0,0.2)]"
-            : ""
+        className={`absolute transition-colors inset-y-0 right-0 left-1/2 h-full rounded-full ${
+          guessingMode === GuessingMode.Full ? "text-white" : ""
         }`}
       >
         Guess phrase
