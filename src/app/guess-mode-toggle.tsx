@@ -3,24 +3,27 @@ import { GuessingMode } from "./types";
 interface GuessModeToggleProps {
   className?: string;
   guessingMode: GuessingMode;
-  onClick?: () => void;
+  setGuessingMode?: (mode: GuessingMode) => void;
   finalGuess: boolean;
 }
 
 export default function GuessModeToggle({
   className,
   guessingMode,
-  onClick,
+  setGuessingMode,
   finalGuess,
 }: GuessModeToggleProps) {
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    mode: GuessingMode
+  ) => {
     // Blur the button to prevent focus outline from sticking around, only when it was a mouse click.
     if (event.detail !== 0) {
       event.currentTarget.blur();
     }
 
-    if (onClick) {
-      onClick();
+    if (setGuessingMode) {
+      setGuessingMode(mode);
     }
   };
 
@@ -32,31 +35,31 @@ export default function GuessModeToggle({
   };
 
   return (
-    <button
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      className={`rounded-full w-full max-w-80 ${className}`}
+    <div
+      className={`rounded-full w-full max-w-80 bg-gray-200 dark:bg-zinc-700 font-semibold overflow-hidden ${className}`}
     >
-      <div className={`flex items-center`}>
-        <div
-          className={`w-1/2 flex items-center justify-center px-6 py-1.5 rounded-l-full border-t border-b border-l ${
-            guessingMode === GuessingMode.Individual
-              ? "border-r border-indigo-600 dark:border-indigo-400 bg-indigo-50 dark:bg-indigo-950 font-semibold text-indigo-600 dark:text-indigo-400"
-              : "border-gray-400 dark:border-zinc-400 text-gray-600 dark:text-zinc-300"
-          } ${finalGuess ? "opacity-50" : ""}`}
-        >
-          {"Guess letters"}
-        </div>
-        <div
-          className={`w-1/2 px-6 py-1.5 rounded-r-full border-t border-b border-r ${
-            guessingMode === GuessingMode.Full
-              ? "border-l border-pink-600 dark:border-pink-300 bg-pink-50 dark:bg-pink-950 font-semibold text-pink-600 dark:text-pink-300"
-              : "border-gray-300 dark:border-zinc-400 text-gray-600 dark:text-zinc-300"
-          }`}
-        >
-          {"Guess phrase"}
-        </div>
-      </div>
-    </button>
+      <button
+        onClick={(e) => handleClick(e, GuessingMode.Individual)}
+        onKeyDown={handleKeyDown}
+        className={`w-1/2 rounded-full px-2 py-2 ${
+          guessingMode === GuessingMode.Individual
+            ? "bg-indigo-500 text-white shadow-[0_0_6px_-1px_rgba(0,0,0,0.2)]"
+            : ""
+        }`}
+      >
+        Guess letters
+      </button>
+      <button
+        onClick={(e) => handleClick(e, GuessingMode.Full)}
+        onKeyDown={handleKeyDown}
+        className={`w-1/2 rounded-full px-2 py-2 ${
+          guessingMode === GuessingMode.Full
+            ? "bg-pink-500 text-white shadow-[0_0_6px_-1px_rgba(0,0,0,0.2)]"
+            : ""
+        }`}
+      >
+        Guess phrase
+      </button>
+    </div>
   );
 }

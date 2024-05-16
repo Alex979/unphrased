@@ -160,18 +160,18 @@ export default function Home() {
     }
   };
 
-  const toggleGuessingMode = () => {
+  const setGuessingMode = (mode: GuessingMode) => {
     if (game.currentGuess === maxGuesses) {
       return;
     }
 
-    if (game.guessingMode === GuessingMode.Individual) {
-      game.setGuessingMode(GuessingMode.Full);
-      game.setQueuedLetter(null);
-    } else {
-      game.setGuessingMode(GuessingMode.Individual);
-      game.setSentenceGuesses([]);
+    if (game.guessingMode === mode) {
+      return;
     }
+
+    game.setGuessingMode(mode);
+    game.setQueuedLetter(null);
+    game.setSentenceGuesses([]);
   };
 
   const checkForWin = (
@@ -371,7 +371,7 @@ export default function Home() {
           <GuessModeToggle
             className={`${game.gameOver ? "hidden" : ""}`}
             guessingMode={game.guessingMode}
-            onClick={toggleGuessingMode}
+            setGuessingMode={setGuessingMode}
             finalGuess={game.currentGuess === maxGuesses}
           />
         </div>
