@@ -33,7 +33,7 @@ export default function TutorialScreen({
         >
           How to play
         </h1>
-        <ul className="list-disc mx-4 leading-relaxed space-y-2">
+        <ul className="list-disc mx-4 leading-relaxed">
           <li>
             Reveal the hidden phrase in{" "}
             <span className="font-bold">{maxGuesses} guesses.</span>
@@ -60,7 +60,7 @@ export default function TutorialScreen({
             <span className="text-pink-500">N</span>E
           </BlockQuote>
         </ul>
-        <div className="mt-6 pb-32 flex justify-center">
+        <div className="mt-6 pb-6 flex justify-center">
           <Button variant="mono" onClick={onClose}>
             Got it!
           </Button>
