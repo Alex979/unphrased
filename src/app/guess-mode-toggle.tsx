@@ -54,7 +54,7 @@ export default function GuessModeToggle({
         onKeyDown={handleKeyDown}
         className={`absolute transition-colors inset-y-0 left-0 right-1/2 h-full rounded-full ${
           guessingMode === GuessingMode.Individual ? "text-white" : ""
-        }`}
+        } ${finalGuess ? "opacity-50" : ""}`}
       >
         Guess letters
       </button>
