@@ -29,11 +29,11 @@ export default function TutorialScreen({
     <div className="w-full h-full flex justify-center overflow-y-auto">
       <div className="max-w-96 px-8">
         <h1
-          className={`font-extrabold text-4xl mb-4 leading-tight ${robotoSlab.className}`}
+          className={`font-extrabold text-3xl mb-4 leading-tight ${robotoSlab.className}`}
         >
           How to play
         </h1>
-        <ul className="list-disc mx-4 leading-relaxed">
+        <ul className="list-disc mx-4">
           <li>
             Reveal the hidden phrase in{" "}
             <span className="font-bold">{maxGuesses} guesses.</span>
