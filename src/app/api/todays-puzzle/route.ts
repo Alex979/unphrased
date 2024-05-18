@@ -1,5 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import { Database } from "@/app/supabase/types";
+import { createClient } from "@/app/supabase/server";
 import { NextRequest } from "next/server";
 import { isTodaysPuzzleRequest } from "@/app/types";
 
@@ -20,10 +19,7 @@ function getCurrentDateForTimeZone(timeZone: string) {
 }
 
 export async function POST(request: NextRequest) {
-  const supabaseAdmin = createClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createClient();
 
   const requestData = await request.json();
 
@@ -39,7 +35,7 @@ export async function POST(request: NextRequest) {
     usersDate = getCurrentDateForTimeZone("America/Los_Angeles");
   }
 
-  const { data, error } = await supabaseAdmin
+  const { data, error } = await supabase
     .from("numbered_puzzles")
     .select()
     .eq("date", usersDate)

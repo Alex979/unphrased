@@ -1,5 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-import { Database } from "@/app/supabase/types";
+import { createClient } from "@/app/supabase/server";
 import { NextRequest } from "next/server";
 import { LogStatsRequest, isLogStatsRequest } from "@/app/types";
 
@@ -19,10 +18,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Not logging stats during development." }, { status: 500 });
   }
 
-  const supabaseAdmin = createClient<Database>(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = createClient();
 
   const data = await request.json();
 
@@ -30,7 +26,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Invalid arguments.' }, { status: 400 });
   }
 
-  const { error } = await supabaseAdmin.from("stats").insert({
+  const { error } = await supabase.from("stats").insert({
     fingerprint: data.fingerprint,
     puzzle_id: data.puzzleId,
     solved: data.solved,
