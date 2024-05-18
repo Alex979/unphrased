@@ -40,7 +40,9 @@ export default function GuessModeToggle({
       : "animate-switch-phrase";
 
   const pillColorStyles =
-    guessingMode === GuessingMode.Individual ? "bg-indigo-500" : "bg-pink-500";
+    guessingMode === GuessingMode.Individual
+      ? "border-2 border-indigo-500 bg-indigo-200 dark:bg-indigo-900"
+      : "border-2 border-pink-500 bg-pink-200 dark:bg-pink-900";
 
   return (
     <div
@@ -53,17 +55,15 @@ export default function GuessModeToggle({
         onClick={(e) => handleClick(e, GuessingMode.Individual)}
         onKeyDown={handleKeyDown}
         className={`absolute transition-colors inset-y-0 left-0 right-1/2 h-full rounded-full ${
-          guessingMode === GuessingMode.Individual ? "text-white" : ""
-        } ${finalGuess ? "opacity-50" : ""}`}
+          finalGuess ? "opacity-50" : ""
+        }`}
       >
         Guess letters
       </button>
       <button
         onClick={(e) => handleClick(e, GuessingMode.Full)}
         onKeyDown={handleKeyDown}
-        className={`absolute transition-colors inset-y-0 right-0 left-1/2 h-full rounded-full ${
-          guessingMode === GuessingMode.Full ? "text-white" : ""
-        }`}
+        className="absolute transition-colors inset-y-0 right-0 left-1/2 h-full rounded-full"
       >
         Guess phrase
       </button>
