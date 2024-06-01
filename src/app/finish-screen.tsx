@@ -1,6 +1,7 @@
 import ShareButton from "./share-btn";
 import { Roboto_Slab } from "next/font/google";
 import BlockQuote from "./block-quote";
+import StatRankings from "./stat-rankings";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -22,7 +23,7 @@ export default function FinishScreen({
   maxGuesses,
 }: FinishScreenProps) {
   return (
-    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-full flex justify-center overflow-y-auto">
       <div className="px-8">
         <h1
           className={`text-center font-extrabold text-3xl mb-4 leading-tight ${robotoSlab.className}`}
@@ -42,6 +43,7 @@ export default function FinishScreen({
         <p className="my-2 text-center">
           Come back tomorrow to guess a new phrase.
         </p>
+        <StatRankings />
         <div className="flex justify-center">
           <ShareButton
             className="my-2"
