@@ -40,13 +40,15 @@ export default function FinishScreen({
           <p className="my-2 text-center">The phrase was</p>
         )}
         <BlockQuote>{sentence.toUpperCase()}</BlockQuote>
-        <p className="my-2 text-center">
+        <p className="my-4 text-center">
           Come back tomorrow to guess a new phrase.
         </p>
+        <hr className="border-zinc-700" />
         <StatRankings />
+        <hr className="border-zinc-700" />
         <div className="flex justify-center">
           <ShareButton
-            className="my-2"
+            className="my-4"
             guessHistory={guessHistory}
             maxGuesses={maxGuesses}
             puzzleNumber={puzzleNumber}

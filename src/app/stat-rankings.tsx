@@ -11,16 +11,24 @@ function RankingBar({
   maxPercent,
   userScore,
 }: RankingBarProps) {
-  const bgColor = userScore === numGuesses ? "bg-zinc-400" : "bg-zinc-600";
+  const bgColor = userScore === numGuesses ? "bg-indigo-500" : "bg-zinc-600";
 
   return (
-    <div className="flex items-center">
-      <p className="w-8 text-center">{numGuesses || "X"}</p>
+    <div className="flex items-center mr-5">
+      <p className="w-3 mr-2 text-center text-sm font-bold">
+        {numGuesses || "X"}
+      </p>
       <div className="grow">
-        <div
-          className={`h-6 my-1 rounded ${bgColor}`}
-          style={{ width: `${(percent / maxPercent) * 100}%` }}
-        ></div>
+        <div className="flex items-center">
+          <div
+            className={`h-5 my-1 rounded ${bgColor} flex items-center justify-end`}
+            style={{ minWidth: `${(percent / maxPercent) * 100}%` }}
+          >
+            {percent > 0 && (
+              <p className="text-xs font-bold mx-2">{Math.round(percent)}%</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -44,7 +52,8 @@ export default function StatRankings() {
   const userScore = 5;
 
   return (
-    <div className="w-full bg-zinc-800 py-4 pr-4 rounded my-4">
+    <div className="my-4">
+      <h2 className="text-sm font-bold my-2">STAT RANKINGS</h2>
       {rankings.map((ranking, index) => (
         <RankingBar
           key={index}
