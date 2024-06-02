@@ -224,7 +224,9 @@ export default function Home() {
       game.setGameOver(true);
 
       // Log stats to server.
-      logStatsToServer(game.puzzleId, true, currentGuess);
+      logStatsToServer(game.puzzleId, true, currentGuess).then(() => {
+        game.setScoreLogged(true);
+      });
       openResultsScreen(500);
     } else {
       if (currentGuess === maxGuesses) {
@@ -233,7 +235,9 @@ export default function Home() {
           game.puzzleId,
           false,
           didSolve ? currentGuess : undefined
-        );
+        ).then(() => {
+          game.setScoreLogged(true);
+        });
         openResultsScreen(500);
       }
     }
@@ -282,6 +286,7 @@ export default function Home() {
             sentence={game.phrase}
             puzzleNumber={game.puzzleNumber}
             puzzleId={game.puzzleId}
+            scoreLogged={game.scoreLogged}
           />
         );
     }

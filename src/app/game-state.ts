@@ -85,6 +85,8 @@ function useGameState() {
 
   const [loading, setLoading] = useState(true);
 
+  const [scoreLogged, setScoreLogged] = useState(false);
+
   const queryParams = useSearchParams();
 
   const addGuessHistory = (guess: boolean) => {
@@ -149,6 +151,7 @@ function useGameState() {
         setGuessedLetters(new Set(storedGameState.guessedLetters));
         setGameOver(storedGameState.gameOver);
         setSolved(storedGameState.solved);
+        setScoreLogged(storedGameState.gameOver);
       }
 
       setLoading(false);
@@ -196,6 +199,8 @@ function useGameState() {
     solved,
     setSolved,
     loading,
+    scoreLogged,
+    setScoreLogged,
   };
 }
 
