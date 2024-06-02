@@ -12,6 +12,7 @@ interface FinishScreenProps {
   guessHistory: boolean[];
   maxGuesses: number;
   puzzleNumber: number;
+  puzzleId: string;
 }
 
 export default function FinishScreen({
@@ -21,6 +22,7 @@ export default function FinishScreen({
   guessHistory,
   puzzleNumber,
   maxGuesses,
+  puzzleId,
 }: FinishScreenProps) {
   return (
     <div className="w-full h-full flex justify-center overflow-y-auto">
@@ -43,9 +45,9 @@ export default function FinishScreen({
         <p className="my-4 text-center">
           Come back tomorrow to guess a new phrase.
         </p>
-        <hr className="border-zinc-700" />
-        <StatRankings />
-        <hr className="border-zinc-700" />
+        <hr className="border-gray-300 dark:border-zinc-700" />
+        <StatRankings userGuesses={guessCount} puzzleId={puzzleId} />
+        <hr className="border-gray-300 dark:border-zinc-700" />
         <div className="flex justify-center">
           <ShareButton
             className="my-4"

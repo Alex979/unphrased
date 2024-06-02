@@ -1,30 +1,42 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { StatRankingsResponse } from "./types";
+import { fetchStatRankings } from "./lib/api";
+
 interface RankingBarProps {
-  numGuesses: number | null;
+  label: string;
+  highlight: boolean;
   percent: number;
-  maxPercent: number;
-  userScore: number;
+  widthPercent: number;
+  loading?: boolean;
 }
 
 function RankingBar({
-  numGuesses,
+  label,
+  highlight,
   percent,
-  maxPercent,
-  userScore,
+  widthPercent,
+  loading,
 }: RankingBarProps) {
-  const bgColor = userScore === numGuesses ? "bg-indigo-500" : "bg-zinc-600";
+  const bgColor = loading
+    ? "bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 dark:from-zinc-800 dark:via-zinc-700 dark:to-zinc-800 bg-[length:200%] animate-loading-gradient"
+    : highlight
+    ? "bg-indigo-500"
+    : "bg-gray-500 dark:bg-zinc-600";
 
   return (
     <div className="flex items-center mr-5">
-      <p className="w-3 mr-2 text-center text-sm font-bold">
-        {numGuesses || "X"}
-      </p>
+      <p className="w-3 mr-2 text-center text-sm font-bold">{label}</p>
       <div className="grow">
         <div className="flex items-center">
           <div
-            className={`h-5 my-1 rounded ${bgColor} flex items-center justify-end`}
-            style={{ minWidth: `${(percent / maxPercent) * 100}%` }}
+            className={`h-5 my-1 rounded ${bgColor} flex items-center justify-end text-white`}
+            style={{
+              minWidth: `${widthPercent}%`,
+            }}
           >
-            {percent > 0 && (
+            {percent > 0 && !loading && (
               <p className="text-xs font-bold mx-2">{Math.round(percent)}%</p>
             )}
           </div>
@@ -34,33 +46,50 @@ function RankingBar({
   );
 }
 
-export default function StatRankings() {
-  const rankings = [
-    { num_guesses: 1, percent: 23.809523809523809524 },
-    { num_guesses: 2, percent: 19.047619047619047619 },
-    { num_guesses: 3, percent: 0.0 },
-    { num_guesses: 4, percent: 0.0 },
-    { num_guesses: 5, percent: 4.761904761904761905 },
-    { num_guesses: 6, percent: 14.285714285714285714 },
-    { num_guesses: 7, percent: 9.52380952380952381 },
-    { num_guesses: 8, percent: 19.047619047619047619 },
-    { num_guesses: null, percent: 9.52380952380952381 },
-  ];
+interface StatRankingsProps {
+  puzzleId: string;
+  userGuesses: number;
+}
 
-  const maxPercent = Math.max(...rankings.map((ranking) => ranking.percent));
+export default function StatRankings({
+  puzzleId,
+  userGuesses,
+}: StatRankingsProps) {
+  const [statRankings, setStatRankings] = useState<StatRankingsResponse | null>(
+    null
+  );
 
-  const userScore = 5;
+  useEffect(() => {
+    if (!puzzleId) {
+      return;
+    }
+
+    (async () => {
+      const data = await fetchStatRankings(puzzleId);
+      setStatRankings(data);
+    })();
+  }, [puzzleId]);
+
+  const loading = statRankings === null;
+
+  const maxPercent = loading
+    ? 100
+    : Math.max(...statRankings.map((ranking) => ranking.percent));
 
   return (
     <div className="my-4">
       <h2 className="text-sm font-bold my-2">STAT RANKINGS</h2>
-      {rankings.map((ranking, index) => (
+      {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
         <RankingBar
-          key={index}
-          numGuesses={ranking.num_guesses}
-          percent={ranking.percent}
-          maxPercent={maxPercent}
-          userScore={userScore}
+          label={i < 8 ? `${i + 1}` : "X"}
+          percent={loading ? 100 : statRankings[i].percent}
+          widthPercent={
+            loading ? 100 : (statRankings[i].percent / maxPercent) * 100
+          }
+          highlight={
+            loading ? false : statRankings[i].num_guesses === userGuesses
+          }
+          loading={loading}
         />
       ))}
     </div>
