@@ -81,6 +81,7 @@ export default function StatRankings({
       <h2 className="text-sm font-bold my-2">STAT RANKINGS</h2>
       {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
         <RankingBar
+          key={i}
           label={i < 8 ? `${i + 1}` : "X"}
           percent={loading ? 100 : statRankings[i].percent}
           widthPercent={
