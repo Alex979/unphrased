@@ -35,16 +35,20 @@ const config: Config = {
           "100%": { opacity: "0" },
         },
         switchPhrase: {
-          "0%": { right: "50%", left: "0"},
+          "0%": { right: "50%", left: "0" },
           "10%": { left: "0" },
           "90%": { right: "0" },
-          "100%": { left: "50%", right: "0"},
+          "100%": { left: "50%", right: "0" },
         },
         switchLetters: {
-          "0%": { left: "50%", right: "0"},
+          "0%": { left: "50%", right: "0" },
           "10%": { right: "0" },
           "90%": { left: "0" },
-          "100%": { right: "50%", left: "0"},
+          "100%": { right: "50%", left: "0" },
+        },
+        loadingGradient: {
+          "0%": { backgroundPosition: "100%" },
+          "100%": { backgroundPosition: "-100%" },
         },
       }),
       animation: {
@@ -53,6 +57,7 @@ const config: Config = {
         "fade-out": "fadeOut 0.3s ease-out forwards",
         "switch-phrase": "switchPhrase 0.15s ease-in-out forwards",
         "switch-letters": "switchLetters 0.15s ease-in-out forwards",
+        "loading-gradient": "loadingGradient 3s infinite linear",
       },
       screens: {
         tiny: { raw: "(max-height: 630px)" },

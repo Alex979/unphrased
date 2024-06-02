@@ -281,6 +281,7 @@ export default function Home() {
             maxGuesses={maxGuesses}
             sentence={game.phrase}
             puzzleNumber={game.puzzleNumber}
+            puzzleId={game.puzzleId}
           />
         );
     }
