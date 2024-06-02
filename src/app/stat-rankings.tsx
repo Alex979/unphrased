@@ -49,18 +49,20 @@ function RankingBar({
 interface StatRankingsProps {
   puzzleId: string;
   userGuesses: number;
+  scoreLogged: boolean;
 }
 
 export default function StatRankings({
   puzzleId,
   userGuesses,
+  scoreLogged
 }: StatRankingsProps) {
   const [statRankings, setStatRankings] = useState<StatRankingsResponse | null>(
     null
   );
 
   useEffect(() => {
-    if (!puzzleId) {
+    if (!puzzleId || !scoreLogged) {
       return;
     }
 
@@ -68,7 +70,7 @@ export default function StatRankings({
       const data = await fetchStatRankings(puzzleId);
       setStatRankings(data);
     })();
-  }, [puzzleId]);
+  }, [puzzleId, scoreLogged]);
 
   const loading = statRankings === null;
 

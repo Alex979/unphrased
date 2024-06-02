@@ -2,7 +2,7 @@ import { getFingerprint } from "@thumbmarkjs/thumbmarkjs";
 import { sendGAEvent } from "@next/third-parties/google";
 import { isStatRankingsResponse } from "../types";
 
-export function logStatsToServer(
+export async function logStatsToServer(
   puzzleId: string,
   solved: boolean,
   numGuesses?: number
@@ -13,19 +13,18 @@ export function logStatsToServer(
     num_guesses: numGuesses,
   });
 
-  getFingerprint().then((fingerprint) => {
-    fetch("/api/log-stats", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        fingerprint,
-        puzzleId,
-        solved,
-        numGuesses,
-      }),
-    });
+  const fingerprint = await getFingerprint();
+  await fetch("/api/log-stats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      fingerprint,
+      puzzleId,
+      solved,
+      numGuesses,
+    }),
   });
 }
 
