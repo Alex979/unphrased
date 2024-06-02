@@ -12,19 +12,19 @@ export type Database = {
       puzzles: {
         Row: {
           clue: string
-          date: string
+          date: string | null
           id: string
           phrase: string
         }
         Insert: {
           clue: string
-          date: string
+          date?: string | null
           id?: string
           phrase: string
         }
         Update: {
           clue?: string
-          date?: string
+          date?: string | null
           id?: string
           phrase?: string
         }
@@ -32,18 +32,21 @@ export type Database = {
       }
       stats: {
         Row: {
+          create_time: string | null
           fingerprint: string
           num_guesses: number | null
           puzzle_id: string
           solved: boolean
         }
         Insert: {
+          create_time?: string | null
           fingerprint: string
           num_guesses?: number | null
           puzzle_id?: string
           solved?: boolean
         }
         Update: {
+          create_time?: string | null
           fingerprint?: string
           num_guesses?: number | null
           puzzle_id?: string
@@ -80,7 +83,15 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      stat_rankings: {
+        Args: {
+          id: string
+        }
+        Returns: {
+          num_guesses: number
+          percent: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

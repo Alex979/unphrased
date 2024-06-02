@@ -84,3 +84,30 @@ export function isTodaysPuzzleResponse(obj: any): obj is TodaysPuzzleResponse {
     typeof obj.clue === "string"
   );
 }
+
+interface StatRankingsRequest {
+  id: string;
+}
+
+export function isStatRankingsRequest(obj: any): obj is StatRankingsRequest {
+  return obj && typeof obj.id === "string";
+}
+
+interface StatRankingsResponseRow {
+  num_guesses: number | null;
+  percent: number;
+}
+
+function isStatRankingsResponseRow(obj: any): obj is StatRankingsResponseRow {
+  return (
+    obj &&
+    (typeof obj.num_guesses === "number" || obj.num_guesses === null) &&
+    typeof obj.percent === "number"
+  );
+}
+
+export type StatRankingsResponse = StatRankingsResponseRow[];
+
+export function isStatRankingsResponse(obj: any): obj is StatRankingsResponse {
+  return Array.isArray(obj) && obj.every(isStatRankingsResponseRow);
+}
