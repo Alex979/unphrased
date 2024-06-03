@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "./_components/button";
+import { isMobile } from "react-device-detect";
 
 interface ShareButtonProps {
   className?: string;
@@ -16,7 +17,18 @@ export default function ShareButton({
 }: ShareButtonProps) {
   const [showClipboardText, setShowClipboardText] = useState(false);
 
-  const handleShare = () => {
+  const copyToClipboard = (shareString: string) => {
+    navigator.clipboard.writeText(shareString);
+    setShowClipboardText(true);
+  };
+
+  const shareNatively = async (shareString: string) => {
+    await navigator.share({
+      text: shareString,
+    });
+  };
+
+  const handleShare = async () => {
     const guessString = guessHistory
       .map((guess) => {
         return guess ? "✅" : "❌";
@@ -26,8 +38,17 @@ export default function ShareButton({
       ? guessHistory.length
       : "X";
     const shareString = `Unphrased\nPuzzle #${puzzleNumber} ${numGuesses}/${maxGuesses}\n${guessString}\nwww.unphrased.app`;
-    navigator.clipboard.writeText(shareString);
-    setShowClipboardText(true);
+    
+    if (isMobile) {
+      // Attempt using share API, otherwise fallback to clipboard
+      try {
+        await shareNatively(shareString);
+      } catch (err) {
+        copyToClipboard(shareString);
+      }
+    } else {
+      copyToClipboard(shareString);
+    }
   };
 
   return (
