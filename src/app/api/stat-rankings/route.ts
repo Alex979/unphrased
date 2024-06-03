@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
-import { StatRankingsResponse, isStatRankingsRequest } from "@/app/types";
+import { isStatRankingsRequest } from "@/app/types";
 
 export const runtime = "edge";
 export const preferredRegion = ["sfo1"];
