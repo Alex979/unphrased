@@ -290,6 +290,8 @@ export default function Home() {
             addNotification={addNotification}
           />
         );
+      default:
+        return null;
     }
   };
 
@@ -391,7 +393,7 @@ export default function Home() {
         />
       </div>
       <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
-        <PopupScreenSwitch />
+        {PopupScreenSwitch()}
       </Popup>
       <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
     </main>
