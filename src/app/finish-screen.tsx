@@ -14,6 +14,7 @@ interface FinishScreenProps {
   puzzleNumber: number;
   puzzleId: string;
   scoreLogged: boolean;
+  addNotification: (message: string) => void;
 }
 
 export default function FinishScreen({
@@ -25,6 +26,7 @@ export default function FinishScreen({
   maxGuesses,
   puzzleId,
   scoreLogged,
+  addNotification,
 }: FinishScreenProps) {
   return (
     <div className="w-full h-full flex justify-center overflow-y-auto">
@@ -60,6 +62,7 @@ export default function FinishScreen({
             guessHistory={guessHistory}
             maxGuesses={maxGuesses}
             puzzleNumber={puzzleNumber}
+            addNotification={addNotification}
           />
         </div>
       </div>

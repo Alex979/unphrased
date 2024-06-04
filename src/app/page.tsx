@@ -287,6 +287,7 @@ export default function Home() {
             puzzleNumber={game.puzzleNumber}
             puzzleId={game.puzzleId}
             scoreLogged={game.scoreLogged}
+            addNotification={addNotification}
           />
         );
     }
@@ -358,7 +359,6 @@ export default function Home() {
             gameOver={game.gameOver}
           />
         </div>
-        <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
       </div>
       <div className="flex flex-col items-center gap-2">
         <GuessCounter
@@ -393,6 +393,7 @@ export default function Home() {
       <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
         <PopupScreenSwitch />
       </Popup>
+      <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
     </main>
   );
 }

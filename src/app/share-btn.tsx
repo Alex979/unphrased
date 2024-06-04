@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Button from "./_components/button";
 import { isMobile } from "react-device-detect";
 
@@ -7,6 +6,7 @@ interface ShareButtonProps {
   guessHistory: boolean[];
   maxGuesses: number;
   puzzleNumber: number;
+  addNotification: (message: string) => void;
 }
 
 export default function ShareButton({
@@ -14,12 +14,11 @@ export default function ShareButton({
   guessHistory,
   maxGuesses,
   puzzleNumber,
+  addNotification,
 }: ShareButtonProps) {
-  const [showClipboardText, setShowClipboardText] = useState(false);
-
   const copyToClipboard = (shareString: string) => {
     navigator.clipboard.writeText(shareString);
-    setShowClipboardText(true);
+    addNotification("Results copied to clipboard");
   };
 
   const shareNatively = async (shareString: string) => {
@@ -38,7 +37,7 @@ export default function ShareButton({
       ? guessHistory.length
       : "X";
     const shareString = `Unphrased\nPuzzle #${puzzleNumber} ${numGuesses}/${maxGuesses}\n${guessString}\nwww.unphrased.app`;
-    
+
     if (isMobile) {
       // Attempt using share API, otherwise fallback to clipboard
       try {
@@ -68,9 +67,6 @@ export default function ShareButton({
           <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z" />
         </svg>
       </Button>
-      <p className={showClipboardText ? "" : "invisible"}>
-        Copied to clipboard!
-      </p>
     </div>
   );
 }
