@@ -28,6 +28,21 @@ export async function logStatsToServer(
   });
 }
 
+export async function logGuessToServer(puzzleId: string, guess: string) {
+  const fingerprint = await getFingerprint();
+  await fetch("/api/log-guess", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      fingerprint,
+      puzzleId,
+      guess,
+    }),
+  });
+}
+
 export async function fetchStatRankings(puzzleId: string) {
   const response = await fetch("/api/stat-rankings", {
     method: "POST",

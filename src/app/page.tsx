@@ -18,7 +18,7 @@ import TutorialScreen from "./tutorial-screen";
 import Hint from "./hint";
 import GuessModeToggle from "./guess-mode-toggle";
 import { useGameState } from "./game-state";
-import { logStatsToServer } from "./lib/api";
+import { logGuessToServer, logStatsToServer } from "./lib/api";
 import Loading from "./loading";
 import Notifications from "./notifications";
 import Button from "./_components/button";
@@ -157,6 +157,8 @@ export default function Home() {
       if (game.currentGuess === maxGuesses - 1) {
         game.setGuessingMode(GuessingMode.Full);
       }
+
+      logGuessToServer(game.puzzleId, constructCurrentGuess());
     }
   };
 
@@ -256,6 +258,23 @@ export default function Home() {
       numBlanks++;
     }
     return numBlanks;
+  };
+
+  const constructCurrentGuess = () => {
+    let guess = "";
+    let blankIndex = -1;
+    for (let char of game.phrase) {
+      char = char.toLowerCase();
+      if (!isAlphabetChar(char) || game.guessedLetters.has(char)) {
+        guess += char;
+      } else {
+        blankIndex++;
+        if (blankIndex < game.sentenceGuesses.length) {
+          guess += game.sentenceGuesses[blankIndex];
+        }
+      }
+    }
+    return guess;
   };
 
   const jiggleSentence = () => {

@@ -58,6 +58,21 @@ export function isLogStatsRequest(obj: any): obj is LogStatsRequest {
   );
 }
 
+export interface LogGuessRequest {
+  fingerprint: string;
+  puzzleId: string;
+  guess: string;
+}
+
+export function isLogGuessRequest(obj: any): obj is LogGuessRequest {
+  return (
+    obj &&
+    typeof obj.fingerprint === "string" &&
+    typeof obj.puzzleId === "string" &&
+    typeof obj.guess === "string"
+  );
+}
+
 export interface TodaysPuzzleRequest {
   timeZone: string;
 }

@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      guess_logs: {
+        Row: {
+          fingerprint: string
+          guess: string
+          puzzle_id: string
+        }
+        Insert: {
+          fingerprint: string
+          guess: string
+          puzzle_id?: string
+        }
+        Update: {
+          fingerprint?: string
+          guess?: string
+          puzzle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guess_logs_puzzle_id_fkey"
+            columns: ["puzzle_id"]
+            isOneToOne: false
+            referencedRelation: "numbered_puzzles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guess_logs_puzzle_id_fkey"
+            columns: ["puzzle_id"]
+            isOneToOne: false
+            referencedRelation: "puzzles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       puzzles: {
         Row: {
           clue: string
