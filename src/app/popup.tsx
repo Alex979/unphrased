@@ -7,7 +7,7 @@ interface PopupProps {
 export default function Popup({ children, open, onClose }: PopupProps) {
   return (
     <div
-      className={`fixed w-full h-full bg-white dark:bg-zinc-900 transition flex flex-col ${
+      className={`fixed w-full h-full bg-white dark:bg-neutral-900 transition flex flex-col ${
         !open ? "translate-y-full" : ""
       }`}
     >

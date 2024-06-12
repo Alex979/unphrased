@@ -13,7 +13,7 @@ export default function GuessCounter({
 
   return (
     <div className={`flex items-center h-8 ${gameOver ? "invisible" : ""}`}>
-      <p className="text-slate-600 dark:text-zinc-300 mr-2">
+      <p className="text-slate-600 dark:text-neutral-300 mr-2">
         {isFinalGuess ? "Last guess!" : "Remaining: "}
       </p>
       {!isFinalGuess &&
@@ -21,7 +21,7 @@ export default function GuessCounter({
           (_, index) => (
             <p
               key={index}
-              className="text-2xl text-slate-600 dark:text-zinc-300"
+              className="text-2xl text-slate-600 dark:text-neutral-300"
             >
               •
             </p>

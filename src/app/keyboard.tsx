@@ -92,9 +92,9 @@ function KeyboardButton({
 
   const colorClassDefault = `${
     guessed
-      ? "bg-slate-500 dark:bg-zinc-800 text-white"
-      : "bg-slate-300 dark:bg-zinc-500"
-  } active:bg-slate-400 dark:active:bg-zinc-600`;
+      ? "bg-slate-500 dark:bg-neutral-800 text-white"
+      : "bg-slate-300 dark:bg-neutral-500"
+  } active:bg-slate-400 dark:active:bg-neutral-600`;
 
   const colorClassHighlight =
     guessingMode === GuessingMode.Full
@@ -102,7 +102,7 @@ function KeyboardButton({
       : `bg-indigo-500 active:bg-indigo-700 text-white`;
 
   const colorClassDisabled =
-    "bg-slate-200 text-slate-400 dark:bg-zinc-700 dark:text-zinc-400";
+    "bg-slate-200 text-slate-400 dark:bg-neutral-700 dark:text-neutral-400";
 
   const colorClass = disabled
     ? colorClassDisabled

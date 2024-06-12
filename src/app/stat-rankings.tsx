@@ -20,10 +20,10 @@ function RankingBar({
   loading,
 }: RankingBarProps) {
   const bgColor = loading
-    ? "bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 dark:from-zinc-800 dark:via-zinc-700 dark:to-zinc-800 bg-[length:200%] animate-loading-gradient"
+    ? "bg-gradient-to-r from-gray-300 via-gray-100 to-gray-300 dark:from-neutral-800 dark:via-neutral-700 dark:to-neutral-800 bg-[length:200%] animate-loading-gradient"
     : highlight
     ? "bg-indigo-500"
-    : "bg-gray-400 dark:bg-zinc-600";
+    : "bg-gray-400 dark:bg-neutral-600";
 
   return (
     <div className="flex items-center mr-5">
