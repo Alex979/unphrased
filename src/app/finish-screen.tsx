@@ -1,6 +1,7 @@
 import ShareButton from "./share-btn";
 import { Roboto_Slab } from "next/font/google";
 import BlockQuote from "./block-quote";
+import StatRankings from "./stat-rankings";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -11,6 +12,9 @@ interface FinishScreenProps {
   guessHistory: boolean[];
   maxGuesses: number;
   puzzleNumber: number;
+  puzzleId: string;
+  scoreLogged: boolean;
+  addNotification: (message: string) => void;
 }
 
 export default function FinishScreen({
@@ -20,9 +24,12 @@ export default function FinishScreen({
   guessHistory,
   puzzleNumber,
   maxGuesses,
+  puzzleId,
+  scoreLogged,
+  addNotification,
 }: FinishScreenProps) {
   return (
-    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-full flex justify-center overflow-y-auto">
       <div className="px-8">
         <h1
           className={`text-center font-extrabold text-3xl mb-4 leading-tight ${robotoSlab.className}`}
@@ -39,15 +46,23 @@ export default function FinishScreen({
           <p className="my-2 text-center">The phrase was</p>
         )}
         <BlockQuote>{sentence.toUpperCase()}</BlockQuote>
-        <p className="my-2 text-center">
+        <p className="my-4 text-center">
           Come back tomorrow to guess a new phrase.
         </p>
+        <hr className="border-gray-300 dark:border-neutral-700" />
+        <StatRankings
+          userGuesses={guessCount}
+          puzzleId={puzzleId}
+          scoreLogged={scoreLogged}
+        />
+        <hr className="border-gray-300 dark:border-neutral-700" />
         <div className="flex justify-center">
           <ShareButton
-            className="my-2"
+            className="my-4"
             guessHistory={guessHistory}
             maxGuesses={maxGuesses}
             puzzleNumber={puzzleNumber}
+            addNotification={addNotification}
           />
         </div>
       </div>

@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export default function Header({ onOpenHelp }: HeaderProps) {
   return (
-    <header className="w-full py-2 px-6 tiny:py-1 tiny:px-4 border-b dark:border-zinc-600 flex justify-between items-center">
+    <header className="w-full py-2 px-6 tiny:py-1 tiny:px-4 border-b dark:border-neutral-600 flex justify-between items-center">
       <h1
         className={`text-3xl tiny:text-2xl font-black tracking-tight underline ${robotoSlab.className}`}
       >

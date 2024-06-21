@@ -18,7 +18,7 @@ export default function Hint({ emojis, guessingMode }: HintProps) {
       >
         <p className="text-sm tiny:text-xs font-bold">CLUE</p>
       </div>
-      <div className="p-1 border-x border-b rounded-b-lg dark:border-zinc-600">
+      <div className="p-1 border-x border-b rounded-b-lg dark:border-neutral-600">
         <p className="text-3xl tiny:text-2xl tracking-widest">{emojis}</p>
       </div>
     </div>

@@ -45,7 +45,7 @@ export default function Sentence({
     };
   }, []);
 
-  const dashColorClasses = "text-gray-500 dark:text-zinc-400";
+  const dashColorClasses = "text-gray-500 dark:text-neutral-400";
 
   const formatSentence = () => {
     let blankIndex = -1;

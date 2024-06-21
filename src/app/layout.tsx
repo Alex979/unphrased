@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`dark:bg-zinc-900 dark:text-zinc-100 ${inter.className}`}
+        className={`dark:bg-neutral-900 dark:text-neutral-100 ${inter.className}`}
       >
         {children}
         <Analytics />

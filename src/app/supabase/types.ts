@@ -9,22 +9,55 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      guess_logs: {
+        Row: {
+          fingerprint: string
+          guess: string
+          puzzle_id: string
+        }
+        Insert: {
+          fingerprint: string
+          guess: string
+          puzzle_id?: string
+        }
+        Update: {
+          fingerprint?: string
+          guess?: string
+          puzzle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "guess_logs_puzzle_id_fkey"
+            columns: ["puzzle_id"]
+            isOneToOne: false
+            referencedRelation: "numbered_puzzles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "guess_logs_puzzle_id_fkey"
+            columns: ["puzzle_id"]
+            isOneToOne: false
+            referencedRelation: "puzzles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       puzzles: {
         Row: {
           clue: string
-          date: string
+          date: string | null
           id: string
           phrase: string
         }
         Insert: {
           clue: string
-          date: string
+          date?: string | null
           id?: string
           phrase: string
         }
         Update: {
           clue?: string
-          date?: string
+          date?: string | null
           id?: string
           phrase?: string
         }
@@ -32,18 +65,21 @@ export type Database = {
       }
       stats: {
         Row: {
+          create_time: string | null
           fingerprint: string
           num_guesses: number | null
           puzzle_id: string
           solved: boolean
         }
         Insert: {
+          create_time?: string | null
           fingerprint: string
           num_guesses?: number | null
           puzzle_id?: string
           solved?: boolean
         }
         Update: {
+          create_time?: string | null
           fingerprint?: string
           num_guesses?: number | null
           puzzle_id?: string
@@ -80,7 +116,15 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      stat_rankings: {
+        Args: {
+          id: string
+        }
+        Returns: {
+          num_guesses: number
+          percent: number
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never

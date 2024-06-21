@@ -18,7 +18,7 @@ import TutorialScreen from "./tutorial-screen";
 import Hint from "./hint";
 import GuessModeToggle from "./guess-mode-toggle";
 import { useGameState } from "./game-state";
-import { logStatsToServer } from "./lib/api";
+import { logGuessToServer, logStatsToServer } from "./lib/api";
 import Loading from "./loading";
 import Notifications from "./notifications";
 import Button from "./_components/button";
@@ -157,6 +157,8 @@ export default function Home() {
       if (game.currentGuess === maxGuesses - 1) {
         game.setGuessingMode(GuessingMode.Full);
       }
+
+      logGuessToServer(game.puzzleId, constructCurrentGuess());
     }
   };
 
@@ -224,7 +226,9 @@ export default function Home() {
       game.setGameOver(true);
 
       // Log stats to server.
-      logStatsToServer(game.puzzleId, true, currentGuess);
+      logStatsToServer(game.puzzleId, true, currentGuess).then(() => {
+        game.setScoreLogged(true);
+      });
       openResultsScreen(500);
     } else {
       if (currentGuess === maxGuesses) {
@@ -233,7 +237,9 @@ export default function Home() {
           game.puzzleId,
           false,
           didSolve ? currentGuess : undefined
-        );
+        ).then(() => {
+          game.setScoreLogged(true);
+        });
         openResultsScreen(500);
       }
     }
@@ -252,6 +258,23 @@ export default function Home() {
       numBlanks++;
     }
     return numBlanks;
+  };
+
+  const constructCurrentGuess = () => {
+    let guess = "";
+    let blankIndex = -1;
+    for (let char of game.phrase) {
+      char = char.toLowerCase();
+      if (!isAlphabetChar(char) || game.guessedLetters.has(char)) {
+        guess += char;
+      } else {
+        blankIndex++;
+        if (blankIndex < game.sentenceGuesses.length) {
+          guess += game.sentenceGuesses[blankIndex];
+        }
+      }
+    }
+    return guess;
   };
 
   const jiggleSentence = () => {
@@ -281,8 +304,13 @@ export default function Home() {
             maxGuesses={maxGuesses}
             sentence={game.phrase}
             puzzleNumber={game.puzzleNumber}
+            puzzleId={game.puzzleId}
+            scoreLogged={game.scoreLogged}
+            addNotification={addNotification}
           />
         );
+      default:
+        return null;
     }
   };
 
@@ -352,7 +380,6 @@ export default function Home() {
             gameOver={game.gameOver}
           />
         </div>
-        <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
       </div>
       <div className="flex flex-col items-center gap-2">
         <GuessCounter
@@ -385,8 +412,9 @@ export default function Home() {
         />
       </div>
       <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
-        <PopupScreenSwitch />
+        {PopupScreenSwitch()}
       </Popup>
+      <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
     </main>
   );
 }
