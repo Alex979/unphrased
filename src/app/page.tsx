@@ -22,6 +22,7 @@ import { logGuessToServer, logStatsToServer } from "./lib/api";
 import Loading from "./loading";
 import Notifications from "./notifications";
 import Button from "./_components/button";
+import HeaderTemplate from "./header-template";
 
 export default function Home() {
   const maxGuesses = 8;
@@ -353,12 +354,16 @@ export default function Home() {
     game.gameOver;
 
   if (game.loading || popupScreen === PopupScreen.UNSET) {
-    return <Loading />;
+    return (
+      <HeaderTemplate>
+        <Loading />
+      </HeaderTemplate>
+    );
   }
 
   return (
+    <HeaderTemplate onOpenHelp={openTutorialScreen}>
     <main className="h-full flex flex-col">
-      <Header onOpenHelp={openTutorialScreen} />
       <div className="flex-1 flex flex-col items-center overflow-y-auto">
         <Hint emojis={game.clue} guessingMode={game.guessingMode} />
         <div className="grow flex flex-col justify-center items-center max-h-[40rem]">
@@ -416,5 +421,6 @@ export default function Home() {
       </Popup>
       <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
     </main>
+    </HeaderTemplate>
   );
 }
