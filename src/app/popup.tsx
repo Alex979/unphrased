@@ -15,7 +15,7 @@ export default function Popup({ children, open, onClose }: PopupProps) {
       onClick={onClose}
     >
       <div
-        className={`w-full h-full rounded-t-lg shadow-lg bg-white dark:bg-neutral-900 transition flex flex-col ${
+        className={`w-full h-full rounded-t-xl shadow-lg bg-white dark:bg-neutral-900 transition flex flex-col ${
           !open ? "translate-y-full" : ""
         }`}
         onClick={(e) => e.stopPropagation()}
