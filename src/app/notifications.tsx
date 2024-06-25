@@ -39,7 +39,7 @@ export default function Notifications({
   const reversedMessages = messages.toReversed();
 
   return (
-    <div className="absolute w-full h-full flex flex-col items-center pt-28 pointer-events-none space-y-4">
+    <div className="fixed inset-0 flex flex-col items-center pt-28 pointer-events-none space-y-4">
       {reversedMessages.map((message) => (
         <MessageBubble
           key={message.id}
