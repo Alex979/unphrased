@@ -1,6 +1,6 @@
 import { getFingerprint } from "@thumbmarkjs/thumbmarkjs";
 import { sendGAEvent } from "@next/third-parties/google";
-import { isStatRankingsResponse } from "../types";
+import { ArchiveRequest, isArchiveRequest, isStatRankingsResponse } from "../types";
 
 export async function logStatsToServer(
   puzzleId: string,
@@ -54,6 +54,22 @@ export async function fetchStatRankings(puzzleId: string) {
   const data = await response.json();
 
   if (!isStatRankingsResponse(data)) {
+    return null;
+  }
+  return data;
+}
+
+export async function fetchArchive(request: ArchiveRequest) {
+  const response = await fetch("/api/archive", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(request),
+  });
+  const data = await response.json();
+
+  if (!isArchiveRequest(data)) {
     return null;
   }
   return data;

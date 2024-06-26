@@ -131,3 +131,37 @@ export type StatRankingsResponse = StatRankingsResponseRow[];
 export function isStatRankingsResponse(obj: any): obj is StatRankingsResponse {
   return Array.isArray(obj) && obj.every(isStatRankingsResponseRow);
 }
+
+export interface ArchiveRequest {
+  timeZone: string;
+  month: number;
+}
+
+export function isArchiveRequest(obj: any): obj is ArchiveRequest {
+  return (
+    obj && typeof obj.timeZone === "string" && typeof obj.month === "number"
+  );
+}
+
+interface ArchiveResponseRow {
+  id: string;
+  date: string;
+  phrase: string;
+  clue: string;
+}
+
+function isArchiveResponseRow(obj: any): obj is ArchiveResponseRow {
+  return (
+    obj &&
+    typeof obj.id === "string" &&
+    typeof obj.date === "string" &&
+    typeof obj.phrase === "string" &&
+    typeof obj.clue === "string"
+  );
+}
+
+export type ArchiveResponse = ArchiveResponseRow[];
+
+export function isArchiveResponse(obj: any): obj is ArchiveResponse {
+  return Array.isArray(obj) && obj.every(isArchiveResponseRow);
+}
