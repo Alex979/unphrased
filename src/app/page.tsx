@@ -363,64 +363,64 @@ export default function Home({ requestedId }: { requestedId?: string }) {
 
   return (
     <HeaderTemplate onOpenHelp={openTutorialScreen}>
-    <main className="h-full flex flex-col">
-      <div className="flex-1 flex flex-col items-center overflow-y-auto">
-        <Hint emojis={game.clue} guessingMode={game.guessingMode} />
-        <div className="grow flex flex-col justify-center items-center max-h-[40rem]">
-          <LetterPreview
-            letter={game.queuedLetter}
-            className={
-              game.guessingMode === GuessingMode.Full || game.solved
-                ? "invisible"
-                : ""
-            }
-            jiggleTrigger={previewJiggleTrigger}
-          />
-          <Sentence
-            sentence={game.phrase}
-            guessingMode={game.guessingMode}
-            guessedLetters={game.guessedLetters}
-            sentenceGuesses={game.sentenceGuesses}
-            jiggleTrigger={sentenceJiggleTrigger}
+      <main className="h-full flex flex-col">
+        <div className="flex-1 flex flex-col items-center overflow-y-auto">
+          <Hint emojis={game.clue} guessingMode={game.guessingMode} />
+          <div className="grow flex flex-col justify-center items-center max-h-[40rem]">
+            <LetterPreview
+              letter={game.queuedLetter}
+              className={
+                game.guessingMode === GuessingMode.Full || game.solved
+                  ? "invisible"
+                  : ""
+              }
+              jiggleTrigger={previewJiggleTrigger}
+            />
+            <Sentence
+              sentence={game.phrase}
+              guessingMode={game.guessingMode}
+              guessedLetters={game.guessedLetters}
+              sentenceGuesses={game.sentenceGuesses}
+              jiggleTrigger={sentenceJiggleTrigger}
+              gameOver={game.gameOver}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <GuessCounter
+            currentGuess={game.currentGuess}
+            maxGuesses={maxGuesses}
             gameOver={game.gameOver}
           />
-        </div>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <GuessCounter
-          currentGuess={game.currentGuess}
-          maxGuesses={maxGuesses}
-          gameOver={game.gameOver}
-        />
-        <div className="px-2 w-full flex justify-center">
-          <Button
-            variant="secondary"
-            className={`${game.gameOver ? "" : "hidden"}`}
-            onClick={() => openResultsScreen()}
-          >
-            Show Results
-          </Button>
-          <GuessModeToggle
-            className={`${game.gameOver ? "hidden" : ""}`}
+          <div className="px-2 w-full flex justify-center">
+            <Button
+              variant="secondary"
+              className={`${game.gameOver ? "" : "hidden"}`}
+              onClick={() => openResultsScreen()}
+            >
+              Show Results
+            </Button>
+            <GuessModeToggle
+              className={`${game.gameOver ? "hidden" : ""}`}
+              guessingMode={game.guessingMode}
+              onClick={toggleGuessingMode}
+              finalGuess={game.currentGuess === maxGuesses}
+            />
+          </div>
+          <VirtualKeyboard
+            onLetterPress={onLetterPress}
+            onBackspace={onBackspace}
+            onEnter={onEnter}
+            guessedLetters={game.guessedLetters}
             guessingMode={game.guessingMode}
-            onClick={toggleGuessingMode}
-            finalGuess={game.currentGuess === maxGuesses}
+            submitDisabled={submitButtonDisabled}
           />
         </div>
-        <VirtualKeyboard
-          onLetterPress={onLetterPress}
-          onBackspace={onBackspace}
-          onEnter={onEnter}
-          guessedLetters={game.guessedLetters}
-          guessingMode={game.guessingMode}
-          submitDisabled={submitButtonDisabled}
-        />
-      </div>
-      <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
-        {PopupScreenSwitch()}
-      </Popup>
-      <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
-    </main>
+        <Popup open={popupOpen} onClose={() => setPopupOpen(false)}>
+          {PopupScreenSwitch()}
+        </Popup>
+        <Notifications messages={messages} onAnimationEnd={onNotificationEnd} />
+      </main>
     </HeaderTemplate>
   );
 }
