@@ -73,15 +73,20 @@ export function isLogGuessRequest(obj: any): obj is LogGuessRequest {
   );
 }
 
-export interface TodaysPuzzleRequest {
+export interface PuzzleRequest {
   timeZone: string;
+  puzzleId?: string;
 }
 
-export function isTodaysPuzzleRequest(obj: any): obj is TodaysPuzzleRequest {
-  return obj && typeof obj.timeZone === "string";
+export function isPuzzleRequest(obj: any): obj is PuzzleRequest {
+  return (
+    obj &&
+    typeof obj.timeZone === "string" &&
+    (obj.puzzleId === undefined || typeof obj.puzzleId === "string")
+  );
 }
 
-export interface TodaysPuzzleResponse {
+export interface PuzzleResponse {
   id: string;
   number: number;
   date: string;
@@ -89,7 +94,7 @@ export interface TodaysPuzzleResponse {
   clue: string;
 }
 
-export function isTodaysPuzzleResponse(obj: any): obj is TodaysPuzzleResponse {
+export function isPuzzleResponse(obj: any): obj is PuzzleResponse {
   return (
     obj &&
     typeof obj.id === "string" &&

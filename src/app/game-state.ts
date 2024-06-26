@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AlphabetChar, GuessingMode, isTodaysPuzzleResponse } from "./types";
+import { AlphabetChar, GuessingMode, isPuzzleResponse } from "./types";
 import { useSearchParams } from "next/navigation";
 
 interface StoredGameState {
@@ -64,7 +64,7 @@ function loadLocalGameState(puzzleId: string): StoredGameState | null {
   return JSON.parse(storedGameState);
 }
 
-function useGameState() {
+function useGameState(requestedId?: string) {
   const [puzzleId, setPuzzleId] = useState("");
   const [puzzleNumber, setPuzzleNumber] = useState(0);
   const [phrase, setPhrase] = useState("");
@@ -124,16 +124,19 @@ function useGameState() {
       // Fetch today's puzzle from the server.
       const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const forceTimeZone = queryParams.get("tz");
-      const response = await fetch("/api/todays-puzzle", {
+      const response = await fetch("/api/puzzle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ timeZone: forceTimeZone || timeZone }),
+        body: JSON.stringify({
+          timeZone: forceTimeZone || timeZone,
+          puzzleId: requestedId,
+        }),
         cache: "no-store",
       });
       const data = await response.json();
-      if (!isTodaysPuzzleResponse(data)) {
+      if (!isPuzzleResponse(data)) {
         console.error("Invalid response from server.");
         return;
       }

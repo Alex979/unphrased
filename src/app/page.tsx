@@ -24,11 +24,11 @@ import Notifications from "./notifications";
 import Button from "./_components/button";
 import HeaderTemplate from "./header-template";
 
-export default function Home() {
+export default function Home({ requestedId }: { requestedId?: string }) {
   const maxGuesses = 8;
 
   // Game state.
-  const game = useGameState();
+  const game = useGameState(requestedId);
 
   // Animation states.
   const [sentenceJiggleTrigger, setSentenceJiggleTrigger] = useState(0);
