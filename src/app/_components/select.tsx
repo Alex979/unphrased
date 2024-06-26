@@ -6,7 +6,7 @@ export default function Select({ ...props }: SelectProps) {
   return (
     <select
       {...props}
-      className={`border-r-8 border-transparent outline outline-1 outline-gray-700 px-3 py-2 rounded-md${
+      className={`border-r-8 border-transparent outline outline-1 outline-gray-700 dark:outline-neutral-700 bg-transparent px-3 py-2 rounded-md${
         props.className ? props.className : ""
       }`}
     >
