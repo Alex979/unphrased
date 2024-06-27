@@ -364,7 +364,10 @@ export default function Home({ requestedId }: { requestedId?: string }) {
   return (
     <HeaderTemplate onOpenHelp={openTutorialScreen}>
       <main className="h-full flex flex-col">
-        <div className="flex-1 flex flex-col items-center overflow-y-auto">
+        <div className="relative flex-1 flex flex-col items-center overflow-y-auto">
+          <div className="absolute top-0 right-0 m-3 px-2 py-0.5 border dark:border-neutral-600 rounded-full flex items-center justify-center text-sm">
+            <span className="mr-0.5">#</span>{game.puzzleNumber}
+          </div>
           <Hint emojis={game.clue} guessingMode={game.guessingMode} />
           <div className="grow flex flex-col justify-center items-center max-h-[40rem]">
             <LetterPreview
