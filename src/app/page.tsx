@@ -24,6 +24,7 @@ import Notifications from "./notifications";
 import Button from "./_components/button";
 import HeaderTemplate from "./header-template";
 import SmallChip from "./_components/small-chip";
+import { loadUserPrefs, saveUserPrefs } from "./lib/localstorage";
 
 export default function Home({ requestedId }: { requestedId?: string }) {
   const maxGuesses = 8;
@@ -36,7 +37,7 @@ export default function Home({ requestedId }: { requestedId?: string }) {
   const [previewJiggleTrigger, setPreviewJiggleTrigger] = useState(0);
 
   // Popup state.
-  const [popupOpen, setPopupOpen] = useState(true);
+  const [popupOpen, setPopupOpen] = useState(false);
   const [popupScreen, setPopupScreen] = useState(PopupScreen.UNSET);
 
   // Notifications state.
@@ -65,6 +66,13 @@ export default function Home({ requestedId }: { requestedId?: string }) {
       setPopupScreen(PopupScreen.RESULTS);
     } else {
       setPopupScreen(PopupScreen.TUTORIAL);
+    }
+
+    const userPrefs = loadUserPrefs();
+    if (!userPrefs.skipTutorial) {
+      setPopupOpen(true);
+      userPrefs.skipTutorial = true;
+      saveUserPrefs(userPrefs);
     }
   }, [game.gameOver, game.loading]);
 
