@@ -8,6 +8,7 @@ import { ArchiveResponseRow } from "../types";
 import { fetchArchive } from "../lib/api";
 import { formatDateYYYYMMDD } from "../lib/date-utils";
 import { loadLocalGameState } from "../game-state";
+import Link from "next/link";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
@@ -247,8 +248,7 @@ export default function Archive() {
       url = `/puzzle/${puzzle.id}`;
     } else if (Object.keys(dateMappedPuzzles).length > 0) {
       // If there are no puzzles for the date but there are puzzles in the map, set blank color classes
-      colorClasses =
-        "border-gray-200 dark:border-neutral-800";
+      colorClasses = "border-gray-200 dark:border-neutral-800";
     }
 
     // If user selects current date, redirect to home.
@@ -258,10 +258,10 @@ export default function Archive() {
 
     return (
       <div className="px-1.5 py-1.5 w-full flex flex-col items-center">
-        <a
-          href={url}
+        <Link
+          href={url || ''}
           className={`aspect-square border w-full max-w-12 ${colorClasses} rounded flex items-center justify-center`}
-        ></a>
+        ></Link>
         <p className="text-center text-sm sm:text-base mt-0.5 leading-normal">
           {date.getDate()}
         </p>

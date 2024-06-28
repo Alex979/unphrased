@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 interface SidebarProps {
   open: boolean;
   onClose: () => void;
@@ -20,8 +22,18 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col py-4">
-          <a href="/" className="py-3 px-4 hover:bg-neutral-100 dark:hover:bg-zinc-800"><span className="mr-3">☀️</span>Today</a>
-          <a href="/archive" className="py-3 px-4 hover:bg-neutral-100 dark:hover:bg-zinc-800"><span className="mr-3">📅</span>Archive</a>
+          <Link
+            href="/"
+            className="py-3 px-4 hover:bg-neutral-100 dark:hover:bg-zinc-800"
+          >
+            <span className="mr-3">☀️</span>Today
+          </Link>
+          <Link
+            href="/archive"
+            className="py-3 px-4 hover:bg-neutral-100 dark:hover:bg-zinc-800"
+          >
+            <span className="mr-3">📅</span>Archive
+          </Link>
         </div>
       </div>
     </div>
