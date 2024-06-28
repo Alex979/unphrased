@@ -363,11 +363,7 @@ export default function Home({ requestedId }: { requestedId?: string }) {
     game.gameOver;
 
   if (game.loading || popupScreen === PopupScreen.UNSET) {
-    return (
-      <HeaderTemplate>
-        <Loading />
-      </HeaderTemplate>
-    );
+    return <Loading chipText={requestedId && "ARCHIVE"} />;
   }
 
   let dateLabel: string | undefined;

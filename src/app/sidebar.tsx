@@ -21,7 +21,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-white dark:bg-neutral-900 shadow-lg rounded-lg border dark:border-neutral-800">
+        <div className="bg-white dark:bg-neutral-900 shadow-lg rounded-lg border border-gray-200 dark:border-neutral-800">
           <div className="flex flex-col">
             <Link
               href="/"

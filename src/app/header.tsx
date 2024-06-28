@@ -15,7 +15,7 @@ export default function Header({
   chipText,
 }: HeaderProps) {
   return (
-    <header className="w-full py-1 px-4 border-b dark:border-neutral-600 flex justify-between items-center">
+    <header className="w-full py-1 px-4 border-b border-gray-300 dark:border-neutral-600 flex justify-between items-center">
       <div className="flex items-center">
         <button onClick={() => onOpenMenu()}>
           <svg

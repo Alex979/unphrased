@@ -68,10 +68,10 @@ function PuzzleCalendar({ getDateTile, year, month }: PuzzleCalendarProps) {
 
   return (
     <div className="grid grid-cols-7">
-      {["s", "M", "T", "W", "T", "F", "S"].map((day, index) => (
+      {["S", "M", "T", "W", "T", "F", "S"].map((day, index) => (
         <div
           key={index}
-          className="border-b border-gray-700 dark:border-neutral-700 text-center"
+          className="border-b border-gray-300 dark:border-neutral-700 text-center"
         >
           {day}
         </div>
@@ -249,6 +249,9 @@ export default function Archive() {
     } else if (Object.keys(dateMappedPuzzles).length > 0) {
       // If there are no puzzles for the date but there are puzzles in the map, set blank color classes
       colorClasses = "border-gray-200 dark:border-neutral-800";
+    } else {
+      // If there are no puzzles for the date and there are no puzzles in the map, set loading classes
+      colorClasses = "border-none bg-gray-100 dark:bg-neutral-800";
     }
 
     // If user selects current date, redirect to home.
