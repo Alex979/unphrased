@@ -16,24 +16,27 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       onClick={onClose}
     >
       <div
-        className={`w-full h-full max-w-xs bg-white dark:bg-neutral-900 shadow-lg transition-transform ${
+        className={`absolute p-4 transition-transform ${
           !open ? "-translate-x-full" : ""
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex flex-col py-4">
-          <Link
-            href="/"
-            className="py-3 px-4 hover:bg-neutral-100 dark:hover:bg-zinc-800"
-          >
-            <span className="mr-3">☀️</span>Today
-          </Link>
-          <Link
-            href="/archive"
-            className="py-3 px-4 hover:bg-neutral-100 dark:hover:bg-zinc-800"
-          >
-            <span className="mr-3">📅</span>Archive
-          </Link>
+        <div className="bg-white dark:bg-neutral-900 shadow-lg rounded-lg border dark:border-neutral-800">
+          <div className="flex flex-col">
+            <Link
+              href="/"
+              className="m-3 px-3 py-2 rounded-md hover:bg-neutral-100 dark:hover:bg-zinc-800"
+            >
+              <span className="mr-3">☀️</span>Today
+            </Link>
+            <hr className="border-gray-300 dark:border-neutral-700 mx-3" />
+            <Link
+              href="/archive"
+              className="m-3 px-3 py-2 rounded-md hover:bg-neutral-100 dark:hover:bg-zinc-800"
+            >
+              <span className="mr-3">📅</span>Archive
+            </Link>
+          </div>
         </div>
       </div>
     </div>

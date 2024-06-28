@@ -10,7 +10,11 @@ interface HeaderTemplateProps {
   chipText?: string;
 }
 
-export default function HeaderTemplate({ children, onOpenHelp, chipText }: HeaderTemplateProps) {
+export default function HeaderTemplate({
+  children,
+  onOpenHelp,
+  chipText,
+}: HeaderTemplateProps) {
   // Sidebar state.
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
@@ -18,9 +22,20 @@ export default function HeaderTemplate({ children, onOpenHelp, chipText }: Heade
     setSidebarOpen((prev) => !prev);
   };
 
+  const handleOpenHelp = onOpenHelp
+    ? () => {
+        setSidebarOpen(false);
+        onOpenHelp();
+      }
+    : undefined;
+
   return (
     <div className="h-full flex flex-col">
-      <Header onOpenHelp={onOpenHelp} onOpenMenu={toggleSidebar} chipText={chipText} />
+      <Header
+        onOpenHelp={handleOpenHelp}
+        onOpenMenu={toggleSidebar}
+        chipText={chipText}
+      />
       <div className="flex-1 overflow-auto">
         <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         {children}
