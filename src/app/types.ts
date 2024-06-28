@@ -135,29 +135,25 @@ export function isStatRankingsResponse(obj: any): obj is StatRankingsResponse {
 export interface ArchiveRequest {
   timeZone: string;
   month: number;
+  year: number;
 }
 
 export function isArchiveRequest(obj: any): obj is ArchiveRequest {
   return (
-    obj && typeof obj.timeZone === "string" && typeof obj.month === "number"
+    obj &&
+    typeof obj.timeZone === "string" &&
+    typeof obj.month === "number" &&
+    typeof obj.year === "number"
   );
 }
 
-interface ArchiveResponseRow {
+export interface ArchiveResponseRow {
   id: string;
   date: string;
-  phrase: string;
-  clue: string;
 }
 
 function isArchiveResponseRow(obj: any): obj is ArchiveResponseRow {
-  return (
-    obj &&
-    typeof obj.id === "string" &&
-    typeof obj.date === "string" &&
-    typeof obj.phrase === "string" &&
-    typeof obj.clue === "string"
-  );
+  return obj && typeof obj.id === "string" && typeof obj.date === "string";
 }
 
 export type ArchiveResponse = ArchiveResponseRow[];

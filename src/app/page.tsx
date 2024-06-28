@@ -23,6 +23,7 @@ import Loading from "./loading";
 import Notifications from "./notifications";
 import Button from "./_components/button";
 import HeaderTemplate from "./header-template";
+import SmallChip from "./_components/small-chip";
 
 export default function Home({ requestedId }: { requestedId?: string }) {
   const maxGuesses = 8;
@@ -361,13 +362,31 @@ export default function Home({ requestedId }: { requestedId?: string }) {
     );
   }
 
+  let dateLabel: string | undefined;
+  const today = new Date();
+  if (game.puzzleDate.toDateString() !== today.toDateString()) {
+    const options: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "numeric",
+    };
+    if (game.puzzleDate.getFullYear() !== today.getFullYear()) {
+      options.year = "numeric";
+    }
+    dateLabel = game.puzzleDate.toLocaleDateString(undefined, options);
+  }
+
   return (
-    <HeaderTemplate onOpenHelp={openTutorialScreen}>
+    <HeaderTemplate
+      onOpenHelp={openTutorialScreen}
+      chipText={requestedId && "ARCHIVE"}
+    >
       <main className="h-full flex flex-col">
         <div className="relative flex-1 flex flex-col items-center overflow-y-auto">
-          <div className="absolute top-0 right-0 m-3 px-2 py-0.5 border dark:border-neutral-600 rounded-full flex items-center justify-center text-sm">
-            <span className="mr-0.5">#</span>{game.puzzleNumber}
-          </div>
+          {dateLabel && (
+            <SmallChip className="absolute top-0 right-0 m-3" style="secondary">
+              {dateLabel}
+            </SmallChip>
+          )}
           <Hint emojis={game.clue} guessingMode={game.guessingMode} />
           <div className="grow flex flex-col justify-center items-center max-h-[40rem]">
             <LetterPreview

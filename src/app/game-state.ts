@@ -51,7 +51,7 @@ function storeLocalGameState(puzzleId: string, gameState: StoredGameState) {
   localStorage.setItem(key, JSON.stringify(gameState));
 }
 
-function loadLocalGameState(puzzleId: string): StoredGameState | null {
+export function loadLocalGameState(puzzleId: string): StoredGameState | null {
   if (!localStorageAvailable()) {
     return null;
   }
@@ -69,6 +69,7 @@ function useGameState(requestedId?: string) {
   const [puzzleNumber, setPuzzleNumber] = useState(0);
   const [phrase, setPhrase] = useState("");
   const [clue, setClue] = useState("");
+  const [puzzleDate, setPuzzleDate] = useState(new Date());
 
   const [currentGuess, setCurrentGuess] = useState(1);
   const [guessHistory, setGuessHistory] = useState<boolean[]>([]);
@@ -145,6 +146,8 @@ function useGameState(requestedId?: string) {
       setPuzzleNumber(data.number);
       setPhrase(data.phrase);
       setClue(data.clue);
+      const [year, month, day] = data.date.split('-').map(Number);
+      setPuzzleDate(new Date(year, month - 1, day));
 
       const storedGameState = loadLocalGameState(data.id);
 
@@ -182,6 +185,7 @@ function useGameState(requestedId?: string) {
     puzzleNumber,
     phrase,
     clue,
+    puzzleDate,
     currentGuess,
     setCurrentGuess,
     guessHistory,

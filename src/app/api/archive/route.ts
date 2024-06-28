@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
 import { isArchiveRequest } from "@/app/types";
-import { getCurrentDateForTimeZone } from "../lib/date-utils";
+import { getCurrentDateForTimeZone } from "../../lib/date-utils";
 
 export async function POST(request: NextRequest) {
   const supabaseAdmin = createClient<Database>(
@@ -29,7 +29,8 @@ export async function POST(request: NextRequest) {
     .select()
     .lte("date", usersDate)
     .eq("extract_month", requestData.month)
-    .order('date', { ascending: true })
+    .eq("extract_year", requestData.year)
+    .order("date", { ascending: true });
 
   if (error || !data) {
     if (error) console.error(error);
@@ -39,5 +40,10 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  return Response.json(data);
+  return Response.json(
+    data.map((puzzle) => ({
+      id: puzzle.id,
+      date: puzzle.date,
+    }))
+  );
 }

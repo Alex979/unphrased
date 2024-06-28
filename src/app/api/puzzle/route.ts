@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
 import { isPuzzleRequest } from "@/app/types";
-import { getCurrentDateForTimeZone } from "../lib/date-utils";
+import { getCurrentDateForTimeZone } from "../../lib/date-utils";
 
 export const runtime = "edge";
 export const preferredRegion = ["sfo1"];
