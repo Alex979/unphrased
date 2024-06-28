@@ -73,20 +73,15 @@ export function isLogGuessRequest(obj: any): obj is LogGuessRequest {
   );
 }
 
-export interface PuzzleRequest {
+export interface TodaysPuzzleRequest {
   timeZone: string;
-  puzzleId?: string;
 }
 
-export function isPuzzleRequest(obj: any): obj is PuzzleRequest {
-  return (
-    obj &&
-    typeof obj.timeZone === "string" &&
-    (obj.puzzleId === undefined || typeof obj.puzzleId === "string")
-  );
+export function isTodaysPuzzleRequest(obj: any): obj is TodaysPuzzleRequest {
+  return obj && typeof obj.timeZone === "string";
 }
 
-export interface PuzzleResponse {
+export interface TodaysPuzzleResponse {
   id: string;
   number: number;
   date: string;
@@ -94,7 +89,7 @@ export interface PuzzleResponse {
   clue: string;
 }
 
-export function isPuzzleResponse(obj: any): obj is PuzzleResponse {
+export function isTodaysPuzzleResponse(obj: any): obj is TodaysPuzzleResponse {
   return (
     obj &&
     typeof obj.id === "string" &&
@@ -130,34 +125,4 @@ export type StatRankingsResponse = StatRankingsResponseRow[];
 
 export function isStatRankingsResponse(obj: any): obj is StatRankingsResponse {
   return Array.isArray(obj) && obj.every(isStatRankingsResponseRow);
-}
-
-export interface ArchiveRequest {
-  timeZone: string;
-  month: number;
-  year: number;
-}
-
-export function isArchiveRequest(obj: any): obj is ArchiveRequest {
-  return (
-    obj &&
-    typeof obj.timeZone === "string" &&
-    typeof obj.month === "number" &&
-    typeof obj.year === "number"
-  );
-}
-
-export interface ArchiveResponseRow {
-  id: string;
-  date: string;
-}
-
-function isArchiveResponseRow(obj: any): obj is ArchiveResponseRow {
-  return obj && typeof obj.id === "string" && typeof obj.date === "string";
-}
-
-export type ArchiveResponse = ArchiveResponseRow[];
-
-export function isArchiveResponse(obj: any): obj is ArchiveResponse {
-  return Array.isArray(obj) && obj.every(isArchiveResponseRow);
 }

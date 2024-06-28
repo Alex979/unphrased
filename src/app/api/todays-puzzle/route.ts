@@ -1,11 +1,23 @@
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
-import { isPuzzleRequest } from "@/app/types";
-import { getCurrentDateForTimeZone } from "../../lib/date-utils";
+import { isTodaysPuzzleRequest } from "@/app/types";
 
 export const runtime = "edge";
 export const preferredRegion = ["sfo1"];
+
+function getCurrentDateForTimeZone(timeZone: string) {
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  };
+  const formatter = new Intl.DateTimeFormat("en-CA", options); // Using Canadian English to favor YYYY-MM-DD format
+  const currentDate = formatter.format(new Date());
+
+  return currentDate; // Returns the date in 'YYYY-MM-DD' format
+}
 
 export async function POST(request: NextRequest) {
   const supabaseAdmin = createClient<Database>(
@@ -15,7 +27,7 @@ export async function POST(request: NextRequest) {
 
   const requestData = await request.json();
 
-  if (!isPuzzleRequest(requestData)) {
+  if (!isTodaysPuzzleRequest(requestData)) {
     return Response.json({ error: "Invalid arguments." }, { status: 400 });
   }
 
@@ -27,20 +39,11 @@ export async function POST(request: NextRequest) {
     usersDate = getCurrentDateForTimeZone("America/Los_Angeles");
   }
 
-  let data, error;
-  if (requestData.puzzleId) {
-    ({ data, error } = await supabaseAdmin
-      .from("numbered_puzzles")
-      .select()
-      .eq("id", requestData.puzzleId)
-      .single());
-  } else {
-    ({ data, error } = await supabaseAdmin
-      .from("numbered_puzzles")
-      .select()
-      .eq("date", usersDate)
-      .single());
-  }
+  const { data, error } = await supabaseAdmin
+    .from("numbered_puzzles")
+    .select()
+    .eq("date", usersDate)
+    .single();
 
   if (error || !data) {
     if (error) console.error(error);

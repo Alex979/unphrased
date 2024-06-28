@@ -1,49 +1,19 @@
 import { Roboto_Slab } from "next/font/google";
-import SmallChip from "./_components/small-chip";
 
 const robotoSlab = Roboto_Slab({ subsets: ["latin"] });
 
 interface HeaderProps {
   onOpenHelp?: () => void;
-  onOpenMenu: () => void;
-  chipText?: string;
 }
 
-export default function Header({
-  onOpenHelp,
-  onOpenMenu,
-  chipText,
-}: HeaderProps) {
+export default function Header({ onOpenHelp }: HeaderProps) {
   return (
     <header className="w-full py-1 px-4 border-b dark:border-neutral-600 flex justify-between items-center">
-      <div className="flex items-center">
-        <button onClick={() => onOpenMenu()}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-7 mr-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-        </button>
-        <h1
-          className={`mr-2 text-2xl font-black tracking-tight underline ${robotoSlab.className} leading-normal`}
-        >
-          Unphrased
-        </h1>
-        {chipText && (
-          <div className="flex flex-col mt-1.5">
-            <SmallChip>{chipText}</SmallChip>
-          </div>
-        )}
-      </div>
+      <h1
+        className={`text-2xl font-black tracking-tight underline ${robotoSlab.className} leading-normal`}
+      >
+        Unphrased
+      </h1>
       {onOpenHelp && (
         <button onClick={() => onOpenHelp()}>
           <svg
