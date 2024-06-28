@@ -116,13 +116,15 @@ export function isStatRankingsRequest(obj: any): obj is StatRankingsRequest {
 interface StatRankingsResponseRow {
   num_guesses: number | null;
   percent: number;
+  amount: number;
 }
 
 function isStatRankingsResponseRow(obj: any): obj is StatRankingsResponseRow {
   return (
     obj &&
     (typeof obj.num_guesses === "number" || obj.num_guesses === null) &&
-    typeof obj.percent === "number"
+    typeof obj.percent === "number" &&
+    typeof obj.amount === "number"
   );
 }
 
