@@ -37,7 +37,7 @@ function RankingBar({
             }}
           >
             {percent > 0 && !loading && (
-              <p className="text-xs font-bold mx-2">{Math.round(percent)}%</p>
+              <p className="text-xs font-bold mx-2">{Math.round(percent)}</p>
             )}
           </div>
         </div>
@@ -79,13 +79,13 @@ export default function StatRankings({
     : Math.max(...statRankings.map((ranking) => ranking.percent));
 
   return (
-    <div className="my-4">
-      <h2 className="text-sm font-bold my-2">STAT RANKINGS</h2>
+    <div className="my-6">
+      <h2 className="text-sm font-bold my-2">LEADERBOARD</h2>
       {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
         <RankingBar
           key={i}
           label={i < 8 ? `${i + 1}` : "X"}
-          percent={loading ? 100 : statRankings[i].percent}
+          percent={loading ? 100 : statRankings[i].amount}
           widthPercent={
             loading ? 100 : (statRankings[i].percent / maxPercent) * 100
           }

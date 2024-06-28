@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { AlphabetChar, GuessingMode, isTodaysPuzzleResponse } from "./types";
+import { AlphabetChar, GuessingMode, isPuzzleResponse } from "./types";
 import { useSearchParams } from "next/navigation";
+import { localStorageAvailable } from "./lib/localstorage";
 
 interface StoredGameState {
   currentGuess: number;
@@ -8,34 +9,6 @@ interface StoredGameState {
   guessedLetters: AlphabetChar[];
   gameOver: boolean;
   solved: boolean;
-}
-
-// From https://developer.mozilla.org/en-US/docs/Web/API/Web_Storage_API/Using_the_Web_Storage_API
-function localStorageAvailable() {
-  let storage;
-  try {
-    storage = window.localStorage;
-    const x = "__storage_test__";
-    storage.setItem(x, x);
-    storage.removeItem(x);
-    return true;
-  } catch (e) {
-    return (
-      e instanceof DOMException &&
-      // everything except Firefox
-      (e.code === 22 ||
-        // Firefox
-        e.code === 1014 ||
-        // test name field too, because code might not be present
-        // everything except Firefox
-        e.name === "QuotaExceededError" ||
-        // Firefox
-        e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
-      // acknowledge QuotaExceededError only if there's something already stored
-      storage &&
-      storage.length !== 0
-    );
-  }
 }
 
 function gameStateKey(puzzleId: string) {
@@ -51,7 +24,7 @@ function storeLocalGameState(puzzleId: string, gameState: StoredGameState) {
   localStorage.setItem(key, JSON.stringify(gameState));
 }
 
-function loadLocalGameState(puzzleId: string): StoredGameState | null {
+export function loadLocalGameState(puzzleId: string): StoredGameState | null {
   if (!localStorageAvailable()) {
     return null;
   }
@@ -64,11 +37,12 @@ function loadLocalGameState(puzzleId: string): StoredGameState | null {
   return JSON.parse(storedGameState);
 }
 
-function useGameState() {
+function useGameState(requestedId?: string) {
   const [puzzleId, setPuzzleId] = useState("");
   const [puzzleNumber, setPuzzleNumber] = useState(0);
   const [phrase, setPhrase] = useState("");
   const [clue, setClue] = useState("");
+  const [puzzleDate, setPuzzleDate] = useState(new Date());
 
   const [currentGuess, setCurrentGuess] = useState(1);
   const [guessHistory, setGuessHistory] = useState<boolean[]>([]);
@@ -124,16 +98,19 @@ function useGameState() {
       // Fetch today's puzzle from the server.
       const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
       const forceTimeZone = queryParams.get("tz");
-      const response = await fetch("/api/todays-puzzle", {
+      const response = await fetch("/api/puzzle", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ timeZone: forceTimeZone || timeZone }),
+        body: JSON.stringify({
+          timeZone: forceTimeZone || timeZone,
+          puzzleId: requestedId,
+        }),
         cache: "no-store",
       });
       const data = await response.json();
-      if (!isTodaysPuzzleResponse(data)) {
+      if (!isPuzzleResponse(data)) {
         console.error("Invalid response from server.");
         return;
       }
@@ -142,6 +119,8 @@ function useGameState() {
       setPuzzleNumber(data.number);
       setPhrase(data.phrase);
       setClue(data.clue);
+      const [year, month, day] = data.date.split('-').map(Number);
+      setPuzzleDate(new Date(year, month - 1, day));
 
       const storedGameState = loadLocalGameState(data.id);
 
@@ -179,6 +158,7 @@ function useGameState() {
     puzzleNumber,
     phrase,
     clue,
+    puzzleDate,
     currentGuess,
     setCurrentGuess,
     guessHistory,

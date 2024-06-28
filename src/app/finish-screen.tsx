@@ -49,22 +49,22 @@ export default function FinishScreen({
         <p className="my-4 text-center">
           Come back tomorrow to guess a new phrase.
         </p>
-        <hr className="border-gray-300 dark:border-neutral-700" />
-        <StatRankings
-          userGuesses={guessCount}
-          puzzleId={puzzleId}
-          scoreLogged={scoreLogged}
-        />
-        <hr className="border-gray-300 dark:border-neutral-700" />
-        <div className="flex justify-center">
+        <div className="flex justify-center mb-6 mt-7">
           <ShareButton
-            className="my-4"
+            className=""
             guessHistory={guessHistory}
             maxGuesses={maxGuesses}
             puzzleNumber={puzzleNumber}
             addNotification={addNotification}
           />
         </div>
+        <hr className="border-gray-300 dark:border-neutral-700" />
+        <StatRankings
+          userGuesses={guessCount}
+          puzzleId={puzzleId}
+          scoreLogged={scoreLogged}
+        />
+        <div className="flex"><div className="mt-4"></div></div>
       </div>
     </div>
   );
