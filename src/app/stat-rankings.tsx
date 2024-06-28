@@ -79,7 +79,7 @@ export default function StatRankings({
     : Math.max(...statRankings.map((ranking) => ranking.percent));
 
   return (
-    <div className="my-4">
+    <div className="my-6">
       <h2 className="text-sm font-bold my-2">LEADERBOARD</h2>
       {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
         <RankingBar
