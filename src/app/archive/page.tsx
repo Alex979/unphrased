@@ -235,13 +235,13 @@ export default function Archive() {
       if (storedGameState) {
         if (storedGameState.solved) {
           colorClasses =
-            "bg-green-300 border-green-500 dark:bg-green-800 dark:border-green-500";
+            "bg-green-200 border-green-500 dark:bg-green-800 dark:border-green-500";
         } else if (storedGameState.gameOver) {
           colorClasses =
-            "bg-red-300 border-red-400 dark:bg-red-900 dark:border-red-500";
+            "bg-red-200 border-red-400 dark:bg-red-900 dark:border-red-500";
         } else if (storedGameState.currentGuess > 1) {
           colorClasses =
-            "bg-yellow-200 border-yellow-500 dark:bg-yellow-800 dark:border-yellow-500";
+            "bg-yellow-100 border-yellow-500 dark:bg-yellow-800 dark:border-yellow-500";
         }
       }
       // Set the URL to the puzzle page
