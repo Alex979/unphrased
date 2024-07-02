@@ -6,12 +6,14 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ open, onClose }: SidebarProps) {
+  const linkClasses = "m-3 px-3 py-2 rounded-md hover:bg-neutral-100 dark:hover:bg-zinc-800";
+
   return (
     <div
       className={`fixed w-full h-full z-10 transition ${
         !open
           ? "pointer-events-none"
-          : "bg-neutral-200 dark:bg-black bg-opacity-70 dark:bg-opacity-70"
+          : "bg-white dark:bg-neutral-950 bg-opacity-70 dark:bg-opacity-70"
       }`}
       onClick={onClose}
     >
@@ -25,16 +27,23 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
           <div className="flex flex-col">
             <Link
               href="/"
-              className="m-3 px-3 py-2 rounded-md hover:bg-neutral-100 dark:hover:bg-zinc-800"
+              className={linkClasses}
             >
               <span className="mr-3">☀️</span>Today
             </Link>
             <hr className="border-gray-300 dark:border-neutral-700 mx-3" />
             <Link
               href="/archive"
-              className="m-3 px-3 py-2 rounded-md hover:bg-neutral-100 dark:hover:bg-zinc-800"
+              className={linkClasses}
             >
               <span className="mr-3">📅</span>Archive
+            </Link>
+            <hr className="border-gray-300 dark:border-neutral-700 mx-3" />
+            <Link
+              href="/about"
+              className={linkClasses}
+            >
+              <span className="mr-3">📖</span>About
             </Link>
           </div>
         </div>
