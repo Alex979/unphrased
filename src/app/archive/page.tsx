@@ -140,7 +140,7 @@ interface DateMappedPuzzles {
 }
 
 export default function Archive() {
-  const availableMonths = [4, 5, 6];
+  const availableMonths = [4, 5, 6, 7];
   const availableYears = [2024];
 
   const [monthIndex, setMonthIndex] = useState(availableMonths.length - 1);
