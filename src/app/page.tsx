@@ -384,7 +384,7 @@ export default function Home({ requestedId }: { requestedId?: string }) {
       onOpenHelp={openTutorialScreen}
       chipText={requestedId && "ARCHIVE"}
     >
-      <main className="h-full flex flex-col">
+      <main className="h-full flex flex-col" data-testid="puzzle-view">
         <div className="relative flex-1 flex flex-col items-center overflow-y-auto">
           {dateLabel && (
             <SmallChip className="absolute top-0 right-0 m-3" style="secondary">

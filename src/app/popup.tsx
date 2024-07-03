@@ -19,9 +19,10 @@ export default function Popup({ children, open, onClose }: PopupProps) {
           !open ? "translate-y-10 opacity-0" : "opacity-100"
         }`}
         onClick={(e) => e.stopPropagation()}
+        data-testid="popup"
       >
         <div className="flex items-center justify-end pr-6 pt-6">
-          <button onClick={onClose}>
+          <button onClick={onClose} aria-label="Close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
