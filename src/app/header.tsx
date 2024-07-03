@@ -15,7 +15,7 @@ export default function Header({
   chipText,
 }: HeaderProps) {
   return (
-    <header className="w-full py-1 px-4 border-b border-gray-300 dark:border-neutral-600 flex justify-between items-center">
+    <header className="w-full py-1 md:py-5 px-4 md:px-6 border-b border-gray-300 dark:border-neutral-600 flex justify-between items-center">
       <div className="flex items-center">
         <button onClick={() => onOpenMenu()}>
           <svg
@@ -24,7 +24,7 @@ export default function Header({
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-7 mr-4"
+            className="size-7 mr-4 md:mr-6"
           >
             <path
               strokeLinecap="round"
@@ -34,13 +34,13 @@ export default function Header({
           </svg>
         </button>
         <h1
-          className={`mr-2 text-2xl font-black tracking-tight underline ${robotoSlab.className} leading-normal`}
+          className={`mr-2 md:mr-4 text-2xl md:text-4xl font-black tracking-tight underline ${robotoSlab.className} leading-normal`}
         >
           Unphrased
         </h1>
         {chipText && (
-          <div className="flex flex-col mt-1.5">
-            <SmallChip>{chipText}</SmallChip>
+          <div className="flex flex-col mt-1.5 md:mt-3">
+            <SmallChip responsive>{chipText}</SmallChip>
           </div>
         )}
       </div>
@@ -52,7 +52,7 @@ export default function Header({
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="w-7 h-7"
+            className="size-7"
           >
             <path
               strokeLinecap="round"
