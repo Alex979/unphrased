@@ -13,7 +13,7 @@ export default function Sidebar({ open, onClose }: SidebarProps) {
       className={`fixed w-full h-full z-10 transition ${
         !open
           ? "pointer-events-none"
-          : "bg-white dark:bg-neutral-950 bg-opacity-70 dark:bg-opacity-70"
+          : "bg-neutral-100 dark:bg-neutral-950 bg-opacity-70 dark:bg-opacity-70"
       }`}
       onClick={onClose}
     >
