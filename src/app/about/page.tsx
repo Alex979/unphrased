@@ -4,7 +4,7 @@ import HeaderTemplate from "../header-template";
 export default function AboutPage() {
   return (
     <HeaderTemplate>
-      <div className="p-8 lg:pt-16 w-full max-w-5xl mx-auto leading-relaxed">
+      <div className="p-8 lg:pt-16 w-full max-w-4xl mx-auto leading-relaxed">
         <p>
           Hello! 👋 I&apos;m Alex, a full-stack developer with a passion for
           creating fun and engaging experiences through code. Welcome to
