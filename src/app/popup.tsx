@@ -7,7 +7,7 @@ interface PopupProps {
 export default function Popup({ children, open, onClose }: PopupProps) {
   return (
     <div
-      className={`fixed inset-0 pt-8 sm:p-0 sm:flex sm:flex-col sm:justify-center sm:items-center transition ${
+      className={`fixed inset-0 pt-8 sm:p-4 sm:flex sm:flex-col sm:justify-center sm:items-center transition ${
         !open
           ? "pointer-events-none"
           : "bg-gray-100 dark:bg-neutral-950 bg-opacity-70 dark:bg-opacity-70"
@@ -15,7 +15,7 @@ export default function Popup({ children, open, onClose }: PopupProps) {
       onClick={onClose}
     >
       <div
-        className={`w-full h-full sm:max-w-lg sm:h-auto rounded-t-xl sm:rounded-b-xl shadow-lg bg-white dark:bg-neutral-900 transition flex flex-col ${
+        className={`w-full h-full sm:max-w-lg sm:h-auto sm:max-h-full rounded-t-xl sm:rounded-b-xl shadow-lg bg-white dark:bg-neutral-900 transition flex flex-col ${
           !open ? "translate-y-10 opacity-0" : "opacity-100"
         }`}
         onClick={(e) => e.stopPropagation()}
