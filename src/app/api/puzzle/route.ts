@@ -43,7 +43,15 @@ export async function POST(request: NextRequest) {
   }
 
   if (error || !data) {
-    if (error) console.error(error);
+    if (error) {
+      console.error(error);
+      if (error.code === 'PGRST116') {
+        return Response.json(
+          { error: "Puzzle not found." },
+          { status: 404 }
+        );
+      }
+    }
     return Response.json(
       { error: "An internal error occurred." },
       { status: 500 }

@@ -58,6 +58,7 @@ function useGameState(requestedId?: string) {
   const [solved, setSolved] = useState(false);
 
   const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
   const [scoreLogged, setScoreLogged] = useState(false);
 
@@ -109,6 +110,12 @@ function useGameState(requestedId?: string) {
         }),
         cache: "no-store",
       });
+
+      if (response.status === 404) {
+        setNotFound(true);
+        return;
+      }
+
       const data = await response.json();
       if (!isPuzzleResponse(data)) {
         console.error("Invalid response from server.");
@@ -179,6 +186,7 @@ function useGameState(requestedId?: string) {
     solved,
     setSolved,
     loading,
+    notFound,
     scoreLogged,
     setScoreLogged,
   };

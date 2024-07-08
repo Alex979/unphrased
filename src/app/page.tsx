@@ -25,6 +25,7 @@ import Button from "./_components/button";
 import HeaderTemplate from "./header-template";
 import SmallChip from "./_components/small-chip";
 import { loadUserPrefs, saveUserPrefs } from "./lib/localstorage";
+import PuzzleNotFound from "./puzzle-not-found";
 
 export default function Home({ requestedId }: { requestedId?: string }) {
   const maxGuesses = 8;
@@ -361,6 +362,10 @@ export default function Home({ requestedId }: { requestedId?: string }) {
     (game.guessingMode === GuessingMode.Full &&
       game.sentenceGuesses.length < numBlanksInSentence()) ||
     game.gameOver;
+
+  if (game.notFound) {
+    return <PuzzleNotFound />;
+  }
 
   if (game.loading || popupScreen === PopupScreen.UNSET) {
     return <Loading chipText={requestedId && "ARCHIVE"} />;
