@@ -4,6 +4,9 @@ import { NextRequest } from "next/server";
 import { isArchiveRequest } from "@/app/types";
 import { getCurrentDateForTimeZone } from "../../lib/date-utils";
 
+export const runtime = "edge";
+export const preferredRegion = ["sfo1"];
+
 export async function POST(request: NextRequest) {
   const supabaseAdmin = createClient<Database>(
     process.env.SUPABASE_URL!,
