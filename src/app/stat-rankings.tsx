@@ -49,13 +49,15 @@ function RankingBar({
 interface StatRankingsProps {
   puzzleId: string;
   userGuesses: number;
+  didWin: boolean;
   scoreLogged: boolean;
 }
 
 export default function StatRankings({
   puzzleId,
   userGuesses,
-  scoreLogged
+  didWin,
+  scoreLogged,
 }: StatRankingsProps) {
   const [statRankings, setStatRankings] = useState<StatRankingsResponse | null>(
     null
@@ -90,7 +92,11 @@ export default function StatRankings({
             loading ? 100 : (statRankings[i].percent / maxPercent) * 100
           }
           highlight={
-            loading ? false : statRankings[i].num_guesses === userGuesses
+            loading
+              ? false
+              : didWin
+              ? statRankings[i].num_guesses === userGuesses
+              : statRankings[i].num_guesses === null
           }
           loading={loading}
         />

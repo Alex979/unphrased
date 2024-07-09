@@ -61,10 +61,13 @@ export default function FinishScreen({
         <hr className="border-gray-300 dark:border-neutral-700" />
         <StatRankings
           userGuesses={guessCount}
+          didWin={didWin}
           puzzleId={puzzleId}
           scoreLogged={scoreLogged}
         />
-        <div className="flex"><div className="mt-4"></div></div>
+        <div className="flex">
+          <div className="mt-4"></div>
+        </div>
       </div>
     </div>
   );
