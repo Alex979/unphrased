@@ -139,12 +139,12 @@ interface DateMappedPuzzles {
   [date: string]: ArchiveResponseRow;
 }
 
-export default function Archive() {
-  const availableMonths = [4, 5, 6, 7];
-  const availableYears = [2024];
+const AVAILABLE_MONTHS = [4, 5, 6, 7];
+const AVAILABLE_YEARS = [2024];
 
-  const [monthIndex, setMonthIndex] = useState(availableMonths.length - 1);
-  const [yearIndex, setYearIndex] = useState(availableYears.length - 1);
+export default function Archive() {
+  const [monthIndex, setMonthIndex] = useState(AVAILABLE_MONTHS.length - 1);
+  const [yearIndex, setYearIndex] = useState(AVAILABLE_YEARS.length - 1);
 
   const [dateMappedPuzzles, setDateMappedPuzzles] = useState<DateMappedPuzzles>(
     {}
@@ -152,50 +152,50 @@ export default function Archive() {
 
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const updateDateMappedPuzzles = async () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    try {
-      const archiveResponse = await fetchArchive(
-        {
-          month: availableMonths[monthIndex],
-          year: availableYears[yearIndex],
-          timeZone: timeZone,
-        },
-        controller.signal
-      );
-      if (archiveResponse === null) {
-        return;
-      }
-
-      const dateMap: DateMappedPuzzles = {};
-      for (const row of archiveResponse) {
-        dateMap[row.date] = row;
-      }
-      console.log(dateMap);
-      setDateMappedPuzzles(dateMap);
-    } catch (error) {}
-  };
-
   useEffect(() => {
+    const updateDateMappedPuzzles = async () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      try {
+        const archiveResponse = await fetchArchive(
+          {
+            month: AVAILABLE_MONTHS[monthIndex],
+            year: AVAILABLE_YEARS[yearIndex],
+            timeZone: timeZone,
+          },
+          controller.signal
+        );
+        if (archiveResponse === null) {
+          return;
+        }
+
+        const dateMap: DateMappedPuzzles = {};
+        for (const row of archiveResponse) {
+          dateMap[row.date] = row;
+        }
+        console.log(dateMap);
+        setDateMappedPuzzles(dateMap);
+      } catch (error) {}
+    };
+
     updateDateMappedPuzzles();
   }, [monthIndex, yearIndex]);
 
   const canIncrement =
-    monthIndex < availableMonths.length - 1 ||
-    yearIndex < availableYears.length - 1;
+    monthIndex < AVAILABLE_MONTHS.length - 1 ||
+    yearIndex < AVAILABLE_YEARS.length - 1;
   const canDecrement = monthIndex > 0 || yearIndex > 0;
 
   const increment = () => {
     if (!canIncrement) {
       return;
     }
-    if (monthIndex < availableMonths.length - 1) {
+    if (monthIndex < AVAILABLE_MONTHS.length - 1) {
       setMonthIndex((prevIndex) => prevIndex + 1);
     } else {
       setYearIndex((prevIndex) => prevIndex + 1);
@@ -212,7 +212,7 @@ export default function Archive() {
       setMonthIndex((prevIndex) => prevIndex - 1);
     } else {
       setYearIndex((prevIndex) => prevIndex - 1);
-      setMonthIndex(availableMonths.length - 1);
+      setMonthIndex(AVAILABLE_MONTHS.length - 1);
     }
     setDateMappedPuzzles({});
   };
@@ -262,7 +262,7 @@ export default function Archive() {
     return (
       <div className="px-1.5 py-1.5 w-full flex flex-col items-center">
         <Link
-          href={url || ''}
+          href={url || ""}
           className={`aspect-square border w-full max-w-12 ${colorClasses} rounded flex items-center justify-center`}
         ></Link>
         <p className="text-center text-sm sm:text-base mt-0.5 leading-normal">
@@ -292,7 +292,7 @@ export default function Archive() {
             setDateMappedPuzzles({});
           }}
         >
-          {availableMonths.map((month, index) => (
+          {AVAILABLE_MONTHS.map((month, index) => (
             <option value={index} key={index}>
               {getMonthString(month)}
             </option>
@@ -305,7 +305,7 @@ export default function Archive() {
             setDateMappedPuzzles({});
           }}
         >
-          {availableYears.map((year, index) => (
+          {AVAILABLE_YEARS.map((year, index) => (
             <option value={index} key={index}>
               {year}
             </option>
@@ -321,8 +321,8 @@ export default function Archive() {
         <div className="w-full p-1.5 max-w-lg">
           <PuzzleCalendar
             getDateTile={getDateTile}
-            year={availableYears[yearIndex]}
-            month={availableMonths[monthIndex]}
+            year={AVAILABLE_YEARS[yearIndex]}
+            month={AVAILABLE_MONTHS[monthIndex]}
           />
         </div>
       </div>

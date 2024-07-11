@@ -10,12 +10,15 @@ function MessageBubble({
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    ref.current?.addEventListener("animationend", onAnimationEnd);
+    if (!ref.current) return;
+
+    const notificationRef = ref.current;
+    notificationRef.addEventListener("animationend", onAnimationEnd);
 
     return () => {
-      ref.current?.removeEventListener("animationend", onAnimationEnd);
+      notificationRef.removeEventListener("animationend", onAnimationEnd);
     };
-  }, []);
+  }, [onAnimationEnd]);
 
   return (
     <div

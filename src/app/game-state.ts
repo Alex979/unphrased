@@ -142,7 +142,7 @@ function useGameState(requestedId?: string) {
 
       setLoading(false);
     })();
-  }, [queryParams]);
+  }, [queryParams, requestedId]);
 
   // Update locally stored game state whenever it changes.
   useEffect(() => {
