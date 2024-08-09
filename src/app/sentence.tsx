@@ -74,7 +74,7 @@ export default function Sentence({
           currentSpan.push(
             <span
               key={currentSpan.length - 1}
-              className="inline-block animate-pop"
+              className="inline-block animate-letter-pop"
             >
               <span
                 className={`absolute translate-y-1 font-normal ${dashColorClasses}`}

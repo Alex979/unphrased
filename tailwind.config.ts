@@ -12,6 +12,17 @@ const config: Config = {
       keyframes: ({ theme }) => ({
         pop: {
           "0%": {
+            transform: "scale(1.2)",
+          },
+          "50%": {
+            transform: "scale(1)",
+          },
+          "100%": {
+            transform: "scale(1)",
+          },
+        },
+        letterPop: {
+          "0%": {
             transform: "scale(1.5)",
             color: theme("colors.green.500"),
           },
@@ -52,12 +63,13 @@ const config: Config = {
         },
       }),
       animation: {
-        pop: "pop 0.3s linear",
+        pop: "pop 0.2s linear",
         jiggle: "jiggle 0.2s ease-out",
         "fade-out": "fadeOut 0.3s ease-out forwards",
         "switch-phrase": "switchPhrase 0.15s ease-in-out forwards",
         "switch-letters": "switchLetters 0.15s ease-in-out forwards",
         "loading-gradient": "loadingGradient 3s infinite linear",
+        "letter-pop": "letterPop 0.3s linear",
       },
       screens: {
         tiny: { raw: "(max-height: 630px)" },
