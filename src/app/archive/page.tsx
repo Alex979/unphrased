@@ -139,7 +139,7 @@ interface DateMappedPuzzles {
   [date: string]: ArchiveResponseRow;
 }
 
-const AVAILABLE_MONTHS = [4, 5, 6, 7, 8];
+const AVAILABLE_MONTHS = [4, 5, 6, 7, 8, 11];
 const AVAILABLE_YEARS = [2024];
 
 export default function Archive() {
