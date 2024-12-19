@@ -11,7 +11,6 @@ export default function PuzzleNotFound() {
         <h1 className={`text-2xl font-extrabold ${robotoSlab.className} mb-4`}>
           No puzzle right now!
         </h1>
-        <p className="text-xl mb-8">I forgor 💀</p>
         <p className="leading-relaxed">
           Please check again later, or visit the{" "}
           <Link
