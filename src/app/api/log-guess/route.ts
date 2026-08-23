@@ -8,9 +8,6 @@ import {
   isLogStatsRequest,
 } from "@/app/types";
 
-export const runtime = "edge";
-export const preferredRegion = ["sfo1"];
-
 function validateRequest(data: LogGuessRequest) {
   if (
     data.fingerprint.length === 0 ||
