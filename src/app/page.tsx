@@ -63,6 +63,7 @@ export default function Home({ requestedId }: { requestedId?: string }) {
       return;
     }
 
+    /* eslint-disable react-hooks/set-state-in-effect -- Initialize popup state after the game finishes loading. */
     if (game.gameOver) {
       setPopupScreen(PopupScreen.RESULTS);
     } else {
@@ -75,6 +76,7 @@ export default function Home({ requestedId }: { requestedId?: string }) {
       userPrefs.skipTutorial = true;
       saveUserPrefs(userPrefs);
     }
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [game.gameOver, game.loading]);
 
   const onLetterPress = (letter: AlphabetChar) => {
