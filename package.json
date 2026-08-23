@@ -11,7 +11,7 @@
   "dependencies": {
     "@next/third-parties": "^14.2.1",
     "@supabase/ssr": "^0.3.0",
-    "@supabase/supabase-js": "^2.42.0",
+    "@supabase/supabase-js": "2.50.0",
     "@thumbmarkjs/thumbmarkjs": "^0.14.6",
     "@vercel/analytics": "^1.2.2",
     "@vercel/speed-insights": "^1.0.10",
