@@ -3,9 +3,6 @@ import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
 import { isStatRankingsRequest } from "@/app/types";
 
-export const runtime = "edge";
-export const preferredRegion = ["sfo1"];
-
 export async function POST(request: NextRequest) {
   const supabaseAdmin = createClient<Database>(
     process.env.SUPABASE_URL!,

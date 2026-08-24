@@ -22,6 +22,8 @@ export default function LetterPreview({
     if (jiggleTrigger === 0) {
       return;
     }
+    // A changed trigger intentionally restarts the CSS animation.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsJiggling(true);
   }, [jiggleTrigger]);
 
@@ -29,6 +31,8 @@ export default function LetterPreview({
     if (!letter) {
       return;
     }
+    // A changed letter intentionally starts the CSS animation.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsPopping(true);
   }, [letter]);
 

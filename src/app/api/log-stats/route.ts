@@ -3,9 +3,6 @@ import { Database } from "@/app/supabase/types";
 import { NextRequest } from "next/server";
 import { LogStatsRequest, isLogStatsRequest } from "@/app/types";
 
-export const runtime = "edge";
-export const preferredRegion = ["sfo1"];
-
 function validateRequest(data: LogStatsRequest) {
   if (
     data.solved &&

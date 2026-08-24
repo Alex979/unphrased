@@ -5,7 +5,7 @@ interface KeyboardRowProps {
   children?: React.ReactNode;
 }
 
-function KeyboardRow({ children }: KeyboardRowProps): JSX.Element {
+function KeyboardRow({ children }: KeyboardRowProps): React.JSX.Element {
   return <div className="grow flex">{children}</div>;
 }
 
@@ -29,7 +29,7 @@ function KeyboardButton({
   highlight,
   disabled,
   guessingMode,
-}: KeyboardButtonProps): JSX.Element {
+}: KeyboardButtonProps): React.JSX.Element {
   const checkTouchDevice = () => {
     return "ontouchstart" in window;
   };

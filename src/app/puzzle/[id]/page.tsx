@@ -1,5 +1,11 @@
 import Home from "@/app/page";
 
-export default function PuzzleArchive({ params }: { params: { id: string } }) {
-  return <Home requestedId={params.id} />;
+export default async function PuzzleArchive({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
+  return <Home requestedId={id} />;
 }

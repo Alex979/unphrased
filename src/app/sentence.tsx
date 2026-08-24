@@ -28,6 +28,8 @@ export default function Sentence({
     if (jiggleTrigger === 0) {
       return;
     }
+    // A changed trigger intentionally restarts the CSS animation.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsJiggling(true);
   }, [jiggleTrigger]);
 
